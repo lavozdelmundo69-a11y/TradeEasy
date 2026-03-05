@@ -1,0 +1,98 @@
+{
+  "components": [
+    {
+      "name": "LessonCard",
+      "description": "Tarjeta que muestra título, dificultad, XP de la lección",
+      "props": ["lesson", "isCompleted", "isUnlocked", "onPress"],
+      "usage": "Muestra cada lección en el mapa de aprendizaje"
+    },
+    {
+      "name": "QuizCard",
+      "description": "Componente de pregunta con opciones y feedback",
+      "props": ["question", "options", "onAnswer", "showResult"],
+      "usage": "Renderiza preguntas interactivas con selección de respuestas"
+    },
+    {
+      "name": "ScenarioCard",
+      "description": "Escenario de mercado + pregunta interactiva",
+      "props": ["scenario", "chartData", "onAnswer"],
+      "usage": "Muestra gráficos de velas y preguntas de trading"
+    },
+    {
+      "name": "ChartView",
+      "description": "Renderiza gráfico de velas OHLC",
+      "props": ["data", "width", "height", "showVolume"],
+      "usage": "Dibuja velas japonesas usando react-native-svg"
+    },
+    {
+      "name": "ProgressBar",
+      "description": "Barra de progreso horizontal",
+      "props": ["progress", "color", "height"],
+      "usage": "Muestra XP del usuario y progreso hacia siguiente nivel"
+    },
+    {
+      "name": "LevelMap",
+      "description": "Mapa tipo Duolingo con lecciones",
+      "props": ["lessons", "completedLessons", "currentLevel"],
+      "usage": "Muestra todas las lecciones con estado de bloqueo/desbloqueo"
+    },
+    {
+      "name": "AnswerButtons",
+      "description": "Botones de respuesta interactivos",
+      "props": ["options", "selectedIndex", "onSelect", "disabled"],
+      "usage": "Botones para seleccionar respuesta en quizzes"
+    },
+    {
+      "name": "XPIndicator",
+      "description": "Muestra XP ganado",
+      "props": ["xp", "animated"],
+      "usage": "Animación de XP al completar lección"
+    },
+    {
+      "name": "StreakCounter",
+      "description": "Contador de racha diaria",
+      "props": ["streak", "maxStreak"],
+      "usage": "Muestra días consecutivos de práctica"
+    },
+    {
+      "name": "LevelBadge",
+      "description": "Insignia de nivel del usuario",
+      "props": ["level", "title", "color"],
+      "usage": "Muestra nivel actual del usuario"
+    }
+  ],
+  "gamification": {
+    "xp": {
+      "lessonComplete": 50,
+      "exerciseCorrect": 10,
+      "streakBonus": 5,
+      "perfectLesson": 25
+    },
+    "levels": [
+      {"level": 1, "minXP": 0, "title": "Novato", "color": "#00CEC9"},
+      {"level": 2, "minXP": 500, "title": "Aprendiz", "color": "#6C5CE7"},
+      {"level": 3, "minXP": 1500, "title": "Analista", "color": "#00B894"},
+      {"level": 4, "minXP": 3500, "title": "Trader", "color": "#FDCB6E"},
+      {"level": 5, "minXP": 7000, "title": "Experto", "color": "#E17055"}
+    ],
+    "streak": {
+      "maxDays": 365,
+      "freezeCost": 100,
+      "reminderHour": 20
+    },
+    "achievements": [
+      {"id": "first_lesson", "title": "Primera Lección", "requirement": 1},
+      {"id": "ten_lessons", "title": "Aprendiz", "requirement": 10},
+      {"id": "streak_7", "title": "Semana Perfecta", "requirement": 7},
+      {"id": "streak_30", "title": "Mes de Racha", "requirement": 30},
+      {"id": "level_5", "title": "Experto", "requirement": 5}
+    ]
+  },
+  "technical": {
+    "navigation": "React Navigation (Bottom Tabs + Stack)",
+    "state": "Zustand + AsyncStorage",
+    "charts": "react-native-svg-charts",
+    "animations": "Reanimated 3",
+    "storage": "AsyncStorage para progreso, JSON embebido para lecciones"
+  }
+}
