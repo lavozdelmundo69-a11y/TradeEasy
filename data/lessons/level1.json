@@ -1,0 +1,430 @@
+{
+  "level": 1,
+  "levelName": "Fundamentos",
+  "description": "Aprende los conceptos básicos del trading",
+  "lessons": [
+    {
+      "id": "l1_01",
+      "title": "¿Qué es el Trading?",
+      "description": "Introducción al mundo del trading",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 1,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "El trading es la compra y venta de activos financieros con el objetivo de obtener ganancias. Estos activos pueden ser acciones, divisas (Forex), criptomonedas, materias primas y más."
+        },
+        {
+          "type": "text",
+          "content": "A diferencia de invertir a largo plazo, el trading busca beneficiarse de los movimientos de precio en períodos cortos de tiempo: minutos, horas o días."
+        },
+        {
+          "type": "tip",
+          "content": "El trading requiere disciplina, gestión del riesgo y aprendizaje continuo. No es una forma rápida de ganar dinero."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Imagina que compras acciones de una empresa a 100€. Dos horas después, suben a 105€. Si vendes en ese momento, has ganado 5€ por acción.",
+        "scenario": " trading básico"
+      },
+      "exercise": {
+        "id": "ex_l1_01",
+        "type": "concept-quiz",
+        "question": "¿Cuál es el objetivo principal del trading?",
+        "options": [
+          "Ganar dinero rápidamente sin esfuerzo",
+          "Beneficiarse de los movimientos de precio",
+          "Comprar empresas para siempre",
+          "Ahorrar para la jubilación"
+        ],
+        "correctAnswer": 1,
+        "explanation": "El trading busca beneficiarse de los movimientos de precio a corto plazo, no es una forma de ganar dinero fácil.",
+        "difficulty": "easy"
+      },
+      "summary": "El trading es comprar y vender activos financieros para beneficiarse de los cambios de precio en el corto plazo."
+    },
+    {
+      "id": "l1_02",
+      "title": "Los Mercados Financieros",
+      "description": "Dónde se negocian los activos",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 2,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Los mercados financieros son lugares (físicos o digitales) donde compradores y vendedores intercambian activos. Cada mercado tiene sus propias características."
+        },
+        {
+          "type": "text",
+          "content": "Los principales mercados son: Bolsa (acciones), Forex (divisas), Criptomonedas y Materias primas (oro, petróleo)."
+        },
+        {
+          "type": "tip",
+          "content": "Cada mercado tiene horarios diferentes. El mercado de criptomonedas opera 24/7, mientras que la bolsa tiene horarios específicos."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Si quieres comprar Bitcoin, vas a un exchange de criptomonedas. Si quieres comprar acciones de Apple, vas a la bolsa de valores.",
+        "scenario": " mercados"
+      },
+      "exercise": {
+        "id": "ex_l1_02",
+        "type": "concept-quiz",
+        "question": "¿Dónde se negocian las acciones de empresas?",
+        "options": [
+          "En el mercado de Forex",
+          "En la bolsa de valores",
+          "En bancos فقط",
+          "Solo en criptomonedas"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Las acciones se negocian en la bolsa de valores, como NYSE, Nasdaq o en mercados locales.",
+        "difficulty": "easy"
+      },
+      "summary": "Los mercados financieros son el entorno donde se compran y venden activos: bolsas, Forex, criptomonedas."
+    },
+    {
+      "id": "l1_03",
+      "title": "¿Qué es el Precio?",
+      "description": "Entendiendo cómo se forma el precio",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 3,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "El precio de un activo se determina por la oferta y la demanda. Si hay más compradores que vendedores, el precio sube. Si hay más vendedores, baja."
+        },
+        {
+          "type": "text",
+          "content": "Cada operación de compra o venta influye en el precio. Cuando alguien compra a un precio mayor, empuja el precio hacia arriba."
+        },
+        {
+          "type": "warning",
+          "content": "El precio siempre está fluctuando. No hay un precio 'correcto' - solo lo que compradores y vendedores están dispuestos a pagar."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Si todos quieren comprar Bitcoin (mucha demanda) y nadie quiere vender, el precio subirá hasta que alguien acepte vender.",
+        "scenario": " oferta demanda"
+      },
+      "exercise": {
+        "id": "ex_l1_03",
+        "type": "concept-quiz",
+        "question": "¿Qué sucede con el precio cuando hay más compradores que vendedores?",
+        "options": [
+          "El precio baja",
+          "El precio se mantiene igual",
+          "El precio sube",
+          "El mercado cierra"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Cuando la demanda supera a la oferta, los compradores compiten por comprar, lo que impulsa el precio hacia arriba.",
+        "difficulty": "easy"
+      },
+      "summary": "El precio se forma por la oferta y demanda. Más compradores = precio sube. Más vendedores = precio baja."
+    },
+    {
+      "id": "l1_04",
+      "title": "Velas Japonesas",
+      "description": "La forma principal de leer gráficos",
+      "duration": 4,
+      "xpReward": 50,
+      "order": 4,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Las velas japonesas (o candlesticks) son una forma de representar el movimiento del precio en un período de tiempo. Cada vela muestra: precio de apertura, cierre, máximo y mínimo."
+        },
+        {
+          "type": "text",
+          "content": "El 'cuerpo' de la vela es la diferencia entre apertura y cierre. Las 'mechas' o 'sombras' muestran los precios máximo y mínimo del período."
+        },
+        {
+          "type": "tip",
+          "content": "Las velas son la base del análisis técnico. Aprender a leerlas es esencial para cualquier trader."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Vela verde: Precio abrió a 100 y cerró a 110 (subió). Vela roja: Precio abrió a 110 y cerró a 100 (bajó).",
+        "chartData": [
+          {"open": 100, "close": 110, "high": 115, "low": 98}
+        ],
+        "scenario": " velas"
+      },
+      "exercise": {
+        "id": "ex_l1_04",
+        "type": "candle-interpretation",
+        "question": "Una vela tiene el precio de apertura igual al de cierre. ¿Qué nos indica esto?",
+        "options": [
+          "El precio subió fuertemente",
+          "El precio bajó fuertemente",
+          "Hubo indecisión en el mercado",
+          "El mercado estuvo cerrado"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Cuando apertura y cierre son iguales, buyers y sellers estaban igualados. Es señal de indecisión.",
+        "difficulty": "easy"
+      },
+      "summary": "Las velas japonesas muestran apertura, cierre, máximo y mínimo. Verdes = subió, Rojas = bajó."
+    },
+    {
+      "id": "l1_05",
+      "title": "Velas Alcistas y Bajistas",
+      "description": "Diferenciando movimiento de precio",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 5,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Una vela alcista (verde o blanca) indica que el precio cerró más alto de lo que abrió. Los compradores dominaron durante ese período."
+        },
+        {
+          "type": "text",
+          "content": "Una vela bajista (roja o negra) indica que el precio cerró más bajo de lo que abrió. Los vendedores dominaron."
+        },
+        {
+          "type": "text",
+          "content": "El color depende de la plataforma. Las más comunes usan verde=alcista y rojo=bajista."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Vela verde: Abre 50, cierra 60. El precio subió 10€. Vela roja: Abre 60, cierra 50. El precio bajó 10€.",
+        "scenario": "velas"
+      },
+      "exercise": {
+        "id": "ex_l1_05",
+        "type": "concept-quiz",
+        "question": "Una vela roja indica que el precio...",
+        "options": [
+          "Subió en ese período",
+          "Se mantuvo estable",
+          "Bajó en ese período",
+          "No se puede determinar"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Las velas rojas/bajistas muestran que el precio de cierre fue menor que el de apertura.",
+        "difficulty": "easy"
+      },
+      "summary": "Verde = precio cerró más alto (alcista). Rojo = precio cerró más bajo (bajista)."
+    },
+    {
+      "id": "l1_06",
+      "title": "Partes de una Vela",
+      "description": "Cuerpo, mecha y sombra",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 6,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "El cuerpo (real) es la parte principal de la vela. Muestra la diferencia entre el precio de apertura y cierre del período."
+        },
+        {
+          "type": "text",
+          "content": "Las mechas (sombras) son las líneas que sobresalen del cuerpo. La mecha superior muestra el precio máximo, la inferior el mínimo."
+        },
+        {
+          "type": "tip",
+          "content": "Una mecha larga puede indicar rechazo del precio en esa zona - los compradores o vendedores no dejaron que continuara."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Precio: Abre 100, baja a 95, sube a 110, cierra a 105. Cuerpo: 100-105. Mecha superior: 110. Mecha inferior: 95.",
+        "scenario": "partes vela"
+      },
+      "exercise": {
+        "id": "ex_l1_06",
+        "type": "concept-quiz",
+        "question": "¿Qué representa la mecha superior de una vela?",
+        "options": [
+          "El precio de apertura",
+          "El precio de cierre",
+          "El precio máximo del período",
+          "El volumen de trading"
+        ],
+        "correctAnswer": 2,
+        "explanation": "La mecha superior muestra el precio más alto alcanzado durante el período representado por la vela.",
+        "difficulty": "easy"
+      },
+      "summary": "Cuerpo = apertura a cierre. Mecha superior = máximo. Mecha inferior = mínimo."
+    },
+    {
+      "id": "l1_07",
+      "title": "Soportes y Resistencias",
+      "description": "Zonas clave del precio",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 7,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Un soporte es una zona de precio donde históricamente el precio ha subido tras caer. Es como un 'piso' que evita que baje más."
+        },
+        {
+          "type": "text",
+          "content": "Una resistencia es lo contrario: una zona donde el precio ha dejado de subir y ha caído. Es un 'techo' que frena las subidas."
+        },
+        {
+          "type": "tip",
+          "content": "Cuando el precio rompe un soporte, ese soporte puede convertirse en resistencia (y viceversa). Esto se llama 'polaridad'."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "El precio de Bitcoin cayó a 60.000$ tres veces y siempre subió. Ese nivel es un soporte fuerte. Cada vez que llegó a 70.000$, bajó. Esa es resistencia.",
+        "scenario": "soporte resistencia"
+      },
+      "exercise": {
+        "id": "ex_l1_07",
+        "type": "concept-quiz",
+        "question": "El precio rebota varias veces en la misma zona al alza. ¿Qué representa esa zona?",
+        "options": [
+          "Soporte",
+          "Resistencia",
+          "Tendencia",
+          "Volumen"
+        ],
+        "correctAnswer": 0,
+        "explanation": "Cuando el precio rebota al alza varias veces desde una zona, esa zona actúa como soporte - un 'piso' que sostiene el precio.",
+        "difficulty": "easy"
+      },
+      "summary": "Soporte = 'piso' donde el precio rebota al alza. Resistencia = 'techo' donde el precio rebota a la baja."
+    },
+    {
+      "id": "l1_08",
+      "title": "Tipos de Tendencia",
+      "description": "Alcista, bajista y lateral",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 8,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Una tendencia alcista se caracteriza por máximos y mínimos crecientes. Cada pico es mayor que el anterior, cada valle es mayor que el anterior."
+        },
+        {
+          "type": "text",
+          "content": "Una tendencia bajista es lo opuesto: máximos y mínimos decrecientes. Cada pico y valle es más bajo que el anterior."
+        },
+        {
+          "type": "text",
+          "content": "Cuando el precio oscila entre dos niveles sin hacer máximos mayores ni menores, estamos en una tendencia lateral o rango."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Tendencia alcista: 100 → 110 → 105 → 120 → 115. Cada mínimo (105, 115) es mayor. Tendencia bajista: 120 → 110 → 115 → 100 → 95.",
+        "scenario": "tendencia"
+      },
+      "exercise": {
+        "id": "ex_l1_08",
+        "type": "trend-identification",
+        "question": "El precio hace estos movimientos: Sube a 100, baja a 95, sube a 110, baja a 105. ¿Qué tendencia hay?",
+        "options": [
+          "Alcista",
+          "Bajista",
+          "Lateral",
+          "No hay tendencia clara"
+        ],
+        "correctAnswer": 0,
+        "explanation": "Hay tendencia alcista porque los mínimos son crecientes: 95 → 105 (sube). También los máximos: 100 → 110.",
+        "difficulty": "medium"
+      },
+      "summary": "Alcista: HH y HL. Bajista: LH y LL. Lateral: precio entre soporte y resistencia sin dirección clara."
+    },
+    {
+      "id": "l1_09",
+      "title": "El Volumen",
+      "description": "La fuerza del movimiento",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 9,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "El volumen representa la cantidad de operaciones realizadas en un período. Más volumen = más participantes en el mercado."
+        },
+        {
+          "type": "text",
+          "content": "Un movimiento de precio con alto volumen se considera más 'sólido' y sostenible. Un movimiento con poco volumen puede ser más frágil."
+        },
+        {
+          "type": "tip",
+          "content": "El volumen alto en rupturas de soporte/resistencia da más fiabilidad al ruptura. Volumen bajo puede indicar falsa ruptura."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "El precio rompe una resistencia con alto volumen (muchas compras). Es más probable que la ruptura sea real. Si rompe con bajo volumen, podría ser un trampa.",
+        "scenario": "volumen"
+      },
+      "exercise": {
+        "id": "ex_l1_09",
+        "type": "concept-quiz",
+        "question": "¿Qué indica un precio que rompe una resistencia con alto volumen?",
+        "options": [
+          "Es probablemente una falsa ruptura",
+          "Es una ruptura más fiable",
+          "El volumen no importa",
+          "El precio bajará pronto"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Alto volumen en una ruptura indica más participantes detrás del movimiento, lo que hace más probable que sea sostenible.",
+        "difficulty": "easy"
+      },
+      "summary": "Volumen = cantidad de operaciones. Alto volumen = movimiento más fuerte y fiable."
+    },
+    {
+      "id": "l1_10",
+      "title": "Gestión del Riesgo",
+      "description": "Proteger tu capital",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 10,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "La gestión del riesgo es lo más importante en trading. Nunca arriesgues más del 1-2% de tu capital en una sola operación."
+        },
+        {
+          "type": "text",
+          "content": "Un stop loss es una orden que cierra tu operación automáticamente si el precio llega a un nivel predetermined. Limita tus pérdidas."
+        },
+        {
+          "type": "warning",
+          "content": "Sin gestión de riesgo, aunque tengas una estrategia ganadora, una racha perdedora puede vaciar tu cuenta."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Tienes 1000€. Operas con 100€ (10%). Pones stop loss que pierde máximo 20€ (2% del total). Así puedes perder 50 operaciones seguidas y aún tener dinero.",
+        "scenario": "gestion riesgo"
+      },
+      "exercise": {
+        "id": "ex_l1_10",
+        "type": "trading-decision",
+        "question": "Entras en una operación y el precio va en tu contra. ¿Qué haces?",
+        "options": [
+          "Mantener la posición sin stop loss, esperando que vuelva",
+          "Cerrar inmediatamente para limitar pérdidas",
+          "Poner un stop loss y mantener",
+          "Duplicar la inversión para promediar"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Siempre usa stop loss. Te protege de pérdidas mayores y te permite seguir operando tras operaciones perdedoras.",
+        "difficulty": "medium"
+      },
+      "summary": "Nunca arriesgues más del 1-2% por operación. Usa siempre stop loss para limitar pérdidas."
+    }
+  ]
+}

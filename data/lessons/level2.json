@@ -1,0 +1,445 @@
+{
+  "level": 2,
+  "levelName": "Comprensión del Mercado",
+  "description": "Aprende a leer la estructura del mercado",
+  "lessons": [
+    {
+      "id": "l2_01",
+      "title": "Estructura del Mercado: HH HL LH LL",
+      "description": "Entendiendo la estructura mediante swing highs y lows",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 1,
+      "requiredLessonIds": ["l1_08"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "La estructura del mercado se define por los 'swings' o oscilaciones: los máximos (highs) y mínimos (lows) que forma el precio."
+        },
+        {
+          "type": "text",
+          "content": "HH = Higher High (máximo más alto), HL = Higher Low (mínimo más alto). En tendencia alcista ves: HH seguido de HL."
+        },
+        {
+          "type": "text",
+          "content": "LH = Lower High (máximo más bajo), LL = Lower Low (mínimo más bajo). Esto aparece en tendencias bajistas."
+        },
+        {
+          "type": "tip",
+          "content": "Identificar la estructura es fundamental para operar con la tendencia, no contra ella."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Precio: 100 → 120 → 110 → 130 → 120. Los máximos: 120, 130 (HH). Los mínimos: 110, 120 (HL). Tendencia alcista.",
+        "scenario": "estructura HH HL"
+      },
+      "exercise": {
+        "id": "ex_l2_01",
+        "type": "trend-identification",
+        "question": "El precio hace: Sube a 100, baja a 90, sube a 95, baja a 85. ¿Qué estructura tiene?",
+        "options": [
+          "HH y HL (Alcista)",
+          "LH y LL (Bajista)",
+          "Sin estructura clara",
+          "Rango lateral"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Máximos decrecientes (100 → 95) = LH. Mínimos decrecientes (90 → 85) = LL. Estructura bajista.",
+        "difficulty": "medium"
+      },
+      "summary": "HH + HL = Tendencia alcista. LH + LL = Tendencia bajista. La estructura define la dirección del mercado."
+    },
+    {
+      "id": "l2_02",
+      "title": "Break of Structure (BOS)",
+      "description": "Cuando la estructura se rompe",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 2,
+      "requiredLessonIds": ["l2_01"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Un Break of Structure (BOS) ocurre cuando el precio rompe el máximo o mínimo anterior de la estructura, confirmando que la tendencia continúa."
+        },
+        {
+          "type": "text",
+          "content": "En una tendencia alcista, después de un HL, el precio hace un nuevo HH rompiendo el máximo anterior. Eso es un BOS alcista."
+        },
+        {
+          "type": "text",
+          "content": "El BOS nos da confirmación de que la tendencia sigue vigente y podemos buscar entradas en la dirección de la tendencia."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Tendencia alcista: HL en 100. Precio sube y rompe por encima del máximo anterior (120). Ha habido un BOS - la estructura sigue válida.",
+        "scenario": "BOS ruptura estructura"
+      },
+      "exercise": {
+        "id": "ex_l2_02",
+        "type": "concept-quiz",
+        "question": "En una tendencia alcista, ¿qué representa un Break of Structure?",
+        "options": [
+          "El precio ha hecho un nuevo mínimo",
+          "La tendencia se ha acabado",
+          "El precio ha roto el máximo anterior, confirmando continuación",
+          "El mercado está en rango"
+        ],
+        "correctAnswer": 2,
+        "explanation": "El BOS ocurre cuando el precio rompe el máximo anterior (en tendencia alcista), confirmando que la estructura sigue intacta.",
+        "difficulty": "medium"
+      },
+      "summary": "BOS = ruptura del máximo/mínimo anterior. Confirma que la tendencia continúa."
+    },
+    {
+      "id": "l2_03",
+      "title": "Change of Character (CHoCH)",
+      "description": "Cambio de carácter del mercado",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 3,
+      "requiredLessonIds": ["l2_02"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "El Change of Character (CHoCH) es un concepto que indica un posible cambio de tendencia. Ocurre cuando el precio viola la estructura anterior de forma significativa."
+        },
+        {
+          "type": "text",
+          "content": "En tendencia alcista, si el precio rompe un HL (no un HH), puede indicar que la tendencia está perdiendo fuerza y podría revertirse."
+        },
+        {
+          "type": "tip",
+          "content": "El CHoCH es una alerta temprana de cambio de tendencia, mientras que el BOS confirma continuación."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Tendencia alcista hace HL en 100. Precio sube pero no llega al máximo anterior, luego cae por debajo de 100. Ese cierre bajo el HL es CHoCH - posible cambio.",
+        "scenario": "CHoCH cambio tendencia"
+      },
+      "exercise": {
+        "id": "ex_l2_03",
+        "type": "concept-quiz",
+        "question": "¿Cuál es la diferencia principal entre BOS y CHoCH?",
+        "options": [
+          "Son lo mismo",
+          "BOS confirma continuación, CHoCH indica posible reversa",
+          "CHoCH es más importante que BOS",
+          "No tienen relación"
+        ],
+        "correctAnswer": 1,
+        "explanation": "BOS (Break of Structure) confirma que la tendencia sigue. CHoCH (Change of Character) indica que el mercado puede estar cambiando de dirección.",
+        "difficulty": "medium"
+      },
+      "summary": "CHoCH = posible cambio de tendencia (alerta). BOS = continuación de la tendencia (confirmación)."
+    },
+    {
+      "id": "l2_04",
+      "title": "Zonas de Oferta y Demanda",
+      "description": "Áreas donde instituciones operan",
+      "duration": 5,
+      "xpReward": 70,
+      "order": 4,
+      "requiredLessonIds": ["l1_07"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Las zonas de oferta y demanda son áreas donde el precio ha fatto movimientos fuertes y rápidos. Se cree que grandes participantes (instituciones) dejaron órdenes."
+        },
+        {
+          "type": "text",
+          "content": "Zona de demanda: Área donde el precio subió rápidamente desde allí. Es donde hubo mucha compra institucional. El precio puede volver a subir desde esta zona."
+        },
+        {
+          "type": "text",
+          "content": "Zona de oferta: Área donde el precio cayó rápidamente. Es donde hubo venta institucional. El precio puede volver a bajar desde esta zona."
+        },
+        {
+          "type": "tip",
+          "content": "Las mejores zonas son las que han sido 'testeadas' múltiples veces sin ser rotas - muestran rechazo claro del precio."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Precio estaba en 100, en minutos sube a 150 con una vela grande verde. Esa zona 100-105 es demanda (compra institucional fuerte). Cuando el precio vuelva, puede subir de nuevo.",
+        "scenario": "oferta demanda"
+      },
+      "exercise": {
+        "id": "ex_l2_04",
+        "type": "trading-decision",
+        "question": "El precio hizo un movimiento fuerte y rápido al alza desde una zona. El precio vuelve a esa zona. ¿Qué es más probable que ocurra?",
+        "options": [
+          "El precio seguirá bajando",
+          "El precio rebotará al alza desde esa zona",
+          "El precio se mantendrá lateral",
+          "No se puede saber"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Las zonas de demanda son áreas de compra institucional. Cuando el precio vuelve, often rebota al alza porque las órdenes de compra siguen activas.",
+        "difficulty": "medium"
+      },
+      "summary": "Zonas de demanda = áreas de compra institucional (soporte). Zonas de oferta = áreas de venta institucional (resistencia)."
+    },
+    {
+      "id": "l2_05",
+      "title": "Consolidaciones",
+      "description": "El mercado descansa",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 5,
+      "requiredLessonIds": ["l1_08"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Una consolidación es un período donde el precio se mueve dentro de un rango definido, sin tendencia clara. El mercado 'descansa' antes de continuar."
+        },
+        {
+          "type": "text",
+          "content": "Durante las consolidaciones, compradores y vendedores están equilibrados. El precio oscila entre soporte y resistencia."
+        },
+        {
+          "type": "tip",
+          "content": "Las consolidaciones son buenas para identificar zonas de oferta/demanda y planificar operaciones para cuando el precio salga del rango."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Precio oscila entre 100 (soporte) y 110 (resistencia) durante varias horas. No hace nuevos máximos ni mínimos. Está en consolidación.",
+        "scenario": "consolidacion rango"
+      },
+      "exercise": {
+        "id": "ex_l2_05",
+        "type": "concept-quiz",
+        "question": "¿Qué sucede usualmente después de una consolidación?",
+        "options": [
+          "El mercado cierra",
+          "El precio usualmente continúa en la dirección previa a la consolidación",
+          "Siempre hay reversa",
+          "Nada cambia"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Tras una consolidación, el precio tiende a continuar en la dirección de la tendencia previa. La acumulación de volumen durante el rango sale en una dirección.",
+        "difficulty": "easy"
+      },
+      "summary": "Consolidación = precio en rango sin tendencia. Después, el precio suele continuar en la dirección previa."
+    },
+    {
+      "id": "l2_06",
+      "title": "Falsas Rupturas",
+      "description": "La trampa del mercado",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 6,
+      "requiredLessonIds": ["l2_05"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Una falsa ruptura (fakeout) ocurre cuando el precio rompe un soporte o resistencia pero inmediatamente vuelve atrás. Parece una ruptura pero no lo es."
+        },
+        {
+          "type": "text",
+          "content": "Las falsas rupturas son comunes porque los ' grandes jugadores' often liquidity buscas流动性. Rompen niveles para collected stop losses y luego reversan."
+        },
+        {
+          "type": "warning",
+          "content": "Para confirmar una ruptura, espera un cierre (vela completa) por encima/debajo del nivel, no solo una mecha que lo toque."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Precio en 100. Rompe resistencia en 110 con una mecha, pero la siguiente vela cierra en 108 (debajo de 110). Es una falsa ruptura. Precio vuelve a bajar.",
+        "scenario": "falsa ruptura"
+      },
+      "exercise": {
+        "id": "ex_l2_06",
+        "type": "trading-decision",
+        "question": "El precio rompe una resistencia con una mecha pero el cierre de la vela queda por debajo de la resistencia. ¿Qué harías?",
+        "options": [
+          "Entrar inmediatamente en compra",
+          "Esperar confirmación (cierre por encima)",
+          "Es una ruptura válida",
+          "No importa el cierre"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Para confirmar una ruptura necesitas un cierre (no solo mecha) por encima del nivel. Sin confirmación, es很可能 una falsa ruptura.",
+        "difficulty": "medium"
+      },
+      "summary": "Falsa ruptura = precio rompe nivel pero vuelve. Espera confirmación (cierre) antes de operar."
+    },
+    {
+      "id": "l2_07",
+      "title": "Confluencias",
+      "description": "Zonas de alta probabilidad",
+      "duration": 4,
+      "xpReward": 70,
+      "order": 7,
+      "requiredLessonIds": ["l2_04", "l2_01"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Una confluencia es cuando dos o más factores técnicos apuntan a la misma zona o dirección. Cuantas más confluencias, mayor probabilidad de éxito."
+        },
+        {
+          "type": "text",
+          "content": "Ejemplos de confluencias: Soporte + zona de demanda + nivel de Fibonacci + media móvil. Todos en la misma zona."
+        },
+        {
+          "type": "tip",
+          "content": "Las mejores operaciones tienen múltiples confluencias: estructura, nivel clave, zona de oferta/demanda, y quizás patrón de velas."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "El precio llega a 100 que es: (1) soporte histórico, (2) zona de demanda, (3) nivel 61.8 de Fibonacci. Tres confluencias = zona muy fuerte.",
+        "scenario": "confluencias"
+      },
+      "exercise": {
+        "id": "ex_l2_07",
+        "type": "concept-quiz",
+        "question": " ¿Por qué las confluencias son importantes?",
+        "options": [
+          "Son más divertidas de operar",
+          "Aumentan la probabilidad de éxito",
+          "Garantizan ganancias",
+          "No son importantes"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Cuando múltiples factores técnicos coinciden en una zona, la probabilidad de que el precio reaccione allí aumenta significativamente.",
+        "difficulty": "easy"
+      },
+      "summary": "Confluencias = múltiples factores técnicos alineados. Mayor confluencia = mayor probabilidad de éxito."
+    },
+    {
+      "id": "l2_08",
+      "title": "Psicología del Trading",
+      "description": "Control emocional",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 8,
+      "requiredLessonIds": ["l1_10"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "La psicología es crucial en trading. Los principales enemigos son: miedo (perder ganancias), codicia (sobreoperar), y revenge trading (recuperar pérdidas)."
+        },
+        {
+          "type": "text",
+          "content": "FOMO (fear of missing out) lleva a entrar tarde en tendencias. FOMO inversa te hace salir demasiado pronto."
+        },
+        {
+          "type": "tip",
+          "content": "Sigue tu plan de trading siempre. Define reglas antes de operar y respétalas, sin importar las emociones del momento."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Perdiste 100€. Sientes que DEBES recuperar ese dinero inmediatamente y operas sin análisis. Ese es revenge trading y usually leads to más pérdidas.",
+        "scenario": "psicologia trading"
+      },
+      "exercise": {
+        "id": "ex_l2_08",
+        "type": "concept-quiz",
+        "question": " ¿Qué es 'revenge trading'?",
+        "options": [
+          "Vengar una operación perdedora operando más",
+          "Esperar la mejor oportunidad",
+          "Operar con el plan establecido",
+          "No operar después de perder"
+        ],
+        "correctAnswer": 0,
+        "explanation": "Revenge trading es intentar recuperar pérdidas inmediatamente después de perder, sin análisis. Usually leads to más pérdidas.",
+        "difficulty": "easy"
+      },
+      "summary": "Controla emociones: miedo, codicia, FOMO. Sigue tu plan, no tus emociones."
+    },
+    {
+      "id": "l2_09",
+      "title": "Liquidez",
+      "description": "Entendiendo la profundidad del mercado",
+      "duration": 4,
+      "xpReward": 60,
+      "order": 9,
+      "requiredLessonIds": ["l1_09"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "La liquidez es la cantidad de órdenes de compra y venta disponibles a diferentes precios. Mercados más líquidos tienen spreads más bajos."
+        },
+        {
+          "type": "text",
+          "content": "Los institucionales necesitan liquidez para entrar/salir de posiciones. Buscan zonas donde hay muchos stops (liquidity pools) para ejecutar sus órdenes."
+        },
+        {
+          "type": "tip",
+          "content": "Los máximos y mínimos anteriores son zonas de liquidez. El precio often busca estas zonas antes de continuar en la dirección de la tendencia."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Muchos traders ponen stops por debajo del mínimo anterior (100). Esas órdenes de compra son liquidez. El precio puede bajar a buscar esa liquidez antes de subir.",
+        "scenario": "liquidez stops"
+      },
+      "exercise": {
+        "id": "ex_l2_09",
+        "type": "concept-quiz",
+        "question": "Las zonas donde hay muchos stops (órdenes de compra/venta) se llaman:",
+        "options": [
+          "Soportes",
+          "Resistencias",
+          "Pools de liquidez",
+          "Volúmenes"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Los pools de liquidez son zonas donde se agrupan órdenes de stop. Los institucionales las usan para ejecutar sus posiciones.",
+        "difficulty": "medium"
+      },
+      "summary": "Liquidez = órdenes disponibles. Los precio often buscan zonas de liquidez (stops) antes de movimientos."
+    },
+    {
+      "id": "l2_10",
+      "title": "Contexto de Mercado",
+      "description": "El marco general",
+      "duration": 4,
+      "xpReward": 70,
+      "order": 10,
+      "requiredLessonIds": ["l2_01", "l2_02", "l2_03"],
+      "explanation": [
+        {
+          "type": "text",
+          "content": "El contexto es entender el 'marco general' antes de operar. ¿Cuál es la tendencia principal? ¿Dónde estamos dentro de esa tendencia?"
+        },
+        {
+          "type": "text",
+          "content": "Operar a favor de la tendencia del marco temporal mayor tiene mayor probabilidad de éxito. Si operas contra el contexto, es más difícil."
+        },
+        {
+          "type": "tip",
+          "content": "Antes de entrar, pregúntate: ¿Cuál es la tendencia en el gráfico diario/semanal? ¿Estoy operando a favor o en contra de esa tendencia?"
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "En gráfico diario hay tendencia bajista. En gráfico de 1h ves un rebote. Operar en venta en 1h (a favor del diario) es mejor que comprar.",
+        "scenario": "contexto marco mayor"
+      },
+      "exercise": {
+        "id": "ex_l2_10",
+        "type": "trading-decision",
+        "question": "El gráfico diario muestra tendencia bajista. En 1h hay un rebote. ¿Qué decisión tiene mayor probabilidad?",
+        "options": [
+          "Comprar porque el precio está subiendo en 1h",
+          "Vender (vender en rebotes a favor de tendencia mayor)",
+          "No operar",
+          "Esperar a que pase algo"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Operar a favor del marco temporal mayor (la tendencia) tiene mayor probabilidad. En tendencia bajista, vender en rebotes es lo óptimo.",
+        "difficulty": "medium"
+      },
+      "summary": "Opera a favor del contexto/marco mayor. La tendencia principal es tu amigo."
+    }
+  ]
+}
