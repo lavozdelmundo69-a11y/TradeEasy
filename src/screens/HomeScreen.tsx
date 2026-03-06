@@ -1,6 +1,7 @@
 // HomeScreen - Pantalla principal mejorada
 import React, { useEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../shared/constants';
 import { useUserStore, useXPProgress } from '../store/userStore';
 import { ProgressBar, Card, AnimatedButton } from '../shared/components';

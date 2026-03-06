@@ -1,6 +1,7 @@
 // LessonScreen - Pantalla de lección mejorada
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Vibration } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Vibration } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../shared/constants';
 import { Lesson } from '../types';
 import { QuizCard } from '../features/quiz/components/QuizCard';

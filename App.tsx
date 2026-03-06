@@ -1,9 +1,9 @@
 // App.tsx - TradeEasy con React Navigation
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { HomeScreen } from './src/screens/HomeScreen';
 import { LessonScreen } from './src/screens/LessonScreen';
@@ -11,28 +11,27 @@ import { LevelMapScreen } from './src/screens/LevelMapScreen';
 import { Lesson } from './src/types';
 import { lessonsData } from './src/data/lessons';
 import { COLORS } from './src/shared/constants';
-import { useUserStore, useIsHydrated } from './src/store/userStore';
+import { useUserStore } from './src/store/userStore';
 
 const Stack = createNativeStackNavigator();
 
-// Componente que espera a que el store esté hidratado
-function AppNavigator() {
+function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<'home' | 'lesson' | 'map'>('home');
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   
-  const { loadProgress, lessonsCompleted, isHydrated } = useUserStore();
+  const loadProgress = useUserStore(state => state.loadProgress);
+  const lessonsCompleted = useUserStore(state => state.lessonsCompleted);
+  const isHydrated = useUserStore(state => state.isHydrated);
 
   useEffect(() => {
-    // Cargar progreso al iniciar
     loadProgress();
   }, []);
 
-  // Mostrar loading mientras se hidrata el store
   if (!isHydrated) {
     return (
-      <View style={styles.loadingContainer}>
+      <SafeAreaView style={styles.loadingContainer} edges={['top', 'bottom']}>
         <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -67,7 +66,6 @@ function AppNavigator() {
       screenOptions={{ 
         headerShown: false,
         contentStyle: { backgroundColor: COLORS.background },
-        animation: 'slide_from_right',
       }}
     >
       {currentScreen === 'home' && (
@@ -109,7 +107,7 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer>
         <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-        <AppNavigator />
+        <AppContent />
       </NavigationContainer>
     </SafeAreaProvider>
   );
