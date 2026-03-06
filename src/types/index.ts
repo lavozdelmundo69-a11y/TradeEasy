@@ -37,7 +37,7 @@ export interface ChartDataPoint {
   low: number;
 }
 
-// ==================== EJERCICIOS ====================
+// ==================== EJERCICIOS MEJORADOS ====================
 
 export interface Exercise {
   id: string;
@@ -46,8 +46,46 @@ export interface Exercise {
   scenario?: MarketScenario;
   options: readonly string[];
   correctAnswer: number;
-  explanation: string;
   difficulty: 'easy' | 'medium' | 'hard';
+  
+  // Feedback educativo completo (opcional para compatibilidad)
+  feedback?: ExerciseFeedback;
+  
+  // Para spaced repetition
+  topic?: string;
+  relatedLessons?: string[];
+  
+  // Legacy: explicación simple (usar feedback en su lugar)
+  explanation?: string;
+}
+
+export interface ExerciseFeedback {
+  // Feedback básico
+  shortExplanation: string;
+  
+  // Por qué cada opción es correcta/incorrecta
+  optionExplanations?: readonly OptionExplanation[];
+  
+  // Error común relacionado
+  commonMistake?: CommonMistake;
+  
+  // Consejo actionable
+  tip?: string;
+  
+  // Contexto de mercado adicional
+  marketContext?: string;
+}
+
+export interface OptionExplanation {
+  optionIndex: number;
+  isCorrect: boolean;
+  explanation: string;
+}
+
+export interface CommonMistake {
+  title: string;
+  description: string;
+  whyWrong: string;
 }
 
 export type ExerciseType =
@@ -125,7 +163,7 @@ export interface AchievementRequirement {
 
 export interface AchievementProgress {
   achievementId: string;
-  progress: number; // 0-100
+  progress: number;
   unlockedAt?: string;
 }
 
@@ -145,6 +183,33 @@ export interface MarketData {
   candles: readonly Candle[];
   supportLevels: readonly number[];
   resistanceLevels: readonly number[];
+}
+
+// ==================== SPACED REPETITION ====================
+
+export interface WeakConcept {
+  conceptId: string;
+  topic: string;
+  errorCount: number;
+  lastError: string;
+  nextReviewAt: string;
+  masteryLevel: number;
+}
+
+export interface QuizHistory {
+  exerciseId: string;
+  answeredAt: string;
+  wasCorrect: boolean;
+  selectedAnswer: number;
+  timeSpentSeconds: number;
+}
+
+export interface TopicProgress {
+  topic: string;
+  totalAttempts: number;
+  correctAttempts: number;
+  accuracy: number;
+  weakConcepts: string[];
 }
 
 // ==================== CONTENIDO ====================
