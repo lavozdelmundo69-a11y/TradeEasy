@@ -2,8 +2,8 @@
 import { Lesson } from '../types';
 
 // Importar datos legacy (mantenemos compatibilidad)
-import level1Data from '../../data/level1.json';
-import level2Data from '../../data/level2.json';
+import level1Data from './level1.json';
+import level2Data from './level2.json';
 
 // Reconstruir lessonsData desde la estructura original por simplicidad MVP
 export const lessonsData: Lesson[] = [

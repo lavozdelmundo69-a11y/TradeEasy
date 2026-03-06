@@ -1,10 +1,10 @@
 // Componente de tarjeta de lección mejorado
 import React, { memo, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../shared/constants';
-import { Lesson } from '../../types';
-import { Card } from '../../shared/components';
-import { MiniCandlestickChart } from '../../features/trading/components/CandlestickChart';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../../shared/constants';
+import { Lesson } from '../../../types';
+import { Card } from '../../../shared/components';
+import { MiniCandlestickChart } from '../../../features/trading/components/CandlestickChart';
 
 interface LessonCardProps {
   lesson: Lesson;

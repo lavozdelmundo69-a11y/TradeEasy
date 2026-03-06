@@ -1,7 +1,7 @@
 // Hook reutilizable para persistencia con AsyncStorage
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useCallback, useEffect } from 'react';
-import { STORAGE_KEYS } from '../../shared/constants';
+import { STORAGE_KEYS } from '../constants';
 
 export function useStorage<T>(key: string, initialValue: T) {
   const [storedValue, setStoredValue] = useState<T>(initialValue);

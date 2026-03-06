@@ -14,7 +14,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, ANIMATION_CONFIG } from '../../shared/constants';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, ANIMATION_CONFIG } from '../constants';
 
 type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'ghost';
 type ButtonSize = 'sm' | 'md' | 'lg';

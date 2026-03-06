@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../shared/constants';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants';
 
 interface ProgressBarProps {
   progress: number; // 0-100
@@ -99,7 +99,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   children,
 }) => {
   const radius = (size - strokeWidth) / 2;
-  const circumference2 * Math.PI = radius * ;
+  const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (Math.min(100, Math.max(0, progress)) / 100) * circumference;
 
   return (

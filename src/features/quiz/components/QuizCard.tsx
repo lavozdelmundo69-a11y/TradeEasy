@@ -1,7 +1,7 @@
 // Componente QuizCard mejorado con feedback visual
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated, Vibration } from 'react-native';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../shared/constants';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../../shared/constants';
 import { Exercise } from '../../types';
 
 interface QuizCardProps {

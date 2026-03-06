@@ -1,7 +1,8 @@
 // Componente Card genérico
 import React, { memo, ReactNode } from 'react';
-import { View, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
-import { COLORS, SPACING, BORDER_RADIUS } from '../../shared/constants';
+import { View, StyleSheet, ViewStyle, TouchableOpacity, Text } from 'react-native';
+import Animated, { useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants';
 
 interface CardProps {
   children: ReactNode;
@@ -67,8 +68,6 @@ const styles = StyleSheet.create({
 });
 
 // Badge component
-import { Text } from 'react-native';
-
 interface BadgeProps {
   children: React.ReactNode;
   variant?: 'primary' | 'success' | 'warning' | 'error' | 'default';
@@ -90,18 +89,18 @@ export const Badge: React.FC<BadgeProps> = ({
 
   return (
     <View style={[
-      styles.badge, 
+      badgeStyles.badge, 
       { backgroundColor: colors[variant].bg },
-      size === 'sm' && styles.badgeSm,
+      size === 'sm' && badgeStyles.badgeSm,
     ]}>
-      <Text style={[styles.badgeText, { color: colors[variant].text }]}>
+      <Text style={[badgeStyles.badgeText, { color: colors[variant].text }]}>
         {children}
       </Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const badgeStyles = StyleSheet.create({
   badge: {
     paddingHorizontal: SPACING.sm,
     paddingVertical: SPACING.xs,
@@ -118,8 +117,6 @@ const styles = StyleSheet.create({
 });
 
 // Skeleton loader
-import { useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
-
 interface SkeletonProps {
   width?: number | string;
   height?: number;
@@ -154,6 +151,3 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     />
   );
 };
-
-// Index exports
-export { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../shared/constants';
