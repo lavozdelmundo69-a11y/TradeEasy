@@ -1,346 +1,371 @@
-# TradeEasy - Arquitectura de la App
+# Arquitectura de TradeEasy
 
-## 1. Stack Tecnológico
+## 🏛️ Arquitectura Feature-Sliced
 
-- **Framework**: React Native + Expo (SDK 52+)
-- **Language**: TypeScript
-- **State Management**: Zustand (lightweight, perfecto para gamificación)
-- **Navigation**: Expo Router (file-based routing)
-- **Storage**: AsyncStorage (progreso local) + SQLite si se necesita más adelante
-- **Animations**: Reanimated 3 + Moti
-- **Charts**: react-native-wagmi-charts (gráficos educativos)
-
----
-
-## 2. Estructura del Proyecto
-
+### Organización
 ```
-TradeEasy/
-├── app/                          # Expo Router (pantallas)
-│   ├── (tabs)/                   # Tab navigation
-│   │   ├── _layout.tsx
-│   │   ├── index.tsx             # Home
-│   │   ├── map.tsx               # Mapa de aprendizaje
-│   │   ├── profile.tsx           # Perfil y estadísticas
-│   │   └── settings.tsx
-│   ├── lesson/
-│   │   └── [lessonId].tsx        # Pantalla de lección
-│   ├── exercise/
-│   │   └── [exerciseId].tsx      # Ejercicio interactivo
-│   └── result/
-│       └── [lessonId].tsx        # Resultado de lección
-├── src/
-│   ├── components/               # Componentes reutilizables
-│   │   ├── ui/                   # UI base (Button, Card, etc.)
-│   │   ├── lesson/               # Componentes de lección
-│   │   ├── exercise/             # Tipos de ejercicios
-│   │   └── gamification/         # XP, niveles, logros
-│   ├── data/                     # Datos estáticos
-│   │   ├── lessons/              # Lecciones por nivel
-│   │   └── achievements.ts       # Logros
-│   ├── store/                    # Zustand stores
-│   │   ├── userStore.ts          # Progreso del usuario
-│   │   └── lessonStore.ts        # Estado de lecciones
-│   ├── hooks/                    # Custom hooks
-│   ├── utils/                    # Utilidades
-│   ├── constants/                # Constantes (colors, XP, etc.)
-│   └── types/                    # TypeScript types
-├── assets/                       # Imágenes, iconos, fuentes
-└── data/                         # JSON con contenido (opcional external)
+src/
+├── features/              # Features independientes
+│   ├── lessons/          # Funcionalidad de lecciones
+│   │   ├── components/   # LessonCard, LessonContent
+│   │   ├── hooks/        # useLessonCompletion, useLessonProgress
+│   │   └── index.ts
+│   ├── quiz/             # Sistema de ejercicios
+│   │   ├── components/   # QuizCard, AnswerButtons
+│   │   ├── hooks/        # useQuiz, useAnswerValidation
+│   │   └── index.ts
+│   ├── trading/          # Gráficos de trading
+│   │   ├── components/   # CandlestickChart, MiniChart
+│   │   ├── utils/        # indicadores.ts
+│   │   └── index.ts
+│   └── gamification/     # XP, niveles, logros
+│       ├── components/   # LevelBadge, XPDisplay
+│       ├── hooks/        # useXP, useStreak, useAchievements
+│       └── index.ts
+├── shared/               # Código compartido
+│   ├── components/       # UI genéricos (Button, Card, ProgressBar)
+│   ├── hooks/            # useStorage, useTimer, useContentLoader
+│   ├── utils/            # Formatters, Validators
+│   └── constants/        # Colores, Spacing, GAME_CONFIG
+├── app/                  # Navegación y routing
+│   ├── navigation/
+│   ├── screens/
+│   └── layout.tsx
+└── store/                # Estado global
+    ├── slices/           # userSlice, quizSlice, settingsSlice
+    ├── selectors.ts
+    └── index.ts
 ```
 
 ---
 
-## 3. Pantallas Principales
+## 📦 Dependencias Principales
 
-### 3.1 Home (Dashboard)
-- Bienvenida con nombre de usuario
-- Racha diaria actual (🔥 X días)
-- XP total y nivel
-- "Continuar aprendiendo" (última lección)
-- Progreso del nivel actual (barra)
-- Botón rápido al mapa de lecciones
+### UI & Animations
+- `react-native-reanimated` - Animaciones nativas de alta performance
+- `@shopify/flash-list` - Lista virtualizada (1000+ items)
+- `react-native-svg` - Gráficos vectoriales
 
-### 3.2 Mapa de Aprendizaje
-- Vista de nodos interconectados (tipo Duolingo)
-- Niveles como secciones解锁ables
-- Lecciones como círculos/nodos
-- Líneas de conexión entre lecciones
-- Indicador de progreso por nivel
-- Animaciones al completar
+### State Management
+- `zustand` - State management minimalista
+- `zustand/middleware` - persist para AsyncStorage
 
-### 3.3 Lección
-- Título y descripción
-- Explicación (máximo 3-5 párrafos)
-- Ejemplo práctico con visualización
-- Ejercicio interactivo
-- Resumen al final
+### Navigation
+- `@react-navigation/native` - Navegación principal
+- `@react-navigation/native-stack` - Stack navigation
 
-### 3.4 Ejercicio Interactivo
--题型 según tipo (quiz, identificación, decisión)
-- Opciones de respuesta
-- Feedback inmediato (correcto/incorrecto)
-- Explicación de la respuesta
-- XP ganado / racha actualizada
-
-### 3.5 Resultado
-- XP ganado en la lección
-- Lecciones completadas hoy
-- Racha actualizada
-- "Siguiente lección" o "Volver al mapa"
-
-### 3.6 Perfil
-- Avatar y nivel
-- XP total y XP para siguiente nivel
-- Racha máxima (record)
-- Lecciones completadas
-- Tiempo total de aprendizaje
-- Logros desbloqueados
-- Estadísticas detalladas
+### Storage
+- `@react-native-async-storage/async-storage` - Persistencia local
 
 ---
 
-## 4. Componentes Principales
+## 🎯 Patrones Recomendados
 
-### UI Base
-- `Button` - Primary, Secondary, Ghost variants
-- `Card` - Container con sombra
-- `ProgressBar` - Barra de progreso
-- `Badge` - Insignias (XP, nivel, racha)
-- `Icon` - Iconos (Expo Vector Icons)
-
-### Lesson Components
-- `LessonCard` - Tarjeta en el mapa
-- `LessonHeader` - Título y progreso
-- `ExplanationBlock` - Texto con formato
-- `ExampleCard` - Ejemplo práctico
-- `SummaryBlock` - Resumen al final
-
-### Exercise Components
-- `QuizQuestion` - Pregunta con opciones
-- `TrendIdentification` - Identificar tendencia
-- `TradingDecision` - Decisión de trading
-- `CandleInterpretation` - Interpretar vela
-- `MarketScenario` - Simulación de mercado
-- `AnswerButton` - Botón de respuesta
-
-### Gamification
-- `XPIndicator` - Muestra XP ganado
-- `StreakCounter` - Contador de racha
-- `LevelBadge` - Insignia de nivel
-- `ProgressCircle` - Círculo de progreso
-- `AchievementCard` - Logro desbloqueado
-
----
-
-## 5. Estructura de Datos
-
-### 5.1 Lecciones (JSON)
-
+### 1. Container/Presentational Pattern
 ```typescript
-interface Lesson {
-  id: string;
-  level: 1 | 2 | 3;
-  levelName: string;
-  title: string;
-  description: string;
-  duration: number; // minutos estimados
-  xpReward: number;
-  order: number;
+// features/lessons/hooks/useLessonCompletion.ts
+const useLessonCompletion = () => {
+  const { completeLesson, addXP } = useUserStore();
   
-  // Contenido
-  explanation: ExplanationBlock[];
-  example: ExampleBlock;
-  exercise: Exercise;
-  summary: string;
+  const complete = useCallback((lessonId: string) => {
+    completeLesson(lessonId);
+    addXP(50);
+  }, []);
   
-  // Requisitos
-  requiredLessonIds?: string[]; // Lecciones previas necesarias
-  unlockedBy?: string; // Qué lección desbloquea esta
-}
+  return { complete };
+};
 
-interface ExplanationBlock {
-  type: 'text' | 'tip' | 'warning' | 'chart';
-  content: string;
-}
-
-interface ExampleBlock {
-  title: string;
-  description: string;
-  chartData?: ChartDataPoint[]; // Para visualizaciones
-  scenario?: string;
-}
+// components/LessonCard.tsx - solo UI
+export const LessonCard = ({ lesson, onPress }) => {
+  const { complete } = useLessonCompletion();
+  // ...
+};
 ```
 
-### 5.2 Ejercicios
-
+### 2. Memoización Agresiva
 ```typescript
-type ExerciseType = 
-  | 'concept-quiz'
-  | 'trend-identification'
-  | 'trading-decision'
-  | 'candle-interpretation'
-  | 'market-scenario';
-
-interface Exercise {
-  id: string;
-  type: ExerciseType;
-  question: string;
-  scenario?: MarketScenario;
-  options: string[];
-  correctAnswer: number; // índice
-  explanation: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-}
-
-interface MarketScenario {
-  trend?: 'up' | 'down' | 'sideways';
-  priceAction?: string;
-  keyLevel?: 'support' | 'resistance';
-  candlePattern?: string;
-  description: string;
-}
+export const LessonCard = memo<LessonCardProps>(({ lesson }) => {
+  const completed = useMemo(() => 
+    useUserStore.getState().lessonsCompleted.includes(lesson.id),
+    [lesson.id]
+  );
+  // ...
+}, (prev, next) => prev.lesson.id === next.lesson.id);
 ```
 
-### 5.3 Progreso de Usuario
-
+### 3. Selectores Optimizados
 ```typescript
-interface UserProgress {
-  userId: string;
-  currentStreak: number;
-  maxStreak: number;
-  totalXP: number;
-  level: number;
-  lessonsCompleted: string[]; // IDs
-  exercisesCompleted: number;
-  correctAnswers: number;
-  totalAnswers: number;
-  lastActiveDate: string;
-  achievements: string[];
-  dailyXP: { [date: string]: number };
-}
+export const useLessonProgress = (lessonId: string) => 
+  useUserStore(
+    useShallow(state => ({
+      completed: state.lessonsCompleted.includes(lessonId),
+      xp: state.totalXP,
+    }))
+  );
 ```
 
-### 5.4 Configuración de Gamificación
-
+### 4. Carga Diferida de Contenido
 ```typescript
-const GAME_CONFIG = {
-  xp: {
-    lessonComplete: 50,
-    exerciseCorrect: 10,
-    streakBonus: 5, // por día de racha
-    perfectLesson: 25, // bonus por todo correcto
-  },
-  levels: [
-    { level: 1, minXP: 0, title: 'Novato' },
-    { level: 2, minXP: 500, title: 'Aprendiz' },
-    { level: 3, minXP: 1500, title: 'Analista' },
-    { level: 4, minXP: 3500, title: 'Trader' },
-    { level: 5, minXP: 7000, title: 'Experto' },
-  ],
-  streak: {
-    maxDays: 365,
-    freezeCost: 100, // XP para proteger racha
-  },
+// content/ lazy loaded
+const loadModule = async (moduleFile: string) => {
+  const module = await import(`../../../content/${moduleFile}`);
+  return module.default.lessons;
 };
 ```
 
 ---
 
-## 6. Navegación
+## 📊 Escalabilidad de Datos
 
+### Estructura Modular de Contenido
 ```
-Root (Stack)
-├── (Tabs) - Bottom Tab Navigator
-│   ├── Home
-│   ├── Mapa (Learning Map)
-│   ├── Perfil
-│   └── Ajustes
-├── Lesson (Modal/Push)
-│   └── [lessonId]
-├── Exercise (Modal)
-│   └── [exerciseId]
-└── Result (Modal)
-    └── [lessonId]
-```
-
----
-
-## 7. Estado Global (Zustand)
-
-### User Store
-```typescript
-interface UserStore {
-  // State
-  user: UserProgress;
-  
-  // Actions
-  addXP: (amount: number) => void;
-  completeLesson: (lessonId: string) => void;
-  correctAnswer: () => void;
-  updateStreak: () => void;
-  unlockAchievement: (achievementId: string) => void;
-  resetProgress: () => void;
-}
+content/
+├── structure.json        # Índice de niveles y módulos
+├── searchIndex.json      # Índice de búsqueda
+├── level1/
+│   ├── module1.json     # 10 lecciones
+│   ├── module2.json     # 10 lecciones
+│   └── module3.json     # 5 lecciones
+├── level2/
+│   └── ...
+└── level3/
+    └── ...
 ```
 
-### Lesson Store
-```typescript
-interface LessonStore {
-  currentLesson: Lesson | null;
-  currentExercise: Exercise | null;
-  answeredExercises: string[];
-  correctAnswers: number;
-  
-  setCurrentLesson: (lesson: Lesson) => void;
-  answerExercise: (exerciseId: string, answer: number) => boolean;
-  resetLesson: () => void;
+Cada módulo se carga bajo demanda. El archivo `structure.json` referencia todos los módulos disponibles y sus IDs.
+
+### Búsqueda Full-Text
+```json
+{
+  "index": {
+    "velas": ["l1_04", "l1_05", "l1_06"],
+    "soporte": ["l1_07", "l2_02"]
+  },
+  "tags": {
+    "beginner": ["l1_01", ...],
+    "chart_patterns": [...]
+  }
 }
 ```
 
 ---
 
-## 8. MVP - Funcionalidades Esenciales
+## ⚡ Optimizaciones de Rendimiento
 
-### Fase 1 (MVP)
-- [ ] Navegación entre pantallas
-- [ ] Mostrar 10 lecciones del Nivel 1
-- [ ] Sistema de progreso (XP, nivel)
-- [ ] Quizzes interactivos básicos
-- [ ] Mapa de lecciones simple
-- [ ] Almacenamiento local (AsyncStorage)
+### 1. FlashList para Listas
+```typescript
+<FlashList
+  data={lessons}
+  renderItem={({ item }) => <LessonCard lesson={item} />}
+  estimatedItemSize={80}
+  keyExtractor={item => item.id}
+/>
+```
 
-### Fase 2
-- [ ] Sistema de rachas
-- [ ] Más lecciones (Nivel 1 completo)
-- [ ] Ejercicios de identificación de tendencia
-- [ ] Animaciones y transiciones
+### 2. Memoización de Gráficos
+```typescript
+export const CandlestickChart = memo(({ data }) => {
+  const memoizedData = useMemo(() => 
+    processDataForRendering(data),
+    [data]
+  );
+  // render
+});
+```
 
-### Fase 3
-- [ ] Nivel 2 completo
-- [ ] Simulaciones de mercado
-- [ ] Logros y recompensas
-- [ ] Estadísticas detalladas
+### 3. Virtualización de Gráficos
+- Solo renderizar velas visibles en viewport
+- Usar `react-native-gesture-handler` con `scroll` para charts grandes
+
+### 4. Cache de Datos
+```typescript
+const contentCache = new Map<string, Lesson[]>();
+// Llenado en useContentLoader
+```
 
 ---
 
-## 9. Consideraciones Técnicas
+## 🎮 Gamificación
 
-### Rendimiento
-- Lazy loading de lecciones
-- Virtualización de listas largas
-- Memoización de componentes pesados
+### Sistema de XP
+- Lección completada: 50 XP
+- Ejercicio correcto: 10 XP
+- Racha diaria: +5 XP por día consecutivo
+- Logros: 100-500 XP
 
-### Accesibilidad
-- Soporte para screen readers
-- Contraste de colores adecuado
-- Tamaño de touch targets (min 44px)
+### Niveles
+| Nivel | Título | XP Requerido |
+|-------|--------|--------------|
+| 1 | Novato | 0 |
+| 2 | Aprendiz | 500 |
+| 3 | Analista | 1500 |
+| 4 | Trader | 3500 |
+| 5 | Experto | 7000 |
 
-### Offline
-- Todo el contenido en la app
-- Sincronización cuando hay conexión (futuro)
+### Logros (ejemplos)
+- Primer día: 50 XP
+- 7 días seguidos (Semana): 200 XP
+- 10 lecciones: 100 XP
+- 100% precisión en quiz: 75 XP
 
-### Animaciones
-- Usar Reanimated para流畅
-- Evitar animaciones bloqueantes
-- Reducir en modo "bajo consumo"
+---
+
+## 📱 UX/UI Guidelines
+
+### Design System
+- **Colores:** Purple primary (#6C5CE7), Green success (#00B894), Red error (#FF6B6B)
+- **Spacing:** xs(4), sm(8), md(16), lg(24), xl(32)
+- **Border radius:** sm(8), md(12), lg(16), full(9999)
+- **Font sizes:** xs(12) a xxl(32)
+
+### Microinteracciones
+- Scale animation en botones al presionar
+- Fade/slide en transiciones de pantalla
+- Confetti en logros desbloqueados
+- Haptic feedback en respuestas correctas/incorrectas
+
+### Estados de Carga
+- Shimmer effect en skeleton loaders
+- Pull-to-refresh en LevelMapScreen
+- Infinite scroll preparado para futuros feeds
+
+---
+
+## 🔧 Testing Strategy
+
+### Unit Tests
+```typescript
+// __tests__/indicators.test.ts
+describe('calculateSMA', () => {
+  it('calculates 5-period SMA correctly', () => {
+    const data = [1, 2, 3, 4, 5];
+    expect(calculateSMA(data, 3)).toBe([3, 4]);
+  });
+});
+```
+
+### Integration Tests
+```typescript
+describe('Lesson Completion Flow', () => {
+  it('completes lesson and awards XP', async () => {
+    // Mock store
+    // Render LessonScreen
+    // Press complete button
+    // Assert XP increased
+  });
+});
+```
+
+### E2E (Detox)
+```typescript
+describe('TradeEasy App', () => {
+  it('should complete a lesson', async () => {
+    await element(by.id('home_screen')).tap();
+    await element(by.id('continue_button')).tap();
+    await element(by.text('Ejercicio')).tap();
+    await element(by.text('Opción correcta')).tap();
+    await expect(element(by.text('¡Correcto!'))).toBeVisible();
+  });
+});
+```
+
+---
+
+## 🚀 Deployment
+
+### Build Variants
+- **development:** Debug, hot reload
+- **staging:** QA, limited data
+- **production:** App Store / Play Store
+
+### EAS Build
+```json
+{
+  "build": {
+    "production": {
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "ios": {
+        "simulator": false
+      },
+      "android": {
+        "gradleProperties": {
+          "android.injected.signing.store.file": "keystore.jks"
+        }
+      }
+    }
+  }
+}
+```
+
+### OTA Updates
+- Usar `expo-updates` para hotfixes de código JS
+- Datos de lecciones en servidor (fetch bajo demanda)
+
+---
+
+## 📈 Roadmap
+
+### Fase 1 (MVP) - Implementado
+- ✅ Estructura Feature-Sliced
+- ✅ Zustand store con persistencia
+- ✅ Navegación básica
+- ✅ Sistema de XP y niveles
+- ✅ 10 lecciones nivel 1
+- ✅ Candlestick chart básico
+
+### Fase 2 (Escalabilidad)
+- [ ] Carga modular de contenido (fetch desde servidor)
+- [ ] 20+ lecciones nivel 2
+- [ ] Sistema de logros completo
+- [ ] Rapidez en charts con WebGL (react-native-webgl)
+- [ ] Tests unitarios y E2E
+
+### Fase 3 (Avanzado)
+- [ ] Modo Practice: Simulador de trading con datos históricos
+- [ ] Social features: Leaderboards, grupos
+- [ ] Modo offline completo
+- [ ] i18n: Inglés, Español, Portugués
+- [ ] Integración con APIs de brokers (demo)
+
+---
+
+## 📚 Recursos
+
+### Documentación Oficial
+- [React Native](https://reactnative.dev/)
+- [Expo](https://docs.expo.dev/)
+- [Zustand](https://zustand-demo.pmnd.rs/)
+- [React Navigation](https://reactnavigation.org/)
+
+### Trading Education
+- Baby Pips (textbooks)
+- Investopedia
+- Naked Forex (book)
+
+---
+
+## 🤝 Contributing
+
+```bash
+# Instalar dependencias
+npm install
+
+# Copiar .env.example a .env
+cp .env.example .env
+
+# Iniciar desarrollo
+npm start
+
+# Android
+npm run android
+
+# iOS
+npm run ios
+```
+
+---
+
+**Autor:** Jose (@aspectz)
+**License:** MIT

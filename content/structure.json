@@ -1,0 +1,84 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2024-01-15T00:00:00Z",
+  "levels": [
+    {
+      "id": "level_1",
+      "level": 1,
+      "title": "Fundamentos",
+      "description": "Aprende los conceptos básicos del trading",
+      "minXP": 0,
+      "color": "#00CEC9",
+      "modules": [
+        {
+          "id": "mod_1_1",
+          "title": "Conceptos Básicos",
+          "lessons": ["l1_01", "l1_02", "l1_03", "l1_04"],
+          "file": "level1/module1.json"
+        },
+        {
+          "id": "mod_1_2",
+          "title": "Velas Japonesas",
+          "lessons": ["l1_05", "l1_06", "l1_07", "l1_08"],
+          "file": "level1/module2.json"
+        },
+        {
+          "id": "mod_1_3",
+          "title": "Análisis Técnico",
+          "lessons": ["l1_09", "l1_10"],
+          "file": "level1/module3.json"
+        }
+      ]
+    },
+    {
+      "id": "level_2",
+      "level": 2,
+      "title": "Análisis Técnico",
+      "description": "Profundiza en el análisis de gráficos",
+      "minXP": 500,
+      "color": "#6C5CE7",
+      "modules": [
+        {
+          "id": "mod_2_1",
+          "title": "Tendencias y Estructura",
+          "lessons": [],
+          "file": "level2/module1.json"
+        },
+        {
+          "id": "mod_2_2",
+          "title": "Soportes y Resistencias",
+          "lessons": [],
+          "file": "level2/module2.json"
+        },
+        {
+          "id": "mod_2_3",
+          "title": "Patrones de Velas",
+          "lessons": [],
+          "file": "level2/module3.json"
+        }
+      ]
+    },
+    {
+      "id": "level_3",
+      "level": 3,
+      "title": "Estrategias",
+      "description": "Desarrolla tu propia estrategia de trading",
+      "minXP": 1500,
+      "color": "#FDCB6E",
+      "modules": [
+        {
+          "id": "mod_3_1",
+          "title": "Gestión de Riesgo",
+          "lessons": [],
+          "file": "level3/module1.json"
+        },
+        {
+          "id": "mod_3_2",
+          "title": "Psicología Trading",
+          "lessons": [],
+          "file": "level3/module2.json"
+        }
+      ]
+    }
+  ]
+}

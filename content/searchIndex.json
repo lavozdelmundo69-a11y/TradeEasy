@@ -1,0 +1,43 @@
+{
+  "index": {
+    "trading": ["l1_01", "l1_02"],
+    "precio": ["l1_03", "l1_04", "l1_07"],
+    "velas": ["l1_04", "l1_05", "l1_06", "l1_07", "l1_08"],
+    "soporte": ["l1_07", "l2_01", "l2_02"],
+    "resistencia": ["l1_07", "l2_01", "l2_02"],
+    "tendencia": ["l1_08", "l2_03", "l2_04"],
+    "volumen": ["l1_09", "l2_05"],
+    "riesgo": ["l1_10", "l3_01"],
+    "mercado": ["l1_01", "l1_02"],
+    "forex": ["l1_02"],
+    "bolsa": ["l1_02"],
+    "criptomonedas": ["l1_02"],
+    "ohlc": ["l1_04", "l1_05"],
+    "candlestick": ["l1_04", "l1_05", "l1_06"],
+    "gestión": ["l1_10", "l3_01"],
+    "capital": ["l1_10", "l3_01"],
+    "stop loss": ["l1_10", "l3_01"]
+  },
+  "tags": {
+    "beginner": ["l1_01", "l1_02", "l1_03", "l1_04", "l1_05"],
+    "intermediate": ["l1_06", "l1_07", "l1_08", "l1_09"],
+    "advanced": ["l1_10", "l2_01", "l2_02", "l2_03", "l3_01"],
+    "easy_quiz": ["l1_01", "l1_02", "l1_03", "l1_04", "l1_05", "l1_09"],
+    "medium_quiz": ["l1_06", "l1_07", "l1_08", "l1_10"],
+    "chart_patterns": ["l1_04", "l1_05", "l1_06", "l2_03"],
+    "market_structure": ["l1_08", "l2_01", "l2_02", "l2_04"],
+    "risk_management": ["l1_10", "l3_01"]
+  },
+  "lessons": {
+    "l1_01": { "title": "¿Qué es el Trading?", "tags": ["beginner", "trading", "mercado"] },
+    "l1_02": { "title": "Los Mercados Financieros", "tags": ["beginner", "mercado", "forex", "bolsa"] },
+    "l1_03": { "title": "¿Qué es el Precio?", "tags": ["beginner", "precio"] },
+    "l1_04": { "title": "Velas Japonesas", "tags": ["beginner", "velas", "ohlc", "candlestick"] },
+    "l1_05": { "title": "Velas Alcistas y Bajistas", "tags": ["beginner", "velas", "candlestick", "easy_quiz"] },
+    "l1_06": { "title": "Partes de una Vela", "tags": ["intermediate", "velas", "candlestick"] },
+    "l1_07": { "title": "Soportes y Resistencias", "tags": ["intermediate", "soporte", "resistencia"] },
+    "l1_08": { "title": "Tipos de Tendencia", "tags": ["intermediate", "tendencia", "market_structure"] },
+    "l1_09": { "title": "El Volumen", "tags": ["beginner", "volumen", "easy_quiz"] },
+    "l1_10": { "title": "Gestión del Riesgo", "tags": ["advanced", "riesgo", "risk_management", "medium_quiz"] }
+  }
+}

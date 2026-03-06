@@ -1,18 +1,6 @@
-// Types para TradeEasy
+// Types centralizados para la app
 
-export interface UserProgress {
-  userId: string;
-  currentStreak: number;
-  maxStreak: number;
-  totalXP: number;
-  level: number;
-  lessonsCompleted: string[];
-  exercisesCompleted: number;
-  correctAnswers: number;
-  totalAnswers: number;
-  lastActiveDate: string;
-  achievements: string[];
-}
+// ==================== LECCIONES ====================
 
 export interface Lesson {
   id: string;
@@ -23,11 +11,11 @@ export interface Lesson {
   duration: number;
   xpReward: number;
   order: number;
-  explanation: ExplanationBlock[];
-  example: ExampleBlock;
-  exercise: Exercise;
+  explanation: readonly ExplanationBlock[];
+  example: Readonly<ExampleBlock>;
+  exercise: Readonly<Exercise>;
   summary: string;
-  requiredLessonIds?: string[];
+  requiredLessonIds?: readonly string[];
 }
 
 export interface ExplanationBlock {
@@ -38,7 +26,7 @@ export interface ExplanationBlock {
 export interface ExampleBlock {
   title: string;
   description: string;
-  chartData?: ChartDataPoint[];
+  chartData?: readonly ChartDataPoint[];
   scenario?: string;
 }
 
@@ -49,12 +37,14 @@ export interface ChartDataPoint {
   low: number;
 }
 
+// ==================== EJERCICIOS ====================
+
 export interface Exercise {
   id: string;
   type: ExerciseType;
   question: string;
   scenario?: MarketScenario;
-  options: string[];
+  options: readonly string[];
   correctAnswer: number;
   explanation: string;
   difficulty: 'easy' | 'medium' | 'hard';
@@ -75,6 +65,8 @@ export interface MarketScenario {
   description: string;
 }
 
+// ==================== NIVELES Y PROGRESO ====================
+
 export interface Level {
   level: number;
   title: string;
@@ -82,10 +74,88 @@ export interface Level {
   color: string;
 }
 
+export interface LevelStructure {
+  id: string;
+  level: number;
+  title: string;
+  description: string;
+  modules: readonly ModuleStructure[];
+  minXP: number;
+  color: string;
+}
+
+export interface ModuleStructure {
+  id: string;
+  title: string;
+  lessons: readonly string[];
+  file: string;
+}
+
+// ==================== USUARIO ====================
+
+export interface UserProgress {
+  userId: string;
+  currentStreak: number;
+  maxStreak: number;
+  totalXP: number;
+  level: number;
+  lessonsCompleted: readonly string[];
+  exercisesCompleted: number;
+  correctAnswers: number;
+  totalAnswers: number;
+  lastActiveDate: string;
+  achievements: readonly string[];
+}
+
+// ==================== GAMIFICACIÓN ====================
+
 export interface Achievement {
   id: string;
   title: string;
   description: string;
   icon: string;
-  requirement: number;
+  requirement: AchievementRequirement;
+  reward: number;
+}
+
+export interface AchievementRequirement {
+  type: 'streak' | 'lessons' | 'perfect_quiz' | 'consecutive_correct' | 'total_xp';
+  value: number;
+}
+
+export interface AchievementProgress {
+  achievementId: string;
+  progress: number; // 0-100
+  unlockedAt?: string;
+}
+
+// ==================== TRADING ====================
+
+export interface Candle {
+  time: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume?: number;
+}
+
+export interface MarketData {
+  symbol: string;
+  candles: readonly Candle[];
+  supportLevels: readonly number[];
+  resistanceLevels: readonly number[];
+}
+
+// ==================== CONTENIDO ====================
+
+export interface ContentManifest {
+  version: string;
+  updatedAt: string;
+  levels: readonly LevelStructure[];
+}
+
+export interface SearchIndex {
+  index: Record<string, readonly string[]>;
+  tags: Record<string, readonly string[]>;
 }

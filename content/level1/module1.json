@@ -1,0 +1,180 @@
+{
+  "module": {
+    "id": "mod_1_1",
+    "title": "Conceptos Básicos",
+    "description": "Fundamentos del trading"
+  },
+  "lessons": [
+    {
+      "id": "l1_01",
+      "title": "¿Qué es el Trading?",
+      "description": "Introducción al mundo del trading",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 1,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "El trading es la compra y venta de activos financieros con el objetivo de obtener ganancias. Estos activos pueden ser acciones, divisas (Forex), criptomonedas, materias primas y más."
+        },
+        {
+          "type": "text",
+          "content": "A diferencia de invertir a largo plazo, el trading busca beneficiarse de los movimientos de precio en períodos cortos de tiempo: minutos, horas o días."
+        },
+        {
+          "type": "tip",
+          "content": "El trading requiere disciplina, gestión del riesgo y aprendizaje continuo. No es una forma rápida de ganar dinero."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Imagina que compras acciones de una empresa a 100€. Dos horas después, suben a 105€. Si vendes en ese momento, has ganado 5€ por acción.",
+        "scenario": "trading básico"
+      },
+      "exercise": {
+        "id": "ex_l1_01",
+        "type": "concept-quiz",
+        "question": "¿Cuál es el objetivo principal del trading?",
+        "options": [
+          "Ganar dinero rápidamente sin esfuerzo",
+          "Beneficiarse de los movimientos de precio",
+          "Comprar empresas para siempre",
+          "Ahorrar para la jubilación"
+        ],
+        "correctAnswer": 1,
+        "explanation": "El trading busca beneficiarse de los movimientos de precio a corto plazo, no es una forma de ganar dinero fácil.",
+        "difficulty": "easy"
+      },
+      "summary": "El trading es comprar y vender activos financieros para beneficiarse de los cambios de precio en el corto plazo."
+    },
+    {
+      "id": "l1_02",
+      "title": "Los Mercados Financieros",
+      "description": "Dónde se negocian los activos",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 2,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Los mercados financieros son lugares (físicos o digitales) donde compradores y vendedores intercambian activos. Cada mercado tiene sus propias características."
+        },
+        {
+          "type": "text",
+          "content": "Los principales mercados son: Bolsa (acciones), Forex (divisas), Criptomonedas y Materias primas (oro, petróleo)."
+        },
+        {
+          "type": "tip",
+          "content": "Cada mercado tiene horarios diferentes. El mercado de criptomonedas opera 24/7, mientras que la bolsa tiene horarios específicos."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Si quieres comprar Bitcoin, vas a un exchange de criptomonedas. Si quieres comprar acciones de Apple, vas a la bolsa de valores.",
+        "scenario": "mercados"
+      },
+      "exercise": {
+        "id": "ex_l1_02",
+        "type": "concept-quiz",
+        "question": "¿Dónde se negocian las acciones de empresas?",
+        "options": [
+          "En el mercado de Forex",
+          "En la bolsa de valores",
+          "En bancos solo",
+          "Solo en criptomonedas"
+        ],
+        "correctAnswer": 1,
+        "explanation": "Las acciones se negocian en la bolsa de valores, como NYSE, Nasdaq o en mercados locales.",
+        "difficulty": "easy"
+      },
+      "summary": "Los mercados financieros son el entorno donde se compran y venden activos: bolsas, Forex, criptomonedas."
+    },
+    {
+      "id": "l1_03",
+      "title": "¿Qué es el Precio?",
+      "description": "Entendiendo cómo se forma el precio",
+      "duration": 3,
+      "xpReward": 50,
+      "order": 3,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "El precio de un activo se determina por la oferta y la demanda. Si hay más compradores que vendedores, el precio sube. Si hay más vendedores, baja."
+        },
+        {
+          "type": "text",
+          "content": "Cada operación de compra o venta influye en el precio. Cuando alguien compra a un precio mayor, empuja el precio hacia arriba."
+        },
+        {
+          "type": "warning",
+          "content": "El precio siempre está fluctuando. No hay un precio 'correcto' - solo lo que compradores y vendedores están dispuestos a pagar."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Si todos quieren comprar Bitcoin (mucha demanda) y nadie quiere vender, el precio subirá hasta que alguien acepte vender.",
+        "scenario": "oferta demanda"
+      },
+      "exercise": {
+        "id": "ex_l1_03",
+        "type": "concept-quiz",
+        "question": "¿Qué sucede con el precio cuando hay más compradores que vendedores?",
+        "options": [
+          "El precio baja",
+          "El precio se mantiene igual",
+          "El precio sube",
+          "El mercado cierra"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Cuando la demanda supera a la oferta, los compradores compiten por comprar, lo que impulsa el precio hacia arriba.",
+        "difficulty": "easy"
+      },
+      "summary": "El precio se forma por la oferta y demanda. Más compradores = precio sube. Más vendedores = precio baja."
+    },
+    {
+      "id": "l1_04",
+      "title": "Velas Japonesas",
+      "description": "La forma principal de leer gráficos",
+      "duration": 4,
+      "xpReward": 50,
+      "order": 4,
+      "explanation": [
+        {
+          "type": "text",
+          "content": "Las velas japonesas (o candlesticks) son una forma de representar el movimiento del precio en un período de tiempo. Cada vela muestra: precio de apertura, cierre, máximo y mínimo."
+        },
+        {
+          "type": "text",
+          "content": "El 'cuerpo' de la vela es la diferencia entre apertura y cierre. Las 'mechas' o 'sombras' muestran los precios máximo y mínimo del período."
+        },
+        {
+          "type": "tip",
+          "content": "Las velas son la base del análisis técnico. Aprender a leerlas es esencial para cualquier trader."
+        }
+      ],
+      "example": {
+        "title": "Ejemplo práctico",
+        "description": "Vela verde: Precio abrió a 100 y cerró a 110 (subió). Vela roja: Precio abrió a 110 y cerró a 100 (bajó).",
+        "chartData": [
+          {"open": 100, "close": 110, "high": 115, "low": 98}
+        ],
+        "scenario": "velas"
+      },
+      "exercise": {
+        "id": "ex_l1_04",
+        "type": "candle-interpretation",
+        "question": "Una vela tiene el precio de apertura igual al de cierre. ¿Qué nos indica esto?",
+        "options": [
+          "El precio subió fuertemente",
+          "El precio bajó fuertemente",
+          "Hubo indecisión en el mercado",
+          "El mercado estuvo cerrado"
+        ],
+        "correctAnswer": 2,
+        "explanation": "Cuando apertura y cierre son iguales, buyers y sellers estaban igualados. Es señal de indecisión.",
+        "difficulty": "easy"
+      },
+      "summary": "Las velas japonesas muestran apertura, cierre, máximo y mínimo. Verdes = subió, Rojas = bajó."
+    }
+  ]
+}

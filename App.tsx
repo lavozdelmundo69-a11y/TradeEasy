@@ -1,20 +1,37 @@
-// App.tsx - TradeEasy MVP
-
+// App.tsx - TradeEasy con React Navigation
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
-import { HomeScreen, LessonScreen, LevelMapScreen } from './src/screens';
+import { View, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { HomeScreen } from './src/screens/HomeScreen';
+import { LessonScreen } from './src/screens/LessonScreen';
+import { LevelMapScreen } from './src/screens/LevelMapScreen';
 import { Lesson } from './src/types';
 import { lessonsData } from './src/data/lessons';
-import { COLORS } from './src/constants';
+import { COLORS } from './src/shared/constants';
+import { useUserStore } from './src/store/userStore';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+function AppNavigator() {
   const [currentScreen, setCurrentScreen] = useState<'home' | 'lesson' | 'map'>('home');
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const { loadProgress, lessonsCompleted } = useUserStore();
+
+  useEffect(() => {
+    const init = async () => {
+      await loadProgress();
+      setIsLoading(false);
+    };
+    init();
+  }, []);
 
   const handleContinue = () => {
     // Encontrar siguiente lección
-    const { lessonsCompleted } = require('./src/store/userStore').useUserStore.getState();
-    
     for (const lesson of lessonsData) {
       if (!lessonsCompleted.includes(lesson.id)) {
         setSelectedLesson(lesson);
@@ -42,35 +59,72 @@ export default function App() {
     setCurrentScreen('map');
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-      
+    <Stack.Navigator 
+      screenOptions={{ 
+        headerShown: false,
+        contentStyle: { backgroundColor: COLORS.background },
+        animation: 'slide_from_right',
+      }}
+    >
       {currentScreen === 'home' && (
-        <HomeScreen 
-          onContinue={handleContinue}
-          onMap={() => setCurrentScreen('map')}
-        />
+        <Stack.Screen name="Home">
+          {() => (
+            <HomeScreen 
+              onContinue={handleContinue}
+              onMap={() => setCurrentScreen('map')}
+            />
+          )}
+        </Stack.Screen>
       )}
       
       {currentScreen === 'map' && (
-        <LevelMapScreen onSelectLesson={handleSelectLesson} />
+        <Stack.Screen name="Map">
+          {() => (
+            <LevelMapScreen onSelectLesson={handleSelectLesson} />
+          )}
+        </Stack.Screen>
       )}
       
       {currentScreen === 'lesson' && selectedLesson && (
-        <LessonScreen 
-          lesson={selectedLesson}
-          onComplete={handleLessonComplete}
-          onBack={handleBack}
-        />
+        <Stack.Screen name="Lesson">
+          {() => (
+            <LessonScreen 
+              lesson={selectedLesson}
+              onComplete={handleLessonComplete}
+              onBack={handleBack}
+            />
+          )}
+        </Stack.Screen>
       )}
-    </View>
+    </Stack.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
+        <AppNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loadingContainer: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: COLORS.background,
   },
 });

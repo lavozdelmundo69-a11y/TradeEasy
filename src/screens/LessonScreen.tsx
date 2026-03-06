@@ -1,18 +1,13 @@
-// LessonScreen - Pantalla de lección
-
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants';
+// LessonScreen - Pantalla de lección mejorada
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Vibration } from 'react-native';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../shared/constants';
 import { Lesson } from '../types';
-import { QuizCard } from '../components';
-import { useUserStore } from '../store/userStore';
+import { QuizCard } from '../features/quiz/components/QuizCard';
+import { useUserStore, useLessonCompletion } from '../store/userStore';
+import { useLessonCompletion as useLessonHook } from '../features/lessons/hooks/useLessonCompletion';
+import { AnimatedButton, Card } from '../shared/components';
+import { useQuiz } from '../features/quiz/hooks/useQuiz';
 
 interface LessonScreenProps {
   lesson: Lesson;
@@ -28,53 +23,61 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({
   const [showExercise, setShowExercise] = useState(false);
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
   
-  const { addXP, correctAnswer, wrongAnswer, completeLesson, getProgressToNextLevel } = useUserStore();
+  const { addXP } = useUserStore();
+  const { completeLesson: completeLessonAction } = useLessonHook();
+  const { exercise } = lesson;
 
-  const handleAnswer = (selectedIndex: number) => {
-    if (selectedIndex === lesson.exercise.correctAnswer) {
-      correctAnswer();
-      addXP(50); // XP por completar lección
-    } else {
-      wrongAnswer();
-    }
-    
+  const handleAnswer = useCallback(() => {
+    // XP ya se añade en el hook QuizCard
+    Vibration.vibrate(50);
+  }, []);
+
+  const handleExerciseComplete = useCallback(() => {
     setExerciseCompleted(true);
-  };
-
-  const handleContinue = () => {
+    // XP por completar lección
     addXP(lesson.xpReward);
-    completeLesson(lesson.id);
+  }, [addXP, lesson.xpReward]);
+
+  const handleContinue = useCallback(() => {
+    completeLessonAction(lesson.id, lesson.xpReward);
     onComplete();
-  };
+  }, [completeLessonAction, lesson.id, lesson.xpReward, onComplete]);
+
+  const handleBackToExplanation = useCallback(() => {
+    setShowExercise(false);
+    setExerciseCompleted(false);
+  }, []);
 
   if (showExercise) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={onBack} style={styles.backButton}>
+          <TouchableOpacity onPress={handleBackToExplanation} style={styles.backButton}>
             <Text style={styles.backText}>← Volver</Text>
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Ejercicio</Text>
           <View style={styles.placeholder} />
         </View>
         
-        <ScrollView style={styles.content}>
+        <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
           <QuizCard
-            exercise={lesson.exercise}
+            exercise={exercise}
             onAnswer={handleAnswer}
+            showTimer
+            timeLimit={60}
           />
         </ScrollView>
         
         {exerciseCompleted && (
           <View style={styles.footer}>
-            <TouchableOpacity
-              style={styles.continueButton}
+            <AnimatedButton
               onPress={handleContinue}
+              variant="success"
+              size="lg"
+              fullWidth
             >
-              <Text style={styles.continueText}>
-                Continuar (+{lesson.xpReward} XP)
-              </Text>
-            </TouchableOpacity>
+              ✅ Completar (+{lesson.xpReward} XP)
+            </AnimatedButton>
           </View>
         )}
       </SafeAreaView>
@@ -91,50 +94,92 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({
         <View style={styles.placeholder} />
       </View>
 
-      <ScrollView style={styles.content}>
-        {/* Explicación */}
-        {lesson.explanation.map((block, index) => (
-          <View key={index} style={styles.explanationBlock}>
-            {block.type === 'tip' && (
-              <View style={[styles.block, styles.tipBlock]}>
-                <Text style={styles.tipTitle}>💡 Consejo</Text>
-                <Text style={styles.blockText}>{block.content}</Text>
-              </View>
-            )}
-            {block.type === 'warning' && (
-              <View style={[styles.block, styles.warningBlock]}>
-                <Text style={styles.warningTitle}>⚠️ Atención</Text>
-                <Text style={styles.blockText}>{block.content}</Text>
-              </View>
-            )}
-            {block.type === 'text' && (
-              <Text style={styles.textContent}>{block.content}</Text>
-            )}
+      <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+        {/* Progress indicator */}
+        <View style={styles.progressHeader}>
+          <View style={styles.levelBadge}>
+            <Text style={styles.levelText}>Nivel {lesson.level}</Text>
           </View>
-        ))}
+          <View style={styles.metaBadges}>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>⏱️ {lesson.duration} min</Text>
+            </View>
+            <View style={styles.badge}>
+              <Text style={[styles.badgeText, { color: COLORS.xp }]}>⭐ {lesson.xpReward} XP</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Explicación */}
+        <Card style={styles.explanationSection} variant="elevated">
+          <Text style={styles.sectionTitle}>📚 Explicación</Text>
+          {lesson.explanation.map((block, index) => (
+            <View key={index} style={styles.explanationBlock}>
+              {block.type === 'tip' && (
+                <View style={[styles.block, styles.tipBlock]}>
+                  <Text style={styles.tipTitle}>💡 Consejo</Text>
+                  <Text style={styles.blockText}>{block.content}</Text>
+                </View>
+              )}
+              {block.type === 'warning' && (
+                <View style={[styles.block, styles.warningBlock]}>
+                  <Text style={styles.warningTitle}>⚠️ Atención</Text>
+                  <Text style={styles.blockText}>{block.content}</Text>
+                </View>
+              )}
+              {block.type === 'text' && (
+                <Text style={styles.textContent}>{block.content}</Text>
+              )}
+            </View>
+          ))}
+        </Card>
 
         {/* Ejemplo */}
-        <View style={styles.exampleContainer}>
+        <Card style={styles.exampleSection} variant="elevated">
+          <Text style={styles.sectionTitle}>💡 Ejemplo Práctico</Text>
           <Text style={styles.exampleTitle}>{lesson.example.title}</Text>
           <Text style={styles.exampleDescription}>
             {lesson.example.description}
           </Text>
-        </View>
+          
+          {lesson.example.chartData && lesson.example.chartData.length > 0 && (
+            <View style={styles.chartContainer}>
+              <Text style={styles.chartLabel}>Vela de ejemplo:</Text>
+              <View style={styles.chartData}>
+                {lesson.example.chartData.map((candle, idx) => (
+                  <View key={idx} style={styles.candleData}>
+                    <Text style={[
+                      styles.candleText,
+                      { color: candle.close >= candle.open ? COLORS.success : COLORS.error }
+                    ]}>
+                      O:{candle.open} C:{candle.close}
+                    </Text>
+                    <Text style={styles.candleSubtext}>
+                      H:{candle.high} L:{candle.low}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
+        </Card>
 
         {/* Resumen */}
-        <View style={styles.summaryContainer}>
-          <Text style={styles.summaryTitle}>📝 Resumen</Text>
+        <Card style={styles.summarySection} variant="outlined">
+          <Text style={styles.sectionTitle}>📝 Resumen</Text>
           <Text style={styles.summaryText}>{lesson.summary}</Text>
-        </View>
+        </Card>
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.startButton}
+        <AnimatedButton
           onPress={() => setShowExercise(true)}
+          variant="primary"
+          size="lg"
+          fullWidth
         >
-          <Text style={styles.startButtonText}>Hacer Ejercicio</Text>
-        </TouchableOpacity>
+          🎯 Hacer Ejercicio
+        </AnimatedButton>
       </View>
     </SafeAreaView>
   );
@@ -156,6 +201,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: SPACING.xs,
+    width: 70,
   },
   backText: {
     color: COLORS.primary,
@@ -164,24 +210,69 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: FONT_SIZES.md,
-    fontWeight: '600',
+    fontWeight: '700',
     color: COLORS.text,
   },
   placeholder: {
-    width: 60,
+    width: 70,
   },
   content: {
     flex: 1,
+  },
+  scrollContent: {
     padding: SPACING.md,
+  },
+  progressHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+    padding: SPACING.sm,
+    backgroundColor: COLORS.surface,
+    borderRadius: BORDER_RADIUS.md,
+  },
+  levelBadge: {
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.xs,
+    borderRadius: BORDER_RADIUS.full,
+  },
+  levelText: {
+    color: COLORS.textInverse,
+    fontSize: FONT_SIZES.sm,
+    fontWeight: '600',
+  },
+  metaBadges: {
+    flexDirection: 'row',
+    gap: SPACING.sm,
+  },
+  badge: {
+    backgroundColor: COLORS.background,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xs,
+    borderRadius: BORDER_RADIUS.full,
+  },
+  badgeText: {
+    fontSize: FONT_SIZES.xs,
+    fontWeight: '600',
+  },
+  explanationSection: {
+    marginBottom: SPACING.md,
+  },
+  exampleSection: {
+    marginBottom: SPACING.md,
+  },
+  summarySection: {
+    marginBottom: SPACING.md,
+  },
+  sectionTitle: {
+    fontSize: FONT_SIZES.lg,
+    fontWeight: '700',
+    color: COLORS.text,
+    marginBottom: SPACING.md,
   },
   explanationBlock: {
     marginBottom: SPACING.md,
-  },
-  textContent: {
-    fontSize: FONT_SIZES.md,
-    color: COLORS.text,
-    lineHeight: 24,
-    marginBottom: SPACING.sm,
   },
   block: {
     padding: SPACING.md,
@@ -189,12 +280,12 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.xs,
   },
   tipBlock: {
-    backgroundColor: '#E8F8F5',
+    backgroundColor: COLORS.successLight,
     borderLeftWidth: 4,
     borderLeftColor: COLORS.success,
   },
   warningBlock: {
-    backgroundColor: '#FEF9E7',
+    backgroundColor: COLORS.warningLight,
     borderLeftWidth: 4,
     borderLeftColor: COLORS.warning,
   },
@@ -210,18 +301,11 @@ const styles = StyleSheet.create({
     color: '#D68910',
     marginBottom: SPACING.xs,
   },
-  blockText: {
-    fontSize: FONT_SIZES.sm,
+  textContent: {
+    fontSize: FONT_SIZES.md,
     color: COLORS.text,
-    lineHeight: 20,
-  },
-  exampleContainer: {
-    backgroundColor: COLORS.surface,
-    padding: SPACING.md,
-    borderRadius: BORDER_RADIUS.md,
-    marginVertical: SPACING.md,
-    borderWidth: 1,
-    borderColor: COLORS.primary,
+    lineHeight: 24,
+    marginBottom: SPACING.sm,
   },
   exampleTitle: {
     fontSize: FONT_SIZES.md,
@@ -234,49 +318,41 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     lineHeight: 22,
   },
-  summaryContainer: {
-    backgroundColor: COLORS.background,
+  chartContainer: {
+    marginTop: SPACING.md,
+    backgroundColor: COLORS.backgroundDark,
     padding: SPACING.md,
     borderRadius: BORDER_RADIUS.md,
-    marginVertical: SPACING.md,
   },
-  summaryTitle: {
-    fontSize: FONT_SIZES.md,
-    fontWeight: '700',
-    color: COLORS.text,
-    marginBottom: SPACING.xs,
+  chartLabel: {
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.textInverse,
+    marginBottom: SPACING.sm,
+  },
+  chartData: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  candleData: {
+    alignItems: 'center',
+  },
+  candleText: {
+    fontSize: FONT_SIZES.sm,
+    fontWeight: '600',
+  },
+  candleSubtext: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textMuted,
   },
   summaryText: {
     fontSize: FONT_SIZES.sm,
-    color: COLORS.textLight,
-    lineHeight: 20,
+    color: COLORS.text,
+    lineHeight: 22,
   },
   footer: {
     padding: SPACING.md,
     backgroundColor: COLORS.surface,
     borderTopWidth: 1,
     borderTopColor: COLORS.background,
-  },
-  startButton: {
-    backgroundColor: COLORS.primary,
-    padding: SPACING.md,
-    borderRadius: BORDER_RADIUS.md,
-    alignItems: 'center',
-  },
-  startButtonText: {
-    color: COLORS.textInverse,
-    fontSize: FONT_SIZES.md,
-    fontWeight: '700',
-  },
-  continueButton: {
-    backgroundColor: COLORS.success,
-    padding: SPACING.md,
-    borderRadius: BORDER_RADIUS.md,
-    alignItems: 'center',
-  },
-  continueText: {
-    color: COLORS.textInverse,
-    fontSize: FONT_SIZES.md,
-    fontWeight: '700',
   },
 });

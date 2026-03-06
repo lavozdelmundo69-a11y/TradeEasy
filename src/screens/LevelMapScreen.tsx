@@ -1,98 +1,130 @@
-// LevelMapScreen - Mapa de niveles estilo Duolingo
-
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants';
-import { Lesson, Level } from '../types';
-import { LessonCard } from '../components';
-import { useUserStore } from '../store/userStore';
-import { lessonsData } from '../data/lessons';
-
-interface LevelMapScreenProps {
-  onSelectLesson: (lesson: Lesson) => void;
-}
+// LevelMapScreen - Pantalla de mapa de niveles con FlashList
+import React, { useMemo, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../../shared/constants';
+import { Lesson } from '../../types';
+import { LessonCard } from '../../features/lessons/components/LessonCard';
+import { useUserStore } from '../../store/userStore';
+import { lessonsData, getLessonsByLevel } from '../../data/lessons';
 
 export const LevelMapScreen: React.FC<LevelMapScreenProps> = ({ onSelectLesson }) => {
-  const { lessonsCompleted, totalXP } = useUserStore();
+  const { lessonsCompleted, level: userLevel } = useUserStore();
   
-  // Agrupar lecciones por nivel
-  const levels = [
-    { level: 1, title: 'Nivel 1', subtitle: 'Fundamentos', color: COLORS.level1, lessons: lessonsData.filter(l => l.level === 1) },
-    { level: 2, title: 'Nivel 2', subtitle: 'Comprensión del Mercado', color: COLORS.level2, lessons: lessonsData.filter(l => l.level === 2) },
-  ];
-
-  const isLessonUnlocked = (lesson: Lesson): boolean => {
-    // Primera lección siempre desbloqueada
-    if (lesson.order === 1) return true;
+  // Obtener lecciones por nivel del usuario
+  const lessonsByLevel = useMemo(() => {
+    const grouped: Record<number, Lesson[]> = {};
     
-    // Busco la lección anterior en el mismo nivel
-    const levelLessons = lessonsData.filter(l => l.level === lesson.level);
-    const prevLesson = levelLessons.find(l => l.order === lesson.order - 1);
-    
-    if (prevLesson) {
-      return lessonsCompleted.includes(prevLesson.id);
+    // Usar getLessonsByLevel para cada nivel
+    for (let lvl = 1; lvl <= 3; lvl++) {
+      const levelLessons = getLessonsByLevel(lvl);
+      if (levelLessons.length > 0) {
+        grouped[lvl] = levelLessons;
+      }
     }
     
-    return lessonsCompleted.includes(lesson.id);
-  };
+    return grouped;
+  }, []);
 
-  const isLessonCompleted = (lessonId: string): boolean => {
-    return lessonsCompleted.includes(lessonId);
-  };
+  // Generar lista plana para FlashList
+  const flatData = useMemo(() => {
+    const items: Array<{ type: 'header' | 'lesson'; data: any; key: string }> = [];
+    
+    // Mostrar niveles hasta el nivel del usuario + 1
+    const maxVisibleLevel = Math.min(userLevel + 1, 3);
+    
+    for (let lvl = 1; lvl <= maxVisibleLevel; lvl++) {
+      const levelConfig = GAME_CONFIG.levels.find(l => l.level === lvl);
+      const lessons = lessonsByLevel[lvl] || [];
+      const completedCount = lessons.filter(l => lessonsCompleted.includes(l.id)).length;
+      
+      // Header de nivel
+      items.push({
+        type: 'header',
+        data: { 
+          level: lvl, 
+          title: levelConfig?.title || `Nivel ${lvl}`,
+          color: levelConfig?.color || COLORS.primary,
+          completed: completedCount,
+          total: lessons.length,
+        },
+        key: `level-header-${lvl}`,
+      });
+      
+      // Lecciones
+      lessons.forEach(lesson => {
+        const isUnlocked = lesson.level <= userLevel || 
+          (lesson.requiredLessonIds?.every(id => lessonsCompleted.includes(id)) ?? true);
+        
+        items.push({
+          type: 'lesson',
+          data: {
+            lesson,
+            isCompleted: lessonsCompleted.includes(lesson.id),
+            isUnlocked,
+          },
+          key: `lesson-${lesson.id}`,
+        });
+      });
+    }
+    
+    return items;
+  }, [lessonsByLevel, lessonsCompleted, userLevel]);
 
-  const getLessonsCompletedCount = (levelNum: number): number => {
-    const levelLessons = lessonsData.filter(l => l.level === levelNum);
-    return levelLessons.filter(l => lessonsCompleted.includes(l.id)).length;
-  };
+  const renderItem = useCallback(({ item }: { item: any }) => {
+    if (item.type === 'header') {
+      const { level, title, color, completed, total } = item.data;
+      return (
+        <View style={styles.levelHeader}>
+          <View style={[styles.levelBadge, { backgroundColor: color }]}>
+            <Text style={styles.levelNumber}>{level}</Text>
+          </View>
+          <View style={styles.levelInfo}>
+            <Text style={styles.levelTitle}>{title}</Text>
+            <Text style={styles.levelProgress}>
+              {completed}/{total} lecciones
+            </Text>
+          </View>
+          <View style={[styles.progressBar, { backgroundColor: color }]}>
+            <View 
+              style={[
+                styles.progressFill, 
+                { width: `${total > 0 ? (completed / total) * 100 : 0}%`, backgroundColor: color }
+              ]} 
+            />
+          </View>
+        </View>
+      );
+    }
+    
+    const { lesson, isCompleted, isUnlocked } = item.data;
+    return (
+      <LessonCard
+        lesson={lesson}
+        isCompleted={isCompleted}
+        isUnlocked={isUnlocked}
+        onPress={() => onSelectLesson(lesson)}
+      />
+    );
+  }, [onSelectLesson]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Mapa de Aprendizaje</Text>
-        <View style={styles.xpBadge}>
-          <Text style={styles.xpText}>⭐ {totalXP} XP</Text>
-        </View>
+        <TouchableOpacity style={styles.backButton} onPress={() => {}}>
+          <Text style={styles.backText}>← Volver</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Mapa de Lecciones</Text>
+        <View style={styles.placeholder} />
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {levels.map((level) => (
-          <View key={level.level} style={styles.levelSection}>
-            <View style={styles.levelHeader}>
-              <View style={[styles.levelBadge, { backgroundColor: level.color }]}>
-                <Text style={styles.levelNumber}>{level.level}</Text>
-              </View>
-              <View style={styles.levelInfo}>
-                <Text style={styles.levelTitle}>{level.title}</Text>
-                <Text style={styles.levelSubtitle}>{level.subtitle}</Text>
-              </View>
-              <View style={styles.progressInfo}>
-                <Text style={styles.progressText}>
-                  {getLessonsCompletedCount(level.level)}/{level.lessons.length}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.lessonsList}>
-              {level.lessons.map((lesson) => (
-                <LessonCard
-                  key={lesson.id}
-                  lesson={lesson}
-                  isCompleted={isLessonCompleted(lesson.id)}
-                  isUnlocked={isLessonUnlocked(lesson)}
-                  onPress={() => onSelectLesson(lesson)}
-                />
-              ))}
-            </View>
-          </View>
-        ))}
-      </ScrollView>
+      <FlashList
+        data={flatData}
+        renderItem={renderItem}
+        estimatedItemSize={100}
+        keyExtractor={item => item.key}
+        contentContainerStyle={styles.listContent}
+      />
     </SafeAreaView>
   );
 };
@@ -111,41 +143,43 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.background,
   },
+  backButton: {
+    padding: SPACING.xs,
+    width: 70,
+  },
+  backText: {
+    color: COLORS.primary,
+    fontSize: FONT_SIZES.md,
+    fontWeight: '600',
+  },
   headerTitle: {
-    fontSize: FONT_SIZES.xl,
+    fontSize: FONT_SIZES.md,
     fontWeight: '700',
     color: COLORS.text,
   },
-  xpBadge: {
-    backgroundColor: '#FEF9E7',
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs,
-    borderRadius: BORDER_RADIUS.full,
+  placeholder: {
+    width: 70,
   },
-  xpText: {
-    color: COLORS.warning,
-    fontWeight: '600',
-    fontSize: FONT_SIZES.sm,
-  },
-  content: {
-    flex: 1,
-    padding: SPACING.md,
-  },
-  levelSection: {
-    marginBottom: SPACING.xl,
+  listContent: {
+    paddingBottom: SPACING.xl,
   },
   levelHeader: {
+    padding: SPACING.md,
+    marginTop: SPACING.md,
+    marginHorizontal: SPACING.md,
+    backgroundColor: COLORS.surface,
+    borderRadius: BORDER_RADIUS.lg,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: SPACING.md,
+    flexWrap: 'wrap',
+    gap: SPACING.sm,
   },
   levelBadge: {
-    width: 44,
-    height: 44,
+    width: 48,
+    height: 48,
     borderRadius: BORDER_RADIUS.full,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: SPACING.md,
   },
   levelNumber: {
     color: COLORS.surface,
@@ -160,22 +194,20 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: COLORS.text,
   },
-  levelSubtitle: {
+  levelProgress: {
     fontSize: FONT_SIZES.sm,
     color: COLORS.textLight,
   },
-  progressInfo: {
-    backgroundColor: COLORS.surface,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs,
-    borderRadius: BORDER_RADIUS.full,
+  progressBar: {
+    width: '100%',
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: COLORS.background,
+    marginTop: SPACING.xs,
+    overflow: 'hidden',
   },
-  progressText: {
-    fontSize: FONT_SIZES.sm,
-    fontWeight: '600',
-    color: COLORS.text,
-  },
-  lessonsList: {
-    gap: SPACING.sm,
+  progressFill: {
+    height: '100%',
+    borderRadius: 3,
   },
 });
