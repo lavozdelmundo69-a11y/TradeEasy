@@ -2,7 +2,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Exercise } from '../../types';
 import { useUserStore } from '../../store/userStore';
-import { useTimer } from '../shared/hooks/useTimer';
+import { useTimer } from '../../../shared/hooks/useTimer';
 
 interface UseQuizReturn {
   exercise: Exercise;

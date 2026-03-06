@@ -2,11 +2,11 @@
 import React, { useMemo, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../../shared/constants';
-import { Lesson } from '../../types';
-import { LessonCard } from '../../features/lessons/components/LessonCard';
-import { useUserStore } from '../../store/userStore';
-import { lessonsData, getLessonsByLevel } from '../../data/lessons';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../shared/constants';
+import { Lesson } from '../types';
+import { LessonCard } from '../features/lessons/components/LessonCard';
+import { useUserStore } from '../store/userStore';
+import { lessonsData, getLessonsByLevel } from '../data/lessons';
 
 export const LevelMapScreen: React.FC<LevelMapScreenProps> = ({ onSelectLesson }) => {
   const { lessonsCompleted, level: userLevel } = useUserStore();

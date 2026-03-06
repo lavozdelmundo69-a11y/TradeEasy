@@ -4,8 +4,8 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Vib
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../shared/constants';
 import { Lesson } from '../types';
 import { QuizCard } from '../features/quiz/components/QuizCard';
-import { useUserStore, useLessonCompletion } from '../store/userStore';
-import { useLessonCompletion as useLessonHook } from '../features/lessons/hooks/useLessonCompletion';
+import { useUserStore } from '../store/userStore';
+import { useLessonCompletion } from '../features/lessons/hooks/useLessonCompletion';
 import { AnimatedButton, Card } from '../shared/components';
 import { useQuiz } from '../features/quiz/hooks/useQuiz';
 
@@ -24,7 +24,7 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({
   const [exerciseCompleted, setExerciseCompleted] = useState(false);
   
   const { addXP } = useUserStore();
-  const { completeLesson: completeLessonAction } = useLessonHook();
+  const { completeLesson: completeLessonAction } = useLessonCompletion();
   const { exercise } = lesson;
 
   const handleAnswer = useCallback(() => {

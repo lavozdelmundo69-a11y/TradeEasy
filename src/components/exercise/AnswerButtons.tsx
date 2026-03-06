@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../constants';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../shared/constants';
 
 interface AnswerButtonsProps {
   options: string[];

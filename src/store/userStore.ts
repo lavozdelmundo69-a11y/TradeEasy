@@ -2,8 +2,8 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserProgress, Achievement, AchievementProgress } from '../../types';
-import { GAME_CONFIG } from '../../shared/constants';
+import { UserProgress, Achievement, AchievementProgress } from '../types';
+import { GAME_CONFIG } from '../shared/constants';
 
 // ==================== STATE ====================
 

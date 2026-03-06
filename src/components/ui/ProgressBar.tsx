@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { COLORS, BORDER_RADIUS } from '../../constants';
+import { COLORS, BORDER_RADIUS } from '../../shared/constants';
 
 interface ProgressBarProps {
   progress: number; // 0-100

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../constants';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../shared/constants';
 import { Lesson } from '../../types';
 
 interface LessonCardProps {
