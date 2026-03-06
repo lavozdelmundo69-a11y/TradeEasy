@@ -1,10 +1,10 @@
-// LevelMapScreen - Pantalla de mapa de niveles
+// LevelMapScreen - Pantalla de mapa de niveles con FlashList
 import React, { useMemo, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlashList } from '@shopify/flash-list';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../shared/constants';
 import { Lesson } from '../types';
-import { LessonCard } from '../features/lessons/components/LessonCard';
 import { useUserStore } from '../store/userStore';
 import { getLessonsByLevel } from '../data/lessons';
 
@@ -12,24 +12,49 @@ interface LevelMapScreenProps {
   onSelectLesson: (lesson: Lesson) => void;
 }
 
+interface ListItem {
+  type: 'header' | 'lesson';
+  level?: number;
+  lesson?: Lesson;
+  key: string;
+}
+
 export const LevelMapScreen: React.FC<LevelMapScreenProps> = ({ onSelectLesson }) => {
   const lessonsCompleted = useUserStore(state => state.lessonsCompleted);
   const userLevel = useUserStore(state => state.level);
-  
-  // Mostrar niveles hasta el nivel del usuario + 1
+
   const maxVisibleLevel = Math.min(userLevel + 1, 3);
 
-  const renderContent = useCallback(() => {
-    const elements: any[] = [];
+  const data = useMemo((): ListItem[] => {
+    const items: ListItem[] = [];
     
     for (let lvl = 1; lvl <= maxVisibleLevel; lvl++) {
-      const levelConfig = GAME_CONFIG.levels.find(l => l.level === lvl);
+      // Header
+      items.push({ type: 'header', level: lvl, key: `header-${lvl}` });
+      
+      // Lecciones
+      const lessons = getLessonsByLevel(lvl);
+      lessons.forEach(lesson => {
+        items.push({ 
+          type: 'lesson', 
+          lesson, 
+          key: `lesson-${lesson.id}` 
+        });
+      });
+    }
+    
+    return items;
+  }, [maxVisibleLevel]);
+
+  const renderItem = useCallback(({ item }: { item: ListItem }) => {
+    if (item.type === 'header') {
+      const lvl = item.level!;
       const lessons = getLessonsByLevel(lvl);
       const completedCount = lessons.filter(l => lessonsCompleted.includes(l.id)).length;
+      const levelConfig = GAME_CONFIG.levels.find(l => l.level === lvl);
       
-      // Header de nivel
-      elements.push(
-        <View key={`level-header-${lvl}`} style={styles.levelHeader}>
+      return (
+        <View style={styles.levelHeader}>
           <View style={[styles.levelBadge, { backgroundColor: levelConfig?.color || COLORS.primary }]}>
             <Text style={styles.levelNumber}>{lvl}</Text>
           </View>
@@ -52,26 +77,46 @@ export const LevelMapScreen: React.FC<LevelMapScreenProps> = ({ onSelectLesson }
           </View>
         </View>
       );
-      
-      // Lecciones
-      lessons.forEach(lesson => {
-        const isUnlocked = lesson.level <= userLevel || 
-          (lesson.requiredLessonIds?.every(id => lessonsCompleted.includes(id)) ?? true);
-        
-        elements.push(
-          <LessonCard
-            key={`lesson-${lesson.id}`}
-            lesson={lesson}
-            isCompleted={lessonsCompleted.includes(lesson.id)}
-            isUnlocked={isUnlocked}
-            onPress={() => onSelectLesson(lesson)}
-          />
-        );
-      });
     }
-    
-    return elements;
-  }, [lessonsCompleted, userLevel, maxVisibleLevel, onSelectLesson]);
+
+    const lesson = item.lesson!;
+    const isUnlocked = lesson.level <= userLevel;
+    const isCompleted = lessonsCompleted.includes(lesson.id);
+    const levelConfig = GAME_CONFIG.levels.find(l => l.level === lesson.level);
+
+    return (
+      <TouchableOpacity
+        style={[
+          styles.lessonCard,
+          !isUnlocked && styles.locked,
+          isCompleted && styles.completed
+        ]}
+        onPress={() => isUnlocked && onSelectLesson(lesson)}
+        disabled={!isUnlocked}
+        activeOpacity={0.7}
+      >
+        <View style={[styles.indicator, { backgroundColor: isUnlocked ? (levelConfig?.color || COLORS.primary) : COLORS.textMuted }]}>
+          {isCompleted ? (
+            <Text style={styles.checkmark}>✓</Text>
+          ) : isUnlocked ? (
+            <Text style={styles.order}>{lesson.order}</Text>
+          ) : (
+            <Text style={styles.lock}>🔒</Text>
+          )}
+        </View>
+        <View style={styles.lessonInfo}>
+          <Text style={[styles.lessonTitle, !isUnlocked && styles.textLocked]} numberOfLines={1}>
+            {lesson.title}
+          </Text>
+          <Text style={styles.lessonMeta}>
+            ⏱️ {lesson.duration} min • ⭐ {lesson.xpReward} XP
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }, [lessonsCompleted, userLevel, onSelectLesson]);
+
+  const estimatedItemHeight = 80;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -83,12 +128,13 @@ export const LevelMapScreen: React.FC<LevelMapScreenProps> = ({ onSelectLesson }
         <View style={styles.placeholder} />
       </View>
 
-      <ScrollView 
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-      >
-        {renderContent()}
-      </ScrollView>
+      <FlashList
+        data={data}
+        renderItem={renderItem}
+        estimatedItemSize={estimatedItemHeight}
+        keyExtractor={(item) => item.key}
+        contentContainerStyle={styles.listContent}
+      />
     </SafeAreaView>
   );
 };
@@ -124,10 +170,7 @@ const styles = StyleSheet.create({
   placeholder: {
     width: 70,
   },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
+  listContent: {
     paddingBottom: SPACING.xl,
   },
   levelHeader: {
@@ -151,6 +194,7 @@ const styles = StyleSheet.create({
   },
   levelInfo: {
     flex: 1,
+    marginTop: SPACING.sm,
   },
   levelTitle: {
     fontSize: FONT_SIZES.lg,
@@ -166,11 +210,64 @@ const styles = StyleSheet.create({
     height: 6,
     borderRadius: 3,
     backgroundColor: COLORS.background,
-    marginTop: SPACING.xs,
+    marginTop: SPACING.sm,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
     borderRadius: 3,
+  },
+  lessonCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.surface,
+    marginVertical: SPACING.xs,
+    marginHorizontal: SPACING.md,
+    padding: SPACING.md,
+    borderRadius: BORDER_RADIUS.md,
+  },
+  locked: {
+    opacity: 0.5,
+  },
+  completed: {
+    borderColor: COLORS.success,
+    borderWidth: 2,
+  },
+  indicator: {
+    width: 40,
+    height: 40,
+    borderRadius: BORDER_RADIUS.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.md,
+  },
+  checkmark: {
+    color: COLORS.surface,
+    fontSize: FONT_SIZES.lg,
+    fontWeight: 'bold',
+  },
+  order: {
+    color: COLORS.surface,
+    fontSize: FONT_SIZES.md,
+    fontWeight: 'bold',
+  },
+  lock: {
+    fontSize: FONT_SIZES.sm,
+  },
+  lessonInfo: {
+    flex: 1,
+  },
+  lessonTitle: {
+    fontSize: FONT_SIZES.md,
+    fontWeight: '600',
+    color: COLORS.text,
+    marginBottom: 2,
+  },
+  textLocked: {
+    color: COLORS.textLight,
+  },
+  lessonMeta: {
+    fontSize: FONT_SIZES.xs,
+    color: COLORS.textLight,
   },
 });
