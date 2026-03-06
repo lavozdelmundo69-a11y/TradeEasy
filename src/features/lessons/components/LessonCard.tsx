@@ -1,10 +1,9 @@
-// Componente de tarjeta de lección mejorado
+// Componente de tarjeta de lección
 import React, { memo, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../../shared/constants';
 import { Lesson } from '../../../types';
 import { Card } from '../../../shared/components';
-import { MiniCandlestickChart } from '../../../features/trading/components/CandlestickChart';
 
 interface LessonCardProps {
   lesson: Lesson;
@@ -72,22 +71,27 @@ export const LessonCard: React.FC<LessonCardProps> = memo(({
             <View style={styles.meta}>
               <Text style={styles.duration}>⏱️ {lesson.duration} min</Text>
               <Text style={styles.xp}>⭐ {lesson.xpReward} XP</Text>
+              <View style={[
+                styles.difficultyBadge,
+                { 
+                  backgroundColor: lesson.exercise.difficulty === 'easy' ? COLORS.successLight : 
+                                   lesson.exercise.difficulty === 'medium' ? COLORS.warningLight : 
+                                   COLORS.errorLight 
+                }
+              ]}>
+                <Text style={[
+                  styles.difficultyText,
+                  { 
+                    color: lesson.exercise.difficulty === 'easy' ? COLORS.success : 
+                           lesson.exercise.difficulty === 'medium' ? '#D68910' : 
+                           COLORS.error 
+                  }
+                ]}>
+                  {lesson.exercise.difficulty}
+                </Text>
+              </View>
             </View>
           </View>
-
-          {/* Preview del gráfico si existe */}
-          {lesson.example.chartData && lesson.example.chartData.length > 0 && (
-            <View style={styles.chartPreview}>
-              <MiniCandlestickChart 
-                data={lesson.example.chartData.map((c, i) => ({
-                  time: `t${i}`,
-                  ...c,
-                }))}
-                width={60}
-                height={32}
-              />
-            </View>
-          )}
         </View>
       </Card>
     </TouchableOpacity>
@@ -153,7 +157,13 @@ const styles = StyleSheet.create({
     color: COLORS.xp,
     fontWeight: '600',
   },
-  chartPreview: {
-    marginLeft: SPACING.sm,
+  difficultyBadge: {
+    paddingHorizontal: SPACING.xs,
+    paddingVertical: 2,
+    borderRadius: BORDER_RADIUS.full,
+  },
+  difficultyText: {
+    fontSize: 10,
+    fontWeight: '600',
   },
 });

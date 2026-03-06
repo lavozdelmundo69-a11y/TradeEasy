@@ -1,117 +1,77 @@
-// LevelMapScreen - Pantalla de mapa de niveles con FlashList
+// LevelMapScreen - Pantalla de mapa de niveles
 import React, { useMemo, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlashList } from '@shopify/flash-list';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../shared/constants';
 import { Lesson } from '../types';
 import { LessonCard } from '../features/lessons/components/LessonCard';
 import { useUserStore } from '../store/userStore';
-import { lessonsData, getLessonsByLevel } from '../data/lessons';
+import { getLessonsByLevel } from '../data/lessons';
 
 interface LevelMapScreenProps {
   onSelectLesson: (lesson: Lesson) => void;
 }
 
 export const LevelMapScreen: React.FC<LevelMapScreenProps> = ({ onSelectLesson }) => {
-  const { lessonsCompleted, level: userLevel } = useUserStore();
+  const lessonsCompleted = useUserStore(state => state.lessonsCompleted);
+  const userLevel = useUserStore(state => state.level);
   
-  // Obtener lecciones por nivel del usuario
-  const lessonsByLevel = useMemo(() => {
-    const grouped: Record<number, Lesson[]> = {};
-    
-    // Usar getLessonsByLevel para cada nivel
-    for (let lvl = 1; lvl <= 3; lvl++) {
-      const levelLessons = getLessonsByLevel(lvl);
-      if (levelLessons.length > 0) {
-        grouped[lvl] = levelLessons;
-      }
-    }
-    
-    return grouped;
-  }, []);
+  // Mostrar niveles hasta el nivel del usuario + 1
+  const maxVisibleLevel = Math.min(userLevel + 1, 3);
 
-  // Generar lista plana para FlashList
-  const flatData = useMemo(() => {
-    const items: Array<{ type: 'header' | 'lesson'; data: any; key: string }> = [];
-    
-    // Mostrar niveles hasta el nivel del usuario + 1
-    const maxVisibleLevel = Math.min(userLevel + 1, 3);
+  const renderContent = useCallback(() => {
+    const elements: any[] = [];
     
     for (let lvl = 1; lvl <= maxVisibleLevel; lvl++) {
       const levelConfig = GAME_CONFIG.levels.find(l => l.level === lvl);
-      const lessons = lessonsByLevel[lvl] || [];
+      const lessons = getLessonsByLevel(lvl);
       const completedCount = lessons.filter(l => lessonsCompleted.includes(l.id)).length;
       
       // Header de nivel
-      items.push({
-        type: 'header',
-        data: { 
-          level: lvl, 
-          title: levelConfig?.title || `Nivel ${lvl}`,
-          color: levelConfig?.color || COLORS.primary,
-          completed: completedCount,
-          total: lessons.length,
-        },
-        key: `level-header-${lvl}`,
-      });
+      elements.push(
+        <View key={`level-header-${lvl}`} style={styles.levelHeader}>
+          <View style={[styles.levelBadge, { backgroundColor: levelConfig?.color || COLORS.primary }]}>
+            <Text style={styles.levelNumber}>{lvl}</Text>
+          </View>
+          <View style={styles.levelInfo}>
+            <Text style={styles.levelTitle}>{levelConfig?.title || `Nivel ${lvl}`}</Text>
+            <Text style={styles.levelProgress}>
+              {completedCount}/{lessons.length} lecciones
+            </Text>
+          </View>
+          <View style={styles.progressBar}>
+            <View 
+              style={[
+                styles.progressFill, 
+                { 
+                  width: `${lessons.length > 0 ? (completedCount / lessons.length) * 100 : 0}%`,
+                  backgroundColor: levelConfig?.color || COLORS.primary
+                }
+              ]} 
+            />
+          </View>
+        </View>
+      );
       
       // Lecciones
       lessons.forEach(lesson => {
         const isUnlocked = lesson.level <= userLevel || 
           (lesson.requiredLessonIds?.every(id => lessonsCompleted.includes(id)) ?? true);
         
-        items.push({
-          type: 'lesson',
-          data: {
-            lesson,
-            isCompleted: lessonsCompleted.includes(lesson.id),
-            isUnlocked,
-          },
-          key: `lesson-${lesson.id}`,
-        });
+        elements.push(
+          <LessonCard
+            key={`lesson-${lesson.id}`}
+            lesson={lesson}
+            isCompleted={lessonsCompleted.includes(lesson.id)}
+            isUnlocked={isUnlocked}
+            onPress={() => onSelectLesson(lesson)}
+          />
+        );
       });
     }
     
-    return items;
-  }, [lessonsByLevel, lessonsCompleted, userLevel]);
-
-  const renderItem = useCallback(({ item }: { item: any }) => {
-    if (item.type === 'header') {
-      const { level, title, color, completed, total } = item.data;
-      return (
-        <View style={styles.levelHeader}>
-          <View style={[styles.levelBadge, { backgroundColor: color }]}>
-            <Text style={styles.levelNumber}>{level}</Text>
-          </View>
-          <View style={styles.levelInfo}>
-            <Text style={styles.levelTitle}>{title}</Text>
-            <Text style={styles.levelProgress}>
-              {completed}/{total} lecciones
-            </Text>
-          </View>
-          <View style={[styles.progressBar, { backgroundColor: color }]}>
-            <View 
-              style={[
-                styles.progressFill, 
-                { width: `${total > 0 ? (completed / total) * 100 : 0}%`, backgroundColor: color }
-              ]} 
-            />
-          </View>
-        </View>
-      );
-    }
-    
-    const { lesson, isCompleted, isUnlocked } = item.data;
-    return (
-      <LessonCard
-        lesson={lesson}
-        isCompleted={isCompleted}
-        isUnlocked={isUnlocked}
-        onPress={() => onSelectLesson(lesson)}
-      />
-    );
-  }, [onSelectLesson]);
+    return elements;
+  }, [lessonsCompleted, userLevel, maxVisibleLevel, onSelectLesson]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -123,13 +83,12 @@ export const LevelMapScreen: React.FC<LevelMapScreenProps> = ({ onSelectLesson }
         <View style={styles.placeholder} />
       </View>
 
-      <FlashList
-        data={flatData}
-        renderItem={renderItem}
-        estimatedItemSize={100}
-        keyExtractor={item => item.key}
-        contentContainerStyle={styles.listContent}
-      />
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {renderContent()}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -165,7 +124,10 @@ const styles = StyleSheet.create({
   placeholder: {
     width: 70,
   },
-  listContent: {
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
     paddingBottom: SPACING.xl,
   },
   levelHeader: {
@@ -174,10 +136,6 @@ const styles = StyleSheet.create({
     marginHorizontal: SPACING.md,
     backgroundColor: COLORS.surface,
     borderRadius: BORDER_RADIUS.lg,
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: SPACING.sm,
   },
   levelBadge: {
     width: 48,
