@@ -1,5 +1,5 @@
 // Componente de botón animado reutilizable
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import { 
   TouchableOpacity, 
   Text, 
@@ -7,14 +7,9 @@ import {
   ViewStyle, 
   TextStyle,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
-import Animated, { 
-  useSharedValue, 
-  useAnimatedStyle, 
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
-import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, ANIMATION_CONFIG } from '../constants';
+import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants';
 
 type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'ghost';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -31,8 +26,6 @@ interface AnimatedButtonProps {
   fullWidth?: boolean;
   icon?: React.ReactNode;
 }
-
-const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 const variantStyles: Record<ButtonVariant, { bg: string; text: string; border?: string }> = {
   primary: { bg: COLORS.primary, text: COLORS.textInverse },
@@ -60,63 +53,66 @@ export const AnimatedButton = memo<AnimatedButtonProps>(({
   fullWidth = false,
   icon,
 }) => {
-  const scale = useSharedValue(1);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = useCallback(() => {
-    scale.value = withSpring(0.96, ANIMATION_CONFIG.spring);
-  }, [scale]);
+    Animated.spring(scaleAnim, {
+      toValue: 0.96,
+      useNativeDriver: true,
+    }).start();
+  }, [scaleAnim]);
 
   const handlePressOut = useCallback(() => {
-    scale.value = withSpring(1, ANIMATION_CONFIG.spring);
-  }, [scale]);
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  }, [scaleAnim]);
 
   const variantStyle = variantStyles[variant];
   const sizeStyle = sizeStyles[size];
 
   return (
-    <AnimatedTouchable
-      style={[
-        styles.button,
-        {
-          backgroundColor: variantStyle.bg,
-          paddingVertical: sizeStyle.padding,
-          paddingHorizontal: sizeStyle.padding * 1.5,
-          borderColor: variantStyle.border || 'transparent',
-          borderWidth: variant === 'secondary' ? 1 : 0,
-        },
-        fullWidth && styles.fullWidth,
-        disabled && styles.disabled,
-        animatedStyle,
-        style,
-      ]}
-      onPress={onPress}
-      disabled={disabled || loading}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      activeOpacity={0.9}
-    >
-      {loading ? (
-        <ActivityIndicator color={variantStyle.text} size="small" />
-      ) : (
-        <>
-          {icon && <>{icon}</>}
-          <Text
-            style={[
-              styles.text,
-              { color: variantStyle.text, fontSize: sizeStyle.fontSize },
-              icon && styles.textWithIcon,
-              textStyle,
-            ]}
-          >
-            {children}
-          </Text>
-        </>
-      )}
-    </AnimatedTouchable>
+    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          {
+            backgroundColor: variantStyle.bg,
+            paddingVertical: sizeStyle.padding,
+            paddingHorizontal: sizeStyle.padding * 1.5,
+            borderColor: variantStyle.border || 'transparent',
+            borderWidth: variant === 'secondary' ? 1 : 0,
+          },
+          fullWidth && styles.fullWidth,
+          disabled && styles.disabled,
+          style,
+        ]}
+        onPress={onPress}
+        disabled={disabled || loading}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={0.9}
+      >
+        {loading ? (
+          <ActivityIndicator color={variantStyle.text} size="small" />
+        ) : (
+          <>
+            {icon && <>{icon}</>}
+            <Text
+              style={[
+                styles.text,
+                { color: variantStyle.text, fontSize: sizeStyle.fontSize },
+                icon && styles.textWithIcon,
+                textStyle,
+              ]}
+            >
+              {children}
+            </Text>
+          </>
+        )}
+      </TouchableOpacity>
+    </Animated.View>
   );
 });
 

@@ -1,7 +1,6 @@
 // Componente Card genérico
-import React, { memo, ReactNode } from 'react';
-import { View, StyleSheet, ViewStyle, TouchableOpacity, Text } from 'react-native';
-import Animated, { useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import React, { memo, ReactNode, useEffect, useRef } from 'react';
+import { View, StyleSheet, ViewStyle, TouchableOpacity, Text, Animated } from 'react-native';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../constants';
 
 interface CardProps {
@@ -116,7 +115,7 @@ const badgeStyles = StyleSheet.create({
   },
 });
 
-// Skeleton loader
+// Skeleton loader - usando Animated API nativa de RN (no Reanimated)
 interface SkeletonProps {
   width?: number | string;
   height?: number;
@@ -128,25 +127,32 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   height = 20,
   borderRadius = BORDER_RADIUS.sm,
 }) => {
-  const opacity = useSharedValue(0.3);
+  const opacity = useRef(new Animated.Value(0.3)).current;
 
-  React.useEffect(() => {
-    opacity.value = withRepeat(
-      withTiming(0.7, { duration: 1000 }),
-      -1,
-      true
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacity, {
+          toValue: 0.7,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacity, {
+          toValue: 0.3,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
     );
+    animation.start();
+    return () => animation.stop();
   }, [opacity]);
-
-  const animatedStyle = {
-    opacity,
-  };
 
   return (
     <Animated.View 
       style={[
         { width, height, borderRadius, backgroundColor: COLORS.background },
-        animatedStyle,
+        { opacity },
       ]} 
     />
   );

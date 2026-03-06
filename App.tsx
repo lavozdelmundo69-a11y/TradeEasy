@@ -11,27 +11,32 @@ import { LevelMapScreen } from './src/screens/LevelMapScreen';
 import { Lesson } from './src/types';
 import { lessonsData } from './src/data/lessons';
 import { COLORS } from './src/shared/constants';
-import { useUserStore } from './src/store/userStore';
+import { useUserStore, useIsHydrated } from './src/store/userStore';
 
 const Stack = createNativeStackNavigator();
 
+// Componente que espera a que el store esté hidratado
 function AppNavigator() {
   const [currentScreen, setCurrentScreen] = useState<'home' | 'lesson' | 'map'>('home');
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   
-  const { loadProgress, lessonsCompleted } = useUserStore();
+  const { loadProgress, lessonsCompleted, isHydrated } = useUserStore();
 
   useEffect(() => {
-    const init = async () => {
-      await loadProgress();
-      setIsLoading(false);
-    };
-    init();
+    // Cargar progreso al iniciar
+    loadProgress();
   }, []);
 
+  // Mostrar loading mientras se hidrata el store
+  if (!isHydrated) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
+
   const handleContinue = () => {
-    // Encontrar siguiente lección
     for (const lesson of lessonsData) {
       if (!lessonsCompleted.includes(lesson.id)) {
         setSelectedLesson(lesson);
@@ -39,8 +44,6 @@ function AppNavigator() {
         return;
       }
     }
-    
-    // Si completó todo, ir al mapa
     setCurrentScreen('map');
   };
 
@@ -58,14 +61,6 @@ function AppNavigator() {
     setSelectedLesson(null);
     setCurrentScreen('map');
   };
-
-  if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      </View>
-    );
-  }
 
   return (
     <Stack.Navigator 

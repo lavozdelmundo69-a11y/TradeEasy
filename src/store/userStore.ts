@@ -1,6 +1,5 @@
 // Store de Zustand mejorado con estructura de slices
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserProgress, Achievement, AchievementProgress } from '../types';
 import { GAME_CONFIG } from '../shared/constants';
@@ -8,41 +7,31 @@ import { GAME_CONFIG } from '../shared/constants';
 // ==================== STATE ====================
 
 interface UserState extends UserProgress {
-  // Estado derivado
   achievementsProgress: AchievementProgress[];
+  isHydrated: boolean; // Track if AsyncStorage has loaded
 }
 
 // ==================== ACTIONS ====================
 
 interface UserActions {
-  // XP y nivel
   addXP: (amount: number) => void;
   getCurrentLevelConfig: () => typeof GAME_CONFIG.levels[0];
   getXPToNextLevel: () => number;
   getProgressToNextLevel: () => number;
-  
-  // Lecciones
   completeLesson: (lessonId: string) => void;
   isLessonCompleted: (lessonId: string) => boolean;
   getNextLesson: (allLessons: { id: string }[]) => { id: string } | null;
-  
-  // Ejercicios
   correctAnswer: () => void;
   wrongAnswer: () => void;
   getAccuracy: () => number;
-  
-  // Rachas
   updateStreak: () => void;
   getStreakStatus: () => { active: boolean; days: number; max: number };
-  
-  // Logros
   checkAchievements: () => AchievementProgress[];
   unlockAchievement: (achievementId: string) => void;
   getUnlockedAchievements: () => Achievement[];
-  
-  // Persistencia
   loadProgress: () => Promise<void>;
   resetProgress: () => void;
+  setHydrated: (hydrated: boolean) => void;
 }
 
 // ==================== HELPERS ====================
@@ -62,214 +51,247 @@ const initialState: UserState = {
   lastActiveDate: '',
   achievements: [],
   achievementsProgress: [],
+  isHydrated: false,
+};
+
+// ==================== STORAGE HELPERS ====================
+
+const STORAGE_KEY = '@tradeeasy_user';
+
+const saveToStorage = async (data: Partial<UserProgress>) => {
+  try {
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.warn('Failed to save to AsyncStorage:', error);
+  }
+};
+
+const loadFromStorage = async (): Promise<Partial<UserProgress> | null> => {
+  try {
+    const data = await AsyncStorage.getItem(STORAGE_KEY);
+    if (data) {
+      return JSON.parse(data);
+    }
+    return null;
+  } catch (error) {
+    console.warn('Failed to load from AsyncStorage:', error);
+    return null;
+  }
 };
 
 // ==================== STORE ====================
 
 export const useUserStore = create<UserState & UserActions>()(
-  persist(
-    (set, get) => ({
-      ...initialState,
+  (set, get) => ({
+    ...initialState,
 
-      // XP y nivel
-      addXP: (amount: number) => {
-        set((state) => {
-          const newXP = state.totalXP + amount;
-          let newLevel = state.level;
-          
-          for (const lvl of GAME_CONFIG.levels) {
-            if (newXP >= lvl.minXP) {
-              newLevel = lvl.level;
-            }
+    setHydrated: (hydrated: boolean) => set({ isHydrated: hydrated }),
+
+    loadProgress: async () => {
+      try {
+        const saved = await loadFromStorage();
+        if (saved) {
+          set({ 
+            ...initialState,
+            ...saved,
+            isHydrated: true,
+          });
+        } else {
+          set({ isHydrated: true });
+        }
+      } catch (error) {
+        console.warn('Error loading progress:', error);
+        set({ isHydrated: true });
+      }
+    },
+
+    addXP: (amount: number) => {
+      set((state) => {
+        const newXP = state.totalXP + amount;
+        let newLevel = state.level;
+        
+        for (const lvl of GAME_CONFIG.levels) {
+          if (newXP >= lvl.minXP) {
+            newLevel = lvl.level;
           }
-          
-          return { totalXP: newXP, level: newLevel };
-        });
-      },
-
-      getCurrentLevelConfig: () => {
-        const state = get();
-        return GAME_CONFIG.levels.find((l) => l.level === state.level) || GAME_CONFIG.levels[0];
-      },
-
-      getXPToNextLevel: () => {
-        const state = get();
-        const nextLevelConfig = GAME_CONFIG.levels.find((l) => l.level === state.level + 1);
-        if (!nextLevelConfig) return 0;
-        return nextLevelConfig.minXP - state.totalXP;
-      },
-
-      getProgressToNextLevel: () => {
-        const state = get();
-        const currentLevelConfig = GAME_CONFIG.levels.find((l) => l.level === state.level);
-        const nextLevelConfig = GAME_CONFIG.levels.find((l) => l.level === state.level + 1);
+        }
         
-        if (!nextLevelConfig) return 100;
-        
-        const levelXP = currentLevelConfig?.minXP || 0;
-        const xpInLevel = state.totalXP - levelXP;
-        const xpNeeded = nextLevelConfig.minXP - levelXP;
-        
-        return Math.min(100, (xpInLevel / xpNeeded) * 100);
-      },
+        const newState = { totalXP: newXP, level: newLevel };
+        saveToStorage(newState);
+        return newState;
+      });
+    },
 
-      // Lecciones
-      completeLesson: (lessonId: string) => {
-        set((state) => {
-          if (state.lessonsCompleted.includes(lessonId)) {
-            return state;
-          }
-          return {
-            lessonsCompleted: [...state.lessonsCompleted, lessonId],
-          };
-        });
-        get().updateStreak();
-      },
+    getCurrentLevelConfig: () => {
+      const state = get();
+      return GAME_CONFIG.levels.find((l) => l.level === state.level) || GAME_CONFIG.levels[0];
+    },
 
-      isLessonCompleted: (lessonId: string) => {
-        return get().lessonsCompleted.includes(lessonId);
-      },
+    getXPToNextLevel: () => {
+      const state = get();
+      const nextLevelConfig = GAME_CONFIG.levels.find((l) => l.level === state.level + 1);
+      if (!nextLevelConfig) return 0;
+      return nextLevelConfig.minXP - state.totalXP;
+    },
 
-      getNextLesson: (allLessons) => {
-        const completed = get().lessonsCompleted;
-        return allLessons.find(l => !completed.includes(l.id)) || null;
-      },
+    getProgressToNextLevel: () => {
+      const state = get();
+      const currentLevelConfig = GAME_CONFIG.levels.find((l) => l.level === state.level);
+      const nextLevelConfig = GAME_CONFIG.levels.find((l) => l.level === state.level + 1);
+      
+      if (!nextLevelConfig) return 100;
+      
+      const levelXP = currentLevelConfig?.minXP || 0;
+      const xpInLevel = state.totalXP - levelXP;
+      const xpNeeded = nextLevelConfig.minXP - levelXP;
+      
+      return Math.min(100, (xpInLevel / xpNeeded) * 100);
+    },
 
-      // Ejercicios
-      correctAnswer: () => {
-        set((state) => ({
+    completeLesson: (lessonId: string) => {
+      set((state) => {
+        if (state.lessonsCompleted.includes(lessonId)) {
+          return state;
+        }
+        const newState = {
+          lessonsCompleted: [...state.lessonsCompleted, lessonId],
+        };
+        saveToStorage(newState);
+        return newState;
+      });
+      get().updateStreak();
+    },
+
+    isLessonCompleted: (lessonId: string) => {
+      return get().lessonsCompleted.includes(lessonId);
+    },
+
+    getNextLesson: (allLessons) => {
+      const completed = get().lessonsCompleted;
+      return allLessons.find(l => !completed.includes(l.id)) || null;
+    },
+
+    correctAnswer: () => {
+      set((state) => {
+        const newState = {
           correctAnswers: state.correctAnswers + 1,
           totalAnswers: state.totalAnswers + 1,
           exercisesCompleted: state.exercisesCompleted + 1,
-        }));
-      },
+        };
+        saveToStorage(newState);
+        return newState;
+      });
+    },
 
-      wrongAnswer: () => {
-        set((state) => ({
+    wrongAnswer: () => {
+      set((state) => {
+        const newState = {
           totalAnswers: state.totalAnswers + 1,
           exercisesCompleted: state.exercisesCompleted + 1,
-        }));
-      },
+        };
+        saveToStorage(newState);
+        return newState;
+      });
+    },
 
-      getAccuracy: () => {
-        const { correctAnswers, totalAnswers } = get();
-        if (totalAnswers === 0) return 0;
-        return Math.round((correctAnswers / totalAnswers) * 100);
-      },
+    getAccuracy: () => {
+      const { correctAnswers, totalAnswers } = get();
+      if (totalAnswers === 0) return 0;
+      return Math.round((correctAnswers / totalAnswers) * 100);
+    },
 
-      // Rachas
-      updateStreak: () => {
-        const today = getToday();
-        set((state) => {
-          if (state.lastActiveDate === today) {
-            return state;
-          }
-          
-          const yesterday = new Date();
-          yesterday.setDate(yesterday.getDate() - 1);
-          const yesterdayStr = yesterday.toISOString().split('T')[0];
-          
-          let newStreak = 1;
-          if (state.lastActiveDate === yesterdayStr) {
-            newStreak = state.currentStreak + 1;
-          }
-          
-          return {
-            currentStreak: newStreak,
-            maxStreak: Math.max(state.maxStreak, newStreak),
-            lastActiveDate: today,
-          };
-        });
-      },
-
-      getStreakStatus: () => {
-        const { currentStreak, maxStreak, lastActiveDate } = get();
-        const today = getToday();
-        const active = lastActiveDate === today || lastActiveDate === getYesterday();
-        return { active, days: currentStreak, max: maxStreak };
-      },
-
-      // Logros
-      checkAchievements: () => {
-        const state = get();
-        const progress: AchievementProgress[] = [];
+    updateStreak: () => {
+      const today = getToday();
+      set((state) => {
+        if (state.lastActiveDate === today) {
+          return state;
+        }
         
-        GAME_CONFIG.achievements.forEach(achievement => {
-          if (state.achievements.includes(achievement.id)) {
-            progress.push({ achievementId: achievement.id, progress: 100, unlockedAt: new Date().toISOString() });
-            return;
-          }
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toISOString().split('T')[0];
+        
+        let newStreak = 1;
+        if (state.lastActiveDate === yesterdayStr) {
+          newStreak = state.currentStreak + 1;
+        }
+        
+        const newState = {
+          currentStreak: newStreak,
+          maxStreak: Math.max(state.maxStreak, newStreak),
+          lastActiveDate: today,
+        };
+        saveToStorage(newState);
+        return newState;
+      });
+    },
 
-          let currentProgress = 0;
-          switch (achievement.type) {
-            case 'lessons':
-              currentProgress = (state.lessonsCompleted.length / achievement.value) * 100;
-              break;
-            case 'streak':
-              currentProgress = (state.currentStreak / achievement.value) * 100;
-              break;
-            case 'total_xp':
-              currentProgress = (state.totalXP / achievement.value) * 100;
-              break;
-          }
+    getStreakStatus: () => {
+      const { currentStreak, maxStreak, lastActiveDate } = get();
+      const today = getToday();
+      const active = lastActiveDate === today || lastActiveDate === getYesterday();
+      return { active, days: currentStreak, max: maxStreak };
+    },
 
-          progress.push({ 
-            achievementId: achievement.id, 
-            progress: Math.min(100, currentProgress),
-          });
+    checkAchievements: () => {
+      const state = get();
+      const progress: AchievementProgress[] = [];
+      
+      GAME_CONFIG.achievements.forEach(achievement => {
+        if (state.achievements.includes(achievement.id)) {
+          progress.push({ achievementId: achievement.id, progress: 100, unlockedAt: new Date().toISOString() });
+          return;
+        }
 
-          // Auto-unlock
-          if (currentProgress >= 100) {
-            get().unlockAchievement(achievement.id);
-            get().addXP(achievement.reward);
-          }
+        let currentProgress = 0;
+        switch (achievement.type) {
+          case 'lessons':
+            currentProgress = (state.lessonsCompleted.length / achievement.value) * 100;
+            break;
+          case 'streak':
+            currentProgress = (state.currentStreak / achievement.value) * 100;
+            break;
+          case 'total_xp':
+            currentProgress = (state.totalXP / achievement.value) * 100;
+            break;
+        }
+
+        progress.push({ 
+          achievementId: achievement.id, 
+          progress: Math.min(100, currentProgress),
         });
 
-        set({ achievementsProgress: progress });
-        return progress;
-      },
+        if (currentProgress >= 100) {
+          get().unlockAchievement(achievement.id);
+          get().addXP(achievement.reward);
+        }
+      });
 
-      unlockAchievement: (achievementId: string) => {
-        set((state) => {
-          if (state.achievements.includes(achievementId)) {
-            return state;
-          }
-          return { achievements: [...state.achievements, achievementId] };
-        });
-      },
+      set({ achievementsProgress: progress });
+      return progress;
+    },
 
-      getUnlockedAchievements: () => {
-        const unlocked = get().achievements;
-        return GAME_CONFIG.achievements.filter(a => unlocked.includes(a.id));
-      },
+    unlockAchievement: (achievementId: string) => {
+      set((state) => {
+        if (state.achievements.includes(achievementId)) {
+          return state;
+        }
+        const newState = { achievements: [...state.achievements, achievementId] };
+        saveToStorage(newState);
+        return newState;
+      });
+    },
 
-      // Persistencia
-      loadProgress: async () => {
-        // Zustand persist lo hace automáticamente, pero puedes añadir lógica adicional aquí
-      },
+    getUnlockedAchievements: () => {
+      const unlocked = get().achievements;
+      return GAME_CONFIG.achievements.filter(a => unlocked.includes(a.id));
+    },
 
-      resetProgress: () => {
-        set(initialState);
-      },
-    }),
-    {
-      name: '@tradeeasy_user',
-      storage: createJSONStorage(() => AsyncStorage),
-      partialize: (state) => ({
-        userId: state.userId,
-        currentStreak: state.currentStreak,
-        maxStreak: state.maxStreak,
-        totalXP: state.totalXP,
-        level: state.level,
-        lessonsCompleted: state.lessonsCompleted,
-        exercisesCompleted: state.exercisesCompleted,
-        correctAnswers: state.correctAnswers,
-        totalAnswers: state.totalAnswers,
-        lastActiveDate: state.lastActiveDate,
-        achievements: state.achievements,
-      }),
-    }
-  )
+    resetProgress: () => {
+      set(initialState);
+      saveToStorage({} as Partial<UserProgress>);
+    },
+  })
 );
 
 // Helper
@@ -279,28 +301,32 @@ function getYesterday(): string {
   return yesterday.toISOString().split('T')[0];
 }
 
-// Selectores memoizados para rendimiento
+// Selectores memoizados
 export const useUserProgress = () => useUserStore(state => ({
   totalXP: state.totalXP,
   level: state.level,
   lessonsCompleted: state.lessonsCompleted,
   currentStreak: state.currentStreak,
+  isHydrated: state.isHydrated,
 }));
 
 export const useLessonProgress = (lessonId: string) => useUserStore(
   state => state.lessonsCompleted.includes(lessonId)
 );
 
-export const useXPProgress = () => useUserStore(state => ({
-  xpToNext: state.totalXP >= GAME_CONFIG.levels[GAME_CONFIG.levels.length - 1].minXP 
-    ? 0 
-    : (GAME_CONFIG.levels.find(l => l.level === state.level + 1)?.minXP || 0) - state.totalXP,
-  progress: state.totalXP >= GAME_CONFIG.levels[GAME_CONFIG.levels.length - 1].minXP 
-    ? 100 
-    : (() => {
-        const current = GAME_CONFIG.levels.find(l => l.level === state.level);
-        const next = GAME_CONFIG.levels.find(l => l.level === state.level + 1);
-        if (!current || !next) return 100;
-        return ((state.totalXP - current.minXP) / (next.minXP - current.minXP)) * 100;
-      })(),
-}));
+export const useXPProgress = () => useUserStore(state => {
+  const lastLevel = GAME_CONFIG.levels[GAME_CONFIG.levels.length - 1];
+  const isMaxLevel = state.totalXP >= lastLevel.minXP;
+  
+  const current = GAME_CONFIG.levels.find(l => l.level === state.level);
+  const next = GAME_CONFIG.levels.find(l => l.level === state.level + 1);
+  
+  return {
+    xpToNext: isMaxLevel ? 0 : (next?.minXP || 0) - state.totalXP,
+    progress: isMaxLevel ? 100 : current && next 
+      ? ((state.totalXP - current.minXP) / (next.minXP - current.minXP)) * 100
+      : 100,
+  };
+});
+
+export const useIsHydrated = () => useUserStore(state => state.isHydrated);
