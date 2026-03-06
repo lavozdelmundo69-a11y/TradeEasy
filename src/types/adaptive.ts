@@ -1,17 +1,16 @@
-// Tipos para Progresión Adaptativa
-// Añadir a src/types/index.ts
-
 // ==================== TEMAS DEL CURSO ====================
 
 export interface CourseTopic {
-  id: string;                    // 'soporte', 'tendencia', 'liquidez', 'wyckoff'
-  name: string;                  // 'Soporte y Resistencia'
-  description: string;            // Breve descripción
-  level: number;                 // Nivel mínimo requerido
-  prerequisites?: string[];       // Temas que deben dominarse primero
-  lessonIds: string[];           // Lecciones que incluyen este tema
-  nextTopics?: string[];          // Temas avanzados disponibles
+  id: string;
+  name: string;
+  description: string;
+  level: number;
+  prerequisites?: string[];
+  lessonIds: string[];
+  nextTopics?: string[];
 }
+
+// ==================== RENDIMIENTO POR TEMA ====================
 
 export interface TopicPerformance {
   topicId: string;
@@ -20,96 +19,30 @@ export interface TopicPerformance {
   // Métricas
   totalAttempts: number;
   correctAttempts: number;
-  accuracy: number;              // Porcentaje 0-100
+  accuracy: number;
   
-  // Estado del tema
+  // Estado
   status: 'locked' | 'learning' | 'proficient' | 'mastered';
   
-  // Evolución
+  // Evolución (últimos 10 intentos)
+  recentAccuracy: number;
   trend: 'improving' | 'stable' | 'declining';
+  
+  // Errores recientes
+  recentErrors: number;
   lastAttemptAt: string;
   
-  // weak concepts en este tema
+  // Weak concepts en este tema
   weakConceptIds: string[];
-}
-
-// ==================== RECOMENDACIONES ====================
-
-export interface LearningRecommendation {
-  id: string;
-  type: 'practice_topic' | 'review_weak' | 'unlock_advanced' | 'continue_lesson';
-  priority: 'high' | 'medium' | 'low';
-  title: string;
-  description: string;
-  topicId?: string;
-  lessonId?: string;
-  reason: string;                 // Por qué se recomienda
-  xpReward?: number;
-}
-
-// ==================== PROGRESIÓN ADAPTATIVA ====================
-
-export interface AdaptiveConfig {
-  // Thresholds
-  proficientThreshold: number;    // >80% = proficient
-  learningThreshold: number;      // 60-80% = learning  
-  masteryThreshold: number;       // >90% con 20+ intentos = mastered
   
-  // Distribución del quiz
-  weakConceptRatio: number;       // 0.6 = 60% weak concepts
-  newContentRatio: number;        // 0.2 = 20% contenido nuevo
-  
-  // Repetición
-  minAttemptsForProgression: number;  // Mínimo intentos antes de avanzar
+  // Lecciones recomendadas
+  recommendedLessons: string[];
 }
-
-export const ADAPTIVE_CONFIG: AdaptiveConfig = {
-  proficientThreshold: 80,
-  learningThreshold: 60,
-  masteryThreshold: 90,
-  weakConceptRatio: 0.6,
-  newContentRatio: 0.2,
-  minAttemptsForProgression: 5,
-};
-
-// ==================== LECCIONES Y TEMAS ====================
-
-export interface LessonTopic {
-  lessonId: string;
-  topicId: string;
-  weight: number;                // Cuánto权重 de la lección es de este tema (0-1)
-}
-
-// Mapa de lecciones a temas (para referencia rápida)
-export const LESSON_TOPIC_MAP: Record<string, string[]> = {
-  // Nivel 1: Fundamentos
-  'l1_01': ['introduccion'],
-  'l1_02': ['introduccion'],
-  'l1_03': ['velas'],
-  'l1_04': ['velas'],
-  'l1_05': ['tendencia'],
-  'l1_06': ['tendencia'],
-  'l1_07': ['soporte'],
-  'l1_08': ['soporte'],
-  'l1_09': ['resistencia'],
-  'l1_10': ['resistencia'],
-  
-  // Nivel 2: Análisis Técnico
-  'l2_01': ['soporte', 'resistencia'],
-  'l2_02': ['soporte', 'resistencia'],
-  'l2_03': ['tendencia'],
-  'l2_04': ['tendencia'],
-  'l2_05': ['liquidez'],
-  'l2_06': ['liquidez'],
-  'l2_07': ['volumen'],
-  'l2_08': ['volumen'],
-  'l2_09': ['patrones'],
-  'l2_10': ['patrones'],
-};
 
 // ==================== TOPICS DEFINITION ====================
 
-export const COURSE_TOPICS: CourseTopic[] = [
+export const TRADING_TOPICS: CourseTopic[] = [
+  // Nivel 1 - Fundamentos
   {
     id: 'introduccion',
     name: 'Introducción al Trading',
@@ -137,31 +70,24 @@ export const COURSE_TOPICS: CourseTopic[] = [
     nextTopics: ['soporte', 'resistencia', 'liquidez'],
   },
   {
-    id: 'soporte',
-    name: 'Soportes',
-    description: 'Zonas de demanda y soporte',
+    id: 'soporte_resistencia',
+    name: 'Soporte y Resistencia',
+    description: 'Zonas de demanda y oferta',
     level: 1,
     prerequisites: ['velas'],
-    lessonIds: ['l1_07', 'l1_08', 'l2_01', 'l2_02'],
-    nextTopics: ['resistencia', 'liquidez'],
+    lessonIds: ['l1_07', 'l1_08', 'l1_09', 'l1_10', 'l2_01', 'l2_02'],
+    nextTopics: ['liquidez', 'estructura_mercado'],
   },
-  {
-    id: 'resistencia',
-    name: 'Resistencias',
-    description: 'Zonas de oferta y resistencia',
-    level: 1,
-    prerequisites: ['soporte'],
-    lessonIds: ['l1_09', 'l1_10', 'l2_01', 'l2_02'],
-    nextTopics: ['liquidez'],
-  },
+  
+  // Nivel 2 - Análisis Técnico
   {
     id: 'liquidez',
     name: 'Zonas de Liquidez',
     description: 'Identificar zonas de liquidez',
     level: 2,
-    prerequisites: ['tendencia', 'soporte', 'resistencia'],
+    prerequisites: ['tendencia', 'soporte_resistencia'],
     lessonIds: ['l2_05', 'l2_06'],
-    nextTopics: ['wyckoff'],
+    nextTopics: ['estructura_mercado', 'wyckoff'],
   },
   {
     id: 'volumen',
@@ -169,7 +95,7 @@ export const COURSE_TOPICS: CourseTopic[] = [
     description: 'Análisis de volumen',
     level: 2,
     lessonIds: ['l2_07', 'l2_08'],
-    nextTopics: ['patrones'],
+    nextTopics: ['estructura_mercado'],
   },
   {
     id: 'patrones',
@@ -178,13 +104,125 @@ export const COURSE_TOPICS: CourseTopic[] = [
     level: 2,
     prerequisites: ['tendencia'],
     lessonIds: ['l2_09', 'l2_10'],
+    nextTopics: ['estructura_mercado'],
+  },
+  
+  // Nivel 3 - Avanzado
+  {
+    id: 'estructura_mercado',
+    name: 'Estructura de Mercado',
+    description: 'Identificar estructura y swing highs/lows',
+    level: 3,
+    prerequisites: ['liquidez', 'soporte_resistencia'],
+    lessonIds: [],
+    nextTopics: ['smc', 'wyckoff'],
+  },
+  {
+    id: 'smc',
+    name: 'Smart Money Concepts',
+    description: 'Análisis de flujo de órdenes',
+    level: 3,
+    prerequisites: ['estructura_mercado', 'liquidez'],
+    lessonIds: [],
+    nextTopics: ['ict'],
   },
   {
     id: 'wyckoff',
     name: 'Método Wyckoff',
     description: 'Análisis Wyckoff avanzado',
     level: 3,
-    prerequisites: ['liquidez', 'volumen'],
+    prerequisites: ['liquidez', 'estructura_mercado'],
+    lessonIds: [],
+  },
+  {
+    id: 'ict',
+    name: 'ICT Trading',
+    description: 'Inner Circle Trader methodology',
+    level: 3,
+    prerequisites: ['smc', 'estructura_mercado'],
     lessonIds: [],
   },
 ];
+
+// ==================== MAPA DE LECCIONES A TEMAS ====================
+
+export const LESSON_TOPIC_MAP: Record<string, string[]> = {
+  // Nivel 1
+  'l1_01': ['introduccion'],
+  'l1_02': ['introduccion'],
+  'l1_03': ['velas'],
+  'l1_04': ['velas'],
+  'l1_05': ['tendencia'],
+  'l1_06': ['tendencia'],
+  'l1_07': ['soporte_resistencia'],
+  'l1_08': ['soporte_resistencia'],
+  'l1_09': ['soporte_resistencia'],
+  'l1_10': ['soporte_resistencia'],
+  
+  // Nivel 2
+  'l2_01': ['soporte_resistencia'],
+  'l2_02': ['soporte_resistencia'],
+  'l2_03': ['tendencia'],
+  'l2_04': ['tendencia'],
+  'l2_05': ['liquidez'],
+  'l2_06': ['liquidez'],
+  'l2_07': ['volumen'],
+  'l2_08': ['volumen'],
+  'l2_09': ['patrones'],
+  'l2_10': ['patrones'],
+};
+
+// ==================== RECOMENDACIONES ====================
+
+export interface LearningRecommendation {
+  id: string;
+  type: 'practice_topic' | 'review_weak' | 'unlock_advanced' | 'continue_lesson' | 'scenario_practice';
+  priority: 'high' | 'medium' | 'low';
+  title: string;
+  description: string;
+  topicId?: string;
+  lessonId?: string;
+  scenarioId?: string;
+  reason: string;
+  xpReward?: number;
+  estimatedMinutes?: number;
+}
+
+// ==================== CONFIGURACIÓN ====================
+
+export interface AdaptiveConfig {
+  // Thresholds
+  proficientThreshold: number;    // >80% = proficient
+  learningThreshold: number;      // <60% = learning (refuerzo)
+  masteryThreshold: number;       // >90% + 10 intentos = mastered
+  
+  // Distribución del quiz
+  weakConceptRatio: number;       // 50% weak concepts
+  newContentRatio: number;        // 25% contenido nuevo
+  reviewRatio: number;            // 25% revisión
+  
+  // Progresión
+  minAttemptsForProgression: number;
+  minAccuracyForUnlock: number;
+}
+
+export const ADAPTIVE_CONFIG: AdaptiveConfig = {
+  proficientThreshold: 80,
+  learningThreshold: 60,
+  masteryThreshold: 90,
+  weakConceptRatio: 0.5,
+  newContentRatio: 0.25,
+  reviewRatio: 0.25,
+  minAttemptsForProgression: 5,
+  minAccuracyForUnlock: 70,
+};
+
+// ==================== EJERCICIO SELECCIONADO ====================
+
+export interface SelectedExercise {
+  exerciseId: string;
+  lessonId: string;
+  topics: string[];
+  source: 'weak' | 'new' | 'review' | 'normal';
+  priority: number;
+}
