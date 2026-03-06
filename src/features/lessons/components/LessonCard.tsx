@@ -33,17 +33,19 @@ export const LessonCard: React.FC<LessonCardProps> = memo(({
     }
   }, [isUnlocked, onPress]);
 
+  const cardStyle = [
+    styles.container,
+    !isUnlocked && styles.locked,
+    isCompleted && { borderColor: COLORS.success, borderWidth: 2 },
+  ];
+
   return (
     <TouchableOpacity
       onPress={handlePress}
       disabled={!isUnlocked}
       activeOpacity={0.7}
     >
-      <Card style={[
-        styles.container,
-        !isUnlocked && styles.locked,
-        isCompleted && { borderColor: COLORS.success, borderWidth: 2 },
-      ]}>
+      <Card style={cardStyle as any} padding="md">
         <View style={styles.content}>
           {/* Indicador de estado */}
           <View style={[
@@ -70,10 +72,6 @@ export const LessonCard: React.FC<LessonCardProps> = memo(({
             <View style={styles.meta}>
               <Text style={styles.duration}>⏱️ {lesson.duration} min</Text>
               <Text style={styles.xp}>⭐ {lesson.xpReward} XP</Text>
-              <Badge variant={lesson.exercise.difficulty === 'easy' ? 'success' : 
-                              lesson.exercise.difficulty === 'medium' ? 'warning' : 'error'}>
-                {lesson.exercise.difficulty}
-              </Badge>
             </View>
           </View>
 
@@ -95,28 +93,6 @@ export const LessonCard: React.FC<LessonCardProps> = memo(({
     </TouchableOpacity>
   );
 });
-
-// Badge interno
-const Badge: React.FC<{ variant: string; children: React.ReactNode }> = ({ 
-  variant, 
-  children 
-}) => {
-  const colors: Record<string, { bg: string; text: string }> = {
-    success: { bg: COLORS.successLight, text: COLORS.success },
-    warning: { bg: COLORS.warningLight, text: '#D68910' },
-    error: { bg: COLORS.errorLight, text: COLORS.error },
-  };
-  
-  const style = colors[variant] || colors.success;
-  
-  return (
-    <View style={[styles.badge, { backgroundColor: style.bg }]}>
-      <Text style={[styles.badgeText, { color: style.text }]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -175,15 +151,6 @@ const styles = StyleSheet.create({
   xp: {
     fontSize: FONT_SIZES.xs,
     color: COLORS.xp,
-    fontWeight: '600',
-  },
-  badge: {
-    paddingHorizontal: SPACING.xs,
-    paddingVertical: 2,
-    borderRadius: BORDER_RADIUS.full,
-  },
-  badgeText: {
-    fontSize: 10,
     fontWeight: '600',
   },
   chartPreview: {

@@ -1,5 +1,5 @@
 // Utilidades para trading y gráficos
-import { Candle } from '../../types';
+import { Candle } from '../../../types';
 
 // Calcular SMA (Simple Moving Average)
 export function calculateSMA(data: number[], period: number): number[] {

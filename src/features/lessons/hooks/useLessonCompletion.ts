@@ -2,6 +2,7 @@
 import { useCallback } from 'react';
 import { useUserStore } from '../../../store/userStore';
 import { GAME_CONFIG } from '../../../shared/constants';
+import { lessonsData, getNextLessonId } from '../../../data/lessons';
 
 interface UseLessonCompletionReturn {
   handleAnswer: (selectedIndex: number, correctIndex: number) => void;
@@ -15,6 +16,7 @@ export function useLessonCompletion(): UseLessonCompletionReturn {
     wrongAnswer, 
     completeLesson: storeCompleteLesson,
     addXP,
+    lessonsCompleted,
   } = useUserStore();
 
   const handleAnswer = useCallback((selectedIndex: number, correctIndex: number) => {
@@ -43,14 +45,16 @@ export function useLessonCompletion(): UseLessonCompletionReturn {
 }
 
 // Hook para obtener la siguiente lección
-import { lessonsData } from '../../../data/lessons';
-
 export function useNextLesson() {
-  const { lessonsCompleted, getNextLesson } = useUserStore();
+  const lessonsCompleted = useUserStore(state => state.lessonsCompleted);
   
   const getNext = useCallback(() => {
-    return getNextLesson(lessonsData);
-  }, [lessonsCompleted, getNextLesson]);
+    const nextId = getNextLessonId([...lessonsCompleted]);
+    if (nextId) {
+      return lessonsData.find(l => l.id === nextId);
+    }
+    return null;
+  }, [lessonsCompleted]);
 
   return { getNext };
 }

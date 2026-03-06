@@ -103,7 +103,7 @@ export const AnimatedButton = memo<AnimatedButtonProps>(({
               style={[
                 styles.text,
                 { color: variantStyle.text, fontSize: sizeStyle.fontSize },
-                icon && styles.textWithIcon,
+                icon ? styles.textWithIcon : null,
                 textStyle,
               ]}
             >

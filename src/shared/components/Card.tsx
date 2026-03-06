@@ -148,12 +148,16 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     return () => animation.stop();
   }, [opacity]);
 
+  const skeletonStyle: any = {
+    width: typeof width === 'number' ? width : '100%',
+    height,
+    borderRadius,
+    backgroundColor: COLORS.background,
+  };
+
   return (
     <Animated.View 
-      style={[
-        { width, height, borderRadius, backgroundColor: COLORS.background },
-        { opacity },
-      ]} 
+      style={[skeletonStyle, { opacity }]} 
     />
   );
 };

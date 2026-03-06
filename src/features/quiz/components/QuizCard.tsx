@@ -1,14 +1,14 @@
 // Componente QuizCard mejorado con feedback visual
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Vibration } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Vibration } from 'react-native';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../../shared/constants';
-import { Exercise } from '../../types';
+import { Exercise } from '../../../types';
 
 interface QuizCardProps {
   exercise: Exercise;
   onAnswer: (selectedIndex: number) => void;
   showTimer?: boolean;
-  timeLimit?: number; // segundos
+  timeLimit?: number;
 }
 
 export const QuizCard: React.FC<QuizCardProps> = ({
@@ -20,51 +20,10 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [timeLeft, setTimeLeft] = useState(timeLimit);
-  
-  // Animaciones
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // Timer
-  useEffect(() => {
-    if (!showTimer || showResult) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      return;
-    }
-
-    timerRef.current = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          // Time's up - auto select wrong
-          clearInterval(timerRef.current!);
-          handleSelect(-1); // Invalid selection
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [showTimer, showResult]);
 
   const handleSelect = useCallback((index: number) => {
     if (showResult) return;
     
-    // Feedback visual
-    Animated.sequence([
-      Animated.timing(scaleAnim, {
-        toValue: 0.98,
-        duration: 50,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-      }),
-    ]).start();
-
     // Vibración
     if (index === exercise.correctAnswer) {
       Vibration.vibrate(50);
@@ -78,7 +37,7 @@ export const QuizCard: React.FC<QuizCardProps> = ({
     setTimeout(() => {
       onAnswer(index);
     }, 1500);
-  }, [showResult, exercise.correctAnswer, onAnswer, scaleAnim]);
+  }, [showResult, exercise.correctAnswer, onAnswer]);
 
   const getButtonStyle = useCallback((index: number) => {
     if (!showResult) {
@@ -99,34 +58,14 @@ export const QuizCard: React.FC<QuizCardProps> = ({
   }, [showResult, selectedIndex, exercise.correctAnswer]);
 
   const getTextStyle = useCallback((index: number) => {
-    if (!showResult) {
-      return styles.buttonText;
-    }
-    
-    if (index === exercise.correctAnswer) {
-      return styles.buttonTextCorrect;
-    }
-    
-    if (selectedIndex === index && index !== exercise.correctAnswer) {
-      return styles.buttonTextWrong;
-    }
-    
+    if (!showResult) return styles.buttonText;
+    if (index === exercise.correctAnswer) return styles.buttonTextCorrect;
+    if (selectedIndex === index && index !== exercise.correctAnswer) return styles.buttonTextWrong;
     return styles.buttonText;
   }, [showResult, selectedIndex, exercise.correctAnswer]);
 
   return (
-    <Animated.View style={[styles.container, { transform: [{ scale: scaleAnim }] }]}>
-      {/* Timer */}
-      {showTimer && !showResult && (
-        <View style={[
-          styles.timer,
-          timeLeft <= 10 && styles.timerWarning,
-        ]}>
-          <Text style={styles.timerText}>⏱️ {timeLeft}s</Text>
-        </View>
-      )}
-
-      {/* Question */}
+    <View style={styles.container}>
       <View style={styles.questionContainer}>
         <View style={styles.difficultyBadge}>
           <Text style={styles.difficultyText}>
@@ -143,28 +82,20 @@ export const QuizCard: React.FC<QuizCardProps> = ({
         )}
       </View>
 
-      {/* Options */}
       <View style={styles.optionsContainer}>
-        {exercise.options.map((option, index) => (
+        {exercise.options.map((option: string, index: number) => (
           <TouchableOpacity
             key={index}
-            style={getButtonStyle(index)}
+            style={getButtonStyle(index) as any}
             onPress={() => handleSelect(index)}
             disabled={showResult}
             activeOpacity={0.7}
           >
-            <Text style={getTextStyle(index)}>{option}</Text>
-            {showResult && index === exercise.correctAnswer && (
-              <Text style={styles.correctIcon}>✓</Text>
-            )}
-            {showResult && selectedIndex === index && index !== exercise.correctAnswer && (
-              <Text style={styles.wrongIcon}>✗</Text>
-            )}
+            <Text style={getTextStyle(index) as any}>{option}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* Explanation */}
       {showResult && (
         <View style={[
           styles.explanation,
@@ -178,145 +109,37 @@ export const QuizCard: React.FC<QuizCardProps> = ({
               ? styles.textCorrect 
               : styles.textWrong
           ]}>
-            {selectedIndex === exercise.correctAnswer ? '🎉 ¡Correcto!' : '💡 Explain'}
+            {selectedIndex === exercise.correctAnswer ? '🎉 ¡Correcto!' : '💡 Explicación'}
           </Text>
           <Text style={styles.explanationText}>{exercise.explanation}</Text>
         </View>
       )}
-    </Animated.View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: SPACING.lg,
-  },
-  timer: {
-    alignSelf: 'flex-end',
-    backgroundColor: COLORS.background,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs,
-    borderRadius: BORDER_RADIUS.full,
-    marginBottom: SPACING.md,
-  },
-  timerWarning: {
-    backgroundColor: COLORS.errorLight,
-  },
-  timerText: {
-    fontSize: FONT_SIZES.sm,
-    color: COLORS.text,
-    fontWeight: '600',
-  },
-  questionContainer: {
-    marginBottom: SPACING.lg,
-  },
-  difficultyBadge: {
-    alignSelf: 'flex-start',
-    marginBottom: SPACING.sm,
-  },
-  difficultyText: {
-    fontSize: FONT_SIZES.xs,
-    fontWeight: '600',
-  },
-  question: {
-    fontSize: FONT_SIZES.lg,
-    fontWeight: '600',
-    color: COLORS.text,
-    lineHeight: 26,
-  },
-  scenario: {
-    backgroundColor: COLORS.background,
-    padding: SPACING.md,
-    borderRadius: BORDER_RADIUS.md,
-    marginTop: SPACING.md,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.primary,
-  },
-  scenarioText: {
-    fontSize: FONT_SIZES.sm,
-    color: COLORS.textLight,
-    fontStyle: 'italic',
-    lineHeight: 20,
-  },
-  optionsContainer: {
-    gap: SPACING.sm,
-  },
-  buttonBase: {
-    paddingVertical: SPACING.md,
-    paddingHorizontal: SPACING.lg,
-    borderRadius: BORDER_RADIUS.md,
-    borderWidth: 2,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.background,
-  },
-  buttonSelected: {
-    backgroundColor: COLORS.surface,
-    borderColor: COLORS.primary,
-  },
-  buttonCorrect: {
-    backgroundColor: COLORS.successLight,
-    borderColor: COLORS.success,
-  },
-  buttonWrong: {
-    backgroundColor: COLORS.errorLight,
-    borderColor: COLORS.error,
-  },
-  buttonText: {
-    fontSize: FONT_SIZES.md,
-    color: COLORS.text,
-    flex: 1,
-  },
-  buttonTextCorrect: {
-    fontSize: FONT_SIZES.md,
-    color: COLORS.success,
-    fontWeight: '600',
-    flex: 1,
-  },
-  buttonTextWrong: {
-    fontSize: FONT_SIZES.md,
-    color: COLORS.error,
-    flex: 1,
-  },
-  correctIcon: {
-    fontSize: FONT_SIZES.lg,
-    color: COLORS.success,
-    fontWeight: 'bold',
-  },
-  wrongIcon: {
-    fontSize: FONT_SIZES.lg,
-    color: COLORS.error,
-    fontWeight: 'bold',
-  },
-  explanation: {
-    marginTop: SPACING.lg,
-    padding: SPACING.md,
-    borderRadius: BORDER_RADIUS.md,
-  },
-  explanationCorrect: {
-    backgroundColor: COLORS.successLight,
-  },
-  explanationWrong: {
-    backgroundColor: COLORS.warningLight,
-  },
-  explanationTitle: {
-    fontSize: FONT_SIZES.md,
-    fontWeight: 'bold',
-    marginBottom: SPACING.xs,
-  },
-  textCorrect: {
-    color: COLORS.success,
-  },
-  textWrong: {
-    color: '#D68910',
-  },
-  explanationText: {
-    fontSize: FONT_SIZES.sm,
-    color: COLORS.text,
-    lineHeight: 20,
-  },
+  container: { marginTop: SPACING.lg },
+  questionContainer: { marginBottom: SPACING.lg },
+  difficultyBadge: { alignSelf: 'flex-start', marginBottom: SPACING.sm },
+  difficultyText: { fontSize: FONT_SIZES.xs, fontWeight: '600' },
+  question: { fontSize: FONT_SIZES.lg, fontWeight: '600', color: COLORS.text, lineHeight: 26 },
+  scenario: { backgroundColor: COLORS.background, padding: SPACING.md, borderRadius: BORDER_RADIUS.md, marginTop: SPACING.md, borderLeftWidth: 4, borderLeftColor: COLORS.primary },
+  scenarioText: { fontSize: FONT_SIZES.sm, color: COLORS.textLight, fontStyle: 'italic', lineHeight: 20 },
+  optionsContainer: { gap: SPACING.sm },
+  buttonBase: { paddingVertical: SPACING.md, paddingHorizontal: SPACING.lg, borderRadius: BORDER_RADIUS.md, borderWidth: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  button: { backgroundColor: COLORS.surface, borderColor: COLORS.background },
+  buttonSelected: { backgroundColor: COLORS.surface, borderColor: COLORS.primary },
+  buttonCorrect: { backgroundColor: COLORS.successLight, borderColor: COLORS.success },
+  buttonWrong: { backgroundColor: COLORS.errorLight, borderColor: COLORS.error },
+  buttonText: { fontSize: FONT_SIZES.md, color: COLORS.text, flex: 1 },
+  buttonTextCorrect: { fontSize: FONT_SIZES.md, color: COLORS.success, fontWeight: '600', flex: 1 },
+  buttonTextWrong: { fontSize: FONT_SIZES.md, color: COLORS.error, flex: 1 },
+  explanation: { marginTop: SPACING.lg, padding: SPACING.md, borderRadius: BORDER_RADIUS.md },
+  explanationCorrect: { backgroundColor: COLORS.successLight },
+  explanationWrong: { backgroundColor: COLORS.warningLight },
+  explanationTitle: { fontSize: FONT_SIZES.md, fontWeight: 'bold', marginBottom: SPACING.xs },
+  textCorrect: { color: COLORS.success },
+  textWrong: { color: '#D68910' },
+  explanationText: { fontSize: FONT_SIZES.sm, color: COLORS.text, lineHeight: 20 },
 });

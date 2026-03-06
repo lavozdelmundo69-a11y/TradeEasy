@@ -1,13 +1,9 @@
-// Exportaciones principales de la app
+// Exportaciones principales
 export * from './types';
-export * from './constants';
-export { useUserStore, useXPProgress } from './store/userStore';
-export * from './shared/components';
 export * from './shared/constants';
-export * from './shared/hooks';
-export * from './features/trading/components';
-export * from './features/trading/utils';
-export * from './features/lessons/components';
-export * from './features/lessons/hooks';
-export * from './features/quiz/components';
-export * from './features/quiz/hooks';
+
+// Store
+export { useUserStore, useUserProgress, useLessonProgress, useXPProgress, useIsHydrated } from './store/userStore';
+
+// Components
+export { AnimatedButton, ProgressBar, Card, Badge, Skeleton } from './shared/components';

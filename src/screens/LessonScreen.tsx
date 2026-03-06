@@ -296,6 +296,11 @@ const styles = StyleSheet.create({
     color: COLORS.success,
     marginBottom: SPACING.xs,
   },
+  blockText: {
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.text,
+    lineHeight: 20,
+  },
   warningTitle: {
     fontSize: FONT_SIZES.sm,
     fontWeight: '700',

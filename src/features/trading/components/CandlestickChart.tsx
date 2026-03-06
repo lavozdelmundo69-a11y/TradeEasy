@@ -300,7 +300,7 @@ export const MiniCandlestickChart: React.FC<{
   const range = maxPrice - minPrice || 1;
   
   return (
-    <View style={[styles.miniContainer, { width, height }]}>
+    <View style={[stylesMini.miniContainer, { width, height }]}>
       <Svg width={width} height={height}>
         {data.slice(-20).map((candle, index) => {
           const isGreen = candle.close >= candle.open;

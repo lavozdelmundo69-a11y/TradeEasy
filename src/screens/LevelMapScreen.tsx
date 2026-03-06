@@ -9,6 +9,10 @@ import { LessonCard } from '../features/lessons/components/LessonCard';
 import { useUserStore } from '../store/userStore';
 import { lessonsData, getLessonsByLevel } from '../data/lessons';
 
+interface LevelMapScreenProps {
+  onSelectLesson: (lesson: Lesson) => void;
+}
+
 export const LevelMapScreen: React.FC<LevelMapScreenProps> = ({ onSelectLesson }) => {
   const { lessonsCompleted, level: userLevel } = useUserStore();
   

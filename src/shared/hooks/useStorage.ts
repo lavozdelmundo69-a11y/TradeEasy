@@ -11,7 +11,7 @@ export function useStorage<T>(key: string, initialValue: T) {
     AsyncStorage.getItem(key).then(value => {
       if (value) {
         try {
-          setStoredValue(JSON.parse(value));
+          setStoredValue(JSON.parse(value) as T);
         } catch {
           setStoredValue(value as unknown as T);
         }
@@ -32,15 +32,4 @@ export function useStorage<T>(key: string, initialValue: T) {
   }, [key]);
 
   return [storedValue, setValue, isLoaded] as const;
-}
-
-// Hook específico para progreso del usuario
-export function useUserStorage() {
-  const [progress, setProgress, isLoaded] = useStorage(STORAGE_KEYS.USER_PROGRESS, null);
-
-  const saveProgress = useCallback((data: object) => {
-    setProgress(data);
-  }, [setProgress]);
-
-  return { progress, saveProgress, isLoaded };
 }
