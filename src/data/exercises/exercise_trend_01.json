@@ -1,0 +1,43 @@
+// Ejercicio chart-decision - Tendencia Alcista con Pullback
+{
+  "id": "ex_trend_01",
+  "type": "chart-decision",
+  "concept": "tendencia",
+  "question": "El precio está en tendencia alcista. ¿Qué harías en el pullback actual?",
+  "chart": {
+    "timeframe": "1h",
+    "candles": [
+      {"time": 1, "open": 1.0700, "high": 1.0720, "low": 1.0695, "close": 1.0715},
+      {"time": 2, "open": 1.0715, "high": 1.0740, "low": 1.0710, "close": 1.0735},
+      {"time": 3, "open": 1.0735, "high": 1.0760, "low": 1.0730, "close": 1.0755},
+      {"time": 4, "open": 1.0755, "high": 1.0780, "low": 1.0750, "close": 1.0775},
+      {"time": 5, "open": 1.0775, "high": 1.0800, "low": 1.0770, "close": 1.0795},
+      {"time": 6, "open": 1.0795, "high": 1.0810, "low": 1.0785, "close": 1.0800},
+      {"time": 7, "open": 1.0800, "high": 1.0815, "low": 1.0790, "close": 1.0795},
+      {"time": 8, "open": 1.0795, "high": 1.0800, "low": 1.0775, "close": 1.0780},
+      {"time": 9, "open": 1.0780, "high": 1.0785, "low": 1.0765, "close": 1.0770},
+      {"time": 10, "open": 1.0770, "high": 1.0775, "low": 1.0755, "close": 1.0760},
+      {"time": 11, "open": 1.0760, "high": 1.0765, "low": 1.0745, "close": 1.0750},
+      {"time": 12, "open": 1.0750, "high": 1.0755, "low": 1.0735, "close": 1.0740},
+      {"time": 13, "open": 1.0740, "high": 1.0745, "low": 1.0725, "close": 1.0730},
+      {"time": 14, "open": 1.0730, "high": 1.0735, "low": 1.0715, "close": 1.0720},
+      {"time": 15, "open": 1.0720, "high": 1.0725, "low": 1.0705, "close": 1.0710},
+      {"time": 16, "open": 1.0710, "high": 1.0715, "low": 1.0695, "close": 1.0700},
+      {"time": 17, "open": 1.0700, "high": 1.0705, "low": 1.0685, "close": 1.0690},
+      {"time": 18, "open": 1.0690, "high": 1.0695, "low": 1.0675, "close": 1.0680},
+      {"time": 19, "open": 1.0680, "high": 1.0685, "low": 1.0665, "close": 1.0670},
+      {"time": 20, "open": 1.0670, "high": 1.0675, "low": 1.0655, "close": 1.0660},
+      {"time": 21, "open": 1.0660, "high": 1.0665, "low": 1.0645, "close": 1.0650},
+      {"time": 22, "open": 1.0650, "high": 1.0655, "low": 1.0635, "close": 1.0640}
+    ]
+  },
+  "options": ["Comprar", "Vender", "Esperar"],
+  "correctAnswer": 0,
+  "difficulty": "easy",
+  "result": {
+    "summary": "¡Correcto! En tendencias alcistas, los pullbacks son oportunidades de compra.",
+    "analysis": "El gráfico muestra una tendencia alcista clara con Higher Highs (5-9) y Higher Lows (13-17). El pullback actual (vela 22) está cerca de una zona de soporte dinámica. La tendencia sigue intacta y el precio respetó el canal.",
+    "commonMistake": "Tener miedo de comprar durante un pullback. Muchos traders esperan a que la tendencia continúe pero ya错过了 la entrada.",
+    "lessonReference": "Tendencias - Entrar en pullbacks"
+  }
+}

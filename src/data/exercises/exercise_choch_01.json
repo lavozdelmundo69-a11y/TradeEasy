@@ -1,0 +1,39 @@
+// Ejercicio chart-decision - CHoCH (Change of Character)
+{
+  "id": "ex_choch_01",
+  "type": "chart-decision",
+  "concept": "estructura_mercado",
+  "question": "El precio ha perdido fuerza. ¿Qué indica este gráfico?",
+  "chart": {
+    "timeframe": "1h",
+    "candles": [
+      {"time": 1, "open": 1.0800, "high": 1.0830, "low": 1.0795, "close": 1.0825},
+      {"time": 2, "open": 1.0825, "high": 1.0850, "low": 1.0820, "close": 1.0845},
+      {"time": 3, "open": 1.0845, "high": 1.0870, "low": 1.0840, "close": 1.0865},
+      {"time": 4, "open": 1.0865, "high": 1.0890, "low": 1.0860, "close": 1.0885},
+      {"time": 5, "open": 1.0885, "high": 1.0910, "low": 1.0880, "close": 1.0905},
+      {"time": 6, "open": 1.0905, "high": 1.0920, "low": 1.0900, "close": 1.0910},
+      {"time": 7, "open": 1.0910, "high": 1.0915, "low": 1.0885, "close": 1.0890},
+      {"time": 8, "open": 1.0890, "high": 1.0895, "low": 1.0865, "close": 1.0870},
+      {"time": 9, "open": 1.0870, "high": 1.0875, "low": 1.0845, "close": 1.0850},
+      {"time": 10, "open": 1.0850, "high": 1.0855, "low": 1.0825, "close": 1.0830},
+      {"time": 11, "open": 1.0830, "high": 1.0835, "low": 1.0805, "close": 1.0810},
+      {"time": 12, "open": 1.0810, "high": 1.0815, "low": 1.0785, "close": 1.0790},
+      {"time": 13, "open": 1.0790, "high": 1.0795, "low": 1.0765, "close": 1.0770},
+      {"time": 14, "open": 1.0770, "high": 1.0775, "low": 1.0745, "close": 1.0750},
+      {"time": 15, "open": 1.0750, "high": 1.0755, "low": 1.0725, "close": 1.0730},
+      {"time": 16, "open": 1.0730, "high": 1.0735, "low": 1.0705, "close": 1.0710},
+      {"time": 17, "open": 1.0710, "high": 1.0715, "low": 1.0685, "close": 1.0690},
+      {"time": 18, "open": 1.0690, "high": 1.0695, "low": 1.0665, "close": 1.0670}
+    ]
+  },
+  "options": ["La tendencia alcista continúa", "CHoCH - Cambio de tendencia", "Mercado lateral", "Falso movimiento"],
+  "correctAnswer": 1,
+  "difficulty": "medium",
+  "result": {
+    "summary": "¡Correcto! Este gráfico muestra un CHoCH (Change of Character) de tendencia alcista a bajista.",
+    "analysis": "El gráfico muestra: 1) Tendencia alcista con Higher Highs (1-5) y Higher Lows (2-6), 2) Lower High en vela 7 rompe la estructura alcista, 3) Lower Low en vela 8-10 confirma el cambio de tendencia, 4) Secuencia de máximos y mínimos decrecientes (7, 9, 11, 13, 15, 17). Este es un CHoCH clásico.",
+    "commonMistake": "No identificar el cambio de estructura a tiempo. Muchos traders siguen comprando pensando que es un pullback cuando en realidad es un reversal.",
+    "lessonReference": "Estructura de Mercado - CHoCH"
+  }
+}

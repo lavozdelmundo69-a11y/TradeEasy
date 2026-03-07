@@ -1,0 +1,41 @@
+// Ejercicios chart-decision para la lección de Soportes y Resistencias
+{
+  "id": "ex_sr_01",
+  "type": "chart-decision",
+  "concept": "soporte_resistencia",
+  "question": "¿Qué harías cuando el precio toca esta zona de soporte?",
+  "chart": {
+    "timeframe": "1h",
+    "candles": [
+      {"time": 1, "open": 1.0850, "high": 1.0870, "low": 1.0845, "close": 1.0865},
+      {"time": 2, "open": 1.0865, "high": 1.0880, "low": 1.0860, "close": 1.0875},
+      {"time": 3, "open": 1.0875, "high": 1.0890, "low": 1.0870, "close": 1.0885},
+      {"time": 4, "open": 1.0885, "high": 1.0900, "low": 1.0880, "close": 1.0895},
+      {"time": 5, "open": 1.0895, "high": 1.0910, "low": 1.0890, "close": 1.0905},
+      {"time": 6, "open": 1.0905, "high": 1.0915, "low": 1.0895, "close": 1.0900},
+      {"time": 7, "open": 1.0900, "high": 1.0905, "low": 1.0885, "close": 1.0890},
+      {"time": 8, "open": 1.0890, "high": 1.0895, "low": 1.0875, "close": 1.0880},
+      {"time": 9, "open": 1.0880, "high": 1.0885, "low": 1.0865, "close": 1.0870},
+      {"time": 10, "open": 1.0870, "high": 1.0875, "low": 1.0860, "close": 1.0865},
+      {"time": 11, "open": 1.0865, "high": 1.0870, "low": 1.0855, "close": 1.0860},
+      {"time": 12, "open": 1.0860, "high": 1.0865, "low": 1.0850, "close": 1.0855},
+      {"time": 13, "open": 1.0855, "high": 1.0860, "low": 1.0845, "close": 1.0850},
+      {"time": 14, "open": 1.0850, "high": 1.0855, "low": 1.0840, "close": 1.0845},
+      {"time": 15, "open": 1.0845, "high": 1.0850, "low": 1.0835, "close": 1.0840},
+      {"time": 16, "open": 1.0840, "high": 1.0845, "low": 1.0830, "close": 1.0835},
+      {"time": 17, "open": 1.0835, "high": 1.0840, "low": 1.0825, "close": 1.0830},
+      {"time": 18, "open": 1.0830, "high": 1.0835, "low": 1.0820, "close": 1.0825},
+      {"time": 19, "open": 1.0825, "high": 1.0830, "low": 1.0815, "close": 1.0820},
+      {"time": 20, "open": 1.0820, "high": 1.0855, "low": 1.0815, "close": 1.0850}
+    ]
+  },
+  "options": ["Comprar", "Vender", "Esperar"],
+  "correctAnswer": 2,
+  "difficulty": "medium",
+  "result": {
+    "summary": "La mejor opción era ESPERAR porque no hay confirmación de reversión.",
+    "analysis": "El precio toca soporte (1.0820) pero no hay señal clara de reversión. El volumen es bajo y no hay una vela de rechazo claramente definida. Comprar en soporte sin confirmación es uno de los errores más comunes.",
+    "commonMistake": "Comprar inmediatamente al tocar soporte. El soporte puede romper. Siempre espera una señal de confirmación como una vela hammer, envolventes alcista o rechazo claro del nivel.",
+    "lessonReference": "Soporte y Resistencia - Confirmación"
+  }
+}

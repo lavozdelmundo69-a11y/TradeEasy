@@ -1,0 +1,41 @@
+// Ejercicio chart-decision - Falso Breakout
+{
+  "id": "ex_breakout_01",
+  "type": "chart-decision",
+  "concept": "breakout",
+  "question": "El precio acaba de romper la resistencia. ¿Qué harías?",
+  "chart": {
+    "timeframe": "1h",
+    "candles": [
+      {"time": 1, "open": 1.0900, "high": 1.0920, "low": 1.0895, "close": 1.0915},
+      {"time": 2, "open": 1.0915, "high": 1.0930, "low": 1.0910, "close": 1.0925},
+      {"time": 3, "open": 1.0925, "high": 1.0940, "low": 1.0920, "close": 1.0935},
+      {"time": 4, "open": 1.0935, "high": 1.0950, "low": 1.0930, "close": 1.0945},
+      {"time": 5, "open": 1.0945, "high": 1.0955, "low": 1.0940, "close": 1.0950},
+      {"time": 6, "open": 1.0950, "high": 1.0955, "low": 1.0940, "close": 1.0945},
+      {"time": 7, "open": 1.0945, "high": 1.0950, "low": 1.0935, "close": 1.0940},
+      {"time": 8, "open": 1.0940, "high": 1.0945, "low": 1.0930, "close": 1.0935},
+      {"time": 9, "open": 1.0935, "high": 1.0940, "low": 1.0925, "close": 1.0930},
+      {"time": 10, "open": 1.0930, "high": 1.0935, "low": 1.0920, "close": 1.0925},
+      {"time": 11, "open": 1.0925, "high": 1.0930, "low": 1.0915, "close": 1.0920},
+      {"time": 12, "open": 1.0920, "high": 1.0925, "low": 1.0910, "close": 1.0915},
+      {"time": 13, "open": 1.0915, "high": 1.0920, "low": 1.0905, "close": 1.0910},
+      {"time": 14, "open": 1.0910, "high": 1.0915, "low": 1.0900, "close": 1.0905},
+      {"time": 15, "open": 1.0905, "high": 1.0910, "low": 1.0895, "close": 1.0900},
+      {"time": 16, "open": 1.0900, "high": 1.0905, "low": 1.0890, "close": 1.0895},
+      {"time": 17, "open": 1.0895, "high": 1.0900, "low": 1.0885, "close": 1.0890},
+      {"time": 18, "open": 1.0890, "high": 1.0895, "low": 1.0880, "close": 1.0885},
+      {"time": 19, "open": 1.0885, "high": 1.0890, "low": 1.0875, "close": 1.0880},
+      {"time": 20, "open": 1.0880, "high": 1.0960, "low": 1.0875, "close": 1.0950}
+    ]
+  },
+  "options": ["Comprar", "Vender", "Esperar"],
+  "correctAnswer": 2,
+  "difficulty": "hard",
+  "result": {
+    "summary": "Cuidado. Este breakout tiene señales de alerta. Mejor esperar.",
+    "analysis": "Aunque el precio rompe la resistencia (1.0900-1.0950), hay 3 señales de alerta: 1) La vela de ruptura es muy larga (形状 de agotamiento), 2) No hay volumen confirmado (no podemos verlo pero la vela es sospechosa), 3) No hubo retest del nivel. El 70% de los breakouts fallan.",
+    "commonMistake": "Comprar inmediatamente en cualquier breakout. Sin confirmación de volumen, es una apuesta muy arriesgada.",
+    "lessonReference": "Breakouts - Falsos Breakouts"
+  }
+}

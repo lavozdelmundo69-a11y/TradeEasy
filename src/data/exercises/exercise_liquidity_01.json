@@ -1,0 +1,41 @@
+// Ejercicio chart-decision - Liquidity Zone
+{
+  "id": "ex_liquidity_01",
+  "type": "chart-decision",
+  "concept": "liquidez",
+  "question": "El precio hace un个小 movimiento hacia arriba. ¿Qué harías?",
+  "chart": {
+    "timeframe": "4h",
+    "candles": [
+      {"time": 1, "open": 1.0500, "high": 1.0510, "low": 1.0490, "close": 1.0505},
+      {"time": 2, "open": 1.0505, "high": 1.0515, "low": 1.0495, "close": 1.0500},
+      {"time": 3, "open": 1.0500, "high": 1.0505, "low": 1.0485, "close": 1.0490},
+      {"time": 4, "open": 1.0490, "high": 1.0495, "low": 1.0475, "close": 1.0480},
+      {"time": 5, "open": 1.0480, "high": 1.0485, "low": 1.0465, "close": 1.0470},
+      {"time": 6, "open": 1.0470, "high": 1.0475, "low": 1.0455, "close": 1.0460},
+      {"time": 7, "open": 1.0460, "high": 1.0465, "low": 1.0445, "close": 1.0450},
+      {"time": 8, "open": 1.0450, "high": 1.0455, "low": 1.0435, "close": 1.0440},
+      {"time": 9, "open": 1.0440, "high": 1.0445, "low": 1.0425, "close": 1.0430},
+      {"time": 10, "open": 1.0430, "high": 1.0435, "low": 1.0415, "close": 1.0420},
+      {"time": 11, "open": 1.0420, "high": 1.0425, "low": 1.0405, "close": 1.0410},
+      {"time": 12, "open": 1.0410, "high": 1.0415, "low": 1.0395, "close": 1.0400},
+      {"time": 13, "open": 1.0400, "high": 1.0405, "low": 1.0385, "close": 1.0390},
+      {"time": 14, "open": 1.0390, "high": 1.0395, "low": 1.0375, "close": 1.0380},
+      {"time": 15, "open": 1.0380, "high": 1.0385, "low": 1.0365, "close": 1.0370},
+      {"time": 16, "open": 1.0370, "high": 1.0375, "low": 1.0355, "close": 1.0360},
+      {"time": 17, "open": 1.0360, "high": 1.0365, "low": 1.0345, "close": 1.0350},
+      {"time": 18, "open": 1.0350, "high": 1.0355, "low": 1.0335, "close": 1.0340},
+      {"time": 19, "open": 1.0340, "high": 1.0390, "low": 1.0335, "close": 1.0385},
+      {"time": 20, "open": 1.0385, "high": 1.0390, "low": 1.0330, "close": 1.0340}
+    ]
+  },
+  "options": ["Comprar", "Vender", "Esperar"],
+  "correctAnswer": 1,
+  "difficulty": "hard",
+  "result": {
+    "summary": "El precio hizo un liquidity grab (stop hunt). Es momento de vender.",
+    "analysis": "El gráfico muestra una tendencia bajista clara. El precio hace un个小 movimiento (vela 19) que alcanza liquidity (ordenes de compra de otros traders). Inmediatamente después (vela 20) rechaza y vuelve abajo. Esto es un classic liquidity grab antes del impulso bajista.",
+    "commonMistake": "Comprar en el liquidity grab pensando que es un reversal. El precio está buscando liquidez para continuar su movimiento.",
+    "lessonReference": "Liquidez - Stop Hunt / Liquidity Grab"
+  }
+}
