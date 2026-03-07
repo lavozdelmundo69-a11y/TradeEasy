@@ -28,10 +28,13 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({
   const { completeLesson: completeLessonAction } = useLessonCompletion();
   const { exercise } = lesson;
 
-  const handleAnswer = useCallback(() => {
-    // XP ya se añade en el hook QuizCard
+  const handleAnswer = useCallback((selectedIndex: number) => {
+    // Marcar ejercicio como completado
+    setExerciseCompleted(true);
+    // XP por completar ejercicio
+    addXP(lesson.xpReward);
     Vibration.vibrate(50);
-  }, []);
+  }, [addXP, lesson.xpReward]);
 
   const handleExerciseComplete = useCallback(() => {
     setExerciseCompleted(true);
