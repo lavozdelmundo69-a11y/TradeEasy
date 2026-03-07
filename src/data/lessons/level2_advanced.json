@@ -1,0 +1,392 @@
+[
+  {
+    "id": "l2_15",
+    "title": "El CHoCH: Cambio de Tendencia",
+    "description": "Aprende a identificar el Change of Character y anticipar reversals",
+    "duration": 6,
+    "xpReward": 80,
+    "order": 15,
+    "requiredLessonIds": ["l2_13", "l2_14"],
+    "explanation": [
+      {
+        "type": "text",
+        "content": "El CHoCH (Change of Character) es una señal que indica que la estructura del mercado está cambiando. A diferencia del BOS que confirma continuación, el CHoCH señala un cambio de tendencia."
+      },
+      {
+        "type": "text",
+        "content": "El CHoCH ocurre cuando: 1) El precio hace un Lower Low (rompe el HL anterior), 2) El precio hace un Lower High (no puede superar el HH anterior). Esto indica debilidad en la tendencia previa."
+      },
+      {
+        "type": "chart",
+        "title": "CHoCH Alcista a Bajista",
+        "description": "Observa cómo la tendencia pierde fuerza",
+        "highlight": "El punto 8 marca el primer LL, confirmando debilidad",
+        "candles": [
+          {"time": 1, "open": 100, "high": 103, "low": 99, "close": 102},
+          {"time": 2, "open": 102, "high": 106, "low": 101, "close": 105},
+          {"time": 3, "open": 105, "high": 109, "low": 104, "close": 108},
+          {"time": 4, "open": 108, "high": 112, "low": 107, "close": 111},
+          {"time": 5, "open": 111, "high": 115, "low": 110, "close": 114},
+          {"time": 6, "open": 114, "high": 117, "low": 113, "close": 116},
+          {"time": 7, "open": 116, "high": 118, "low": 114, "close": 115},
+          {"time": 8, "open": 115, "high": 116, "low": 110, "close": 111},
+          {"time": 9, "open": 111, "high": 112, "low": 106, "close": 107},
+          {"time": 10, "open": 107, "high": 108, "low": 102, "close": 103},
+          {"time": 11, "open": 103, "high": 104, "low": 98, "close": 99},
+          {"time": 12, "open": 99, "high": 100, "low": 95, "close": 96}
+        ]
+      },
+      {
+        "type": "tip",
+        "content": "El CHoCH es más fiable cuando ocurre después de una tendencia clara. En mercados laterales es más difícil de identificar correctamente."
+      },
+      {
+        "type": "warning",
+        "content": "No confundas un simple pullback con un CHoCH. Necesitas al menos 2-3 velas de confirmación después del primer LL."
+      }
+    ],
+    "example": {
+      "title": "CHoCH en EUR/USD",
+      "description": "Tendencia alcista que pierde fuerza y cambia a bajista",
+      "scenario": "Observa los HH y HL antes y después del cambio"
+    },
+    "exercise": {
+      "id": "ex_l2_15",
+      "type": "chart-decision",
+      "question": "¿Qué indica este gráfico en el punto marcado?",
+      "chart": {
+        "timeframe": "1h",
+        "candles": [
+          {"time": 1, "open": 1.0850, "high": 1.0880, "low": 1.0845, "close": 1.0875},
+          {"time": 2, "open": 1.0875, "high": 1.0910, "low": 1.0870, "close": 1.0905},
+          {"time": 3, "open": 1.0905, "high": 1.0940, "low": 1.0900, "close": 1.0935},
+          {"time": 4, "open": 1.0935, "high": 1.0970, "low": 1.0930, "close": 1.0965},
+          {"time": 5, "open": 1.0965, "high": 1.0990, "low": 1.0955, "close": 1.0980},
+          {"time": 6, "open": 1.0980, "high": 1.1000, "low": 1.0970, "close": 1.0985},
+          {"time": 7, "open": 1.0985, "high": 1.0995, "low": 1.0955, "close": 1.0965},
+          {"time": 8, "open": 1.0965, "high": 1.0970, "low": 1.0925, "close": 1.0935},
+          {"time": 9, "open": 1.0935, "high": 1.0940, "low": 1.0900, "close": 1.0910},
+          {"time": 10, "open": 1.0910, "high": 1.0915, "low": 1.0870, "close": 1.0880},
+          {"time": 11, "open": 1.0880, "high": 1.0885, "low": 1.0840, "close": 1.0850},
+          {"time": 12, "open": 1.0850, "high": 1.0855, "low": 1.0810, "close": 1.0820}
+        ]
+      },
+      "options": ["Continuación alcista", "CHoCH - Cambio de tendencia", "Mercado lateral", "Falso movimiento"],
+      "correctAnswer": 1,
+      "result": {
+        "summary": "El gráfico muestra un CHoCH: cambio de tendencia de alcista a bajista.",
+        "analysis": "La tendencia era alcista con HH (3, 5) y HL (2, 4, 6). El LH en vela 7 y el LL en vela 8 rompen la estructura, confirmando el CHoCH.",
+        "commonMistake": "No identificar el cambio de estructura a tiempo. Muchos traders siguen comprando pensando que es un pullback.",
+        "lessonReference": "Estructura - CHoCH"
+      },
+      "difficulty": "medium"
+    },
+    "summary": "El CHoCH indica cambio de tendencia cuando el precio hace un Lower Low seguido de un Lower High. Es una señal temprana de reversión."
+  },
+  {
+    "id": "l2_16",
+    "title": "Consolidación y Rangos",
+    "description": "Aprende a identificar períodos de consolidación y operarlos",
+    "duration": 5,
+    "xpReward": 65,
+    "order": 16,
+    "requiredLessonIds": ["l2_01", "l2_02"],
+    "explanation": [
+      {
+        "type": "text",
+        "content": "La consolidación es un período donde el precio se mueve dentro de un rango definido. El mercado está en equilibrio entre compradores y vendedores."
+      },
+      {
+        "type": "text",
+        "content": "Un rango tiene dos niveles clave: resistencia (techo) y soporte (suelo). El precio rebota entre estos niveles múltiples veces."
+      },
+      {
+        "type": "chart",
+        "title": "Rango Lateral",
+        "description": "El precio se mueve entre soporte y resistencia",
+        "highlight": "La zona superior es resistencia, la inferior es soporte",
+        "candles": [
+          {"time": 1, "open": 100, "high": 103, "low": 99, "close": 102},
+          {"time": 2, "open": 102, "high": 103, "low": 99, "close": 100},
+          {"time": 3, "open": 100, "high": 103, "low": 99, "close": 101},
+          {"time": 4, "open": 101, "high": 103, "low": 99, "close": 102},
+          {"time": 5, "open": 102, "high": 103, "low": 99, "close": 100},
+          {"time": 6, "open": 100, "high": 103, "low": 99, "close": 101},
+          {"time": 7, "open": 101, "high": 103, "low": 99, "close": 102},
+          {"time": 8, "open": 102, "high": 103, "low": 99, "close": 100},
+          {"time": 9, "open": 100, "high": 103, "low": 99, "close": 101},
+          {"time": 10, "open": 101, "high": 103, "low": 99, "close": 102},
+          {"time": 11, "open": 102, "high": 103, "low": 99, "close": 100},
+          {"time": 12, "open": 100, "high": 103, "low": 99, "close": 101}
+        ]
+      },
+      {
+        "type": "tip",
+        "content": "En rango, compra en soporte y vende en resistencia. Usa stop loss ligeramente fuera del rango."
+      }
+    ],
+    "example": {
+      "title": "Rango en EUR/USD",
+      "description": "Precio moviéndose entre 1.0850 y 1.0950",
+      "scenario": "Identifica los rebotes en los niveles"
+    },
+    "exercise": {
+      "id": "ex_l2_16",
+      "type": "concept-quiz",
+      "question": "¿Qué caracteriza a un rango lateral?",
+      "options": [
+        "Tendencia claramente alcista",
+        "El precio se mueve entre soporte y resistencia",
+        "El precio cae constantemente",
+        "Alta volatilidad sin dirección"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Un rango lateral se caracteriza porque el precio se mueve entre dos niveles horizontales: soporte (inferior) y resistencia (superior).",
+      "difficulty": "easy"
+    },
+    "summary": "La consolidación es un período de equilibrio donde el precio se mueve entre soporte y resistencia. Opera comprándo en soporte y vendiendo en resistencia."
+  },
+  {
+    "id": "l2_17",
+    "title": "Falsas Rupturas",
+    "description": "Aprende a identificar y evitar falsas rupturas",
+    "duration": 6,
+    "xpReward": 75,
+    "order": 17,
+    "requiredLessonIds": ["l2_13", "l2_15"],
+    "explanation": [
+      {
+        "type": "text",
+        "content": "Una falsa ruptura ocurre cuando el precio rompe un nivel importante pero inmediatamente vuelve dentro del rango anterior. Es una trampa común que captura a muchos traders."
+      },
+      {
+        "type": "text",
+        "content": "Las falsas rupturas ocurren porque los institucionales buscan liquidez (stops de traders) antes de mover el precio en la dirección opuesta."
+      },
+      {
+        "type": "chart",
+        "title": "Falsa Ruptura Alcista",
+        "description": "El precio rompe resistencia pero vuelve abajo",
+        "highlight": "La ruptura en punto 11 es falsa, el precio vuelve al rango",
+        "candles": [
+          {"time": 1, "open": 100, "high": 102, "low": 99, "close": 101},
+          {"time": 2, "open": 101, "high": 103, "low": 100, "close": 102},
+          {"time": 3, "open": 102, "high": 104, "low": 101, "close": 103},
+          {"time": 4, "open": 103, "high": 105, "low": 102, "close": 104},
+          {"time": 5, "open": 104, "high": 106, "low": 103, "close": 105},
+          {"time": 6, "open": 105, "high": 107, "low": 104, "close": 106},
+          {"time": 7, "open": 106, "high": 108, "low": 105, "close": 107},
+          {"time": 8, "open": 107, "high": 109, "low": 106, "close": 108},
+          {"time": 9, "open": 108, "high": 110, "low": 107, "close": 109},
+          {"time": 10, "open": 109, "high": 111, "low": 108, "close": 110},
+          {"time": 11, "open": 110, "high": 115, "low": 109, "close": 114},
+          {"time": 12, "open": 114, "high": 115, "low": 108, "close": 109}
+        ]
+      },
+      {
+        "type": "tip",
+        "content": "Espera un retest del nivel roto antes de entrar. Si el precio vuelve a la estructura anterior, fue una falsa ruptura."
+      },
+      {
+        "type": "warning",
+        "content": "El 70% de las rupturas son falsas. Nunca entres inmediatamente en una ruptura sin confirmación."
+      }
+    ],
+    "example": {
+      "title": "Falsa ruptura de resistencia",
+      "description": "El precio rompe pero no mantiene el breakout",
+      "scenario": "Observa cómo el precio vuelve al rango"
+    },
+    "exercise": {
+      "id": "ex_l2_17",
+      "type": "chart-decision",
+      "question": "El precio acaba de romper la resistencia. ¿Qué harías?",
+      "chart": {
+        "timeframe": "1h",
+        "candles": [
+          {"time": 1, "open": 1.0900, "high": 1.0920, "low": 1.0895, "close": 1.0915},
+          {"time": 2, "open": 1.0915, "high": 1.0935, "low": 1.0910, "close": 1.0930},
+          {"time": 3, "open": 1.0930, "high": 1.0950, "low": 1.0925, "close": 1.0945},
+          {"time": 4, "open": 1.0945, "high": 1.0965, "low": 1.0940, "close": 1.0960},
+          {"time": 5, "open": 1.0960, "high": 1.0975, "low": 1.0955, "close": 1.0970},
+          {"time": 6, "open": 1.0970, "high": 1.0980, "low": 1.0960, "close": 1.0965},
+          {"time": 7, "open": 1.0965, "high": 1.0975, "low": 1.0955, "close": 1.0960},
+          {"time": 8, "open": 1.0960, "high": 1.0970, "low": 1.0945, "close": 1.0955},
+          {"time": 9, "open": 1.0955, "high": 1.0965, "low": 1.0940, "close": 1.0950},
+          {"time": 10, "open": 1.0950, "high": 1.0960, "low": 1.0935, "close": 1.0945},
+          {"time": 11, "open": 1.0945, "high": 1.0955, "low": 1.0930, "close": 1.0940},
+          {"time": 12, "open": 1.0940, "high": 1.0950, "low": 1.0925, "close": 1.0935},
+          {"time": 13, "open": 1.0935, "high": 1.1000, "low": 1.0930, "close": 1.0990},
+          {"time": 14, "open": 1.0990, "high": 1.0995, "low": 1.0920, "close": 1.0930}
+        ]
+      },
+      "options": ["Comprar inmediatamente", "Vender porque es falsa", "Esperar confirmación"],
+      "correctAnswer": 2,
+      "result": {
+        "summary": "Espera confirmación. La ruptura tiene señales de alerta.",
+        "analysis": "Aunque el precio rompe (vela 13), hay señales de falsa ruptura: la vela es muy larga (形状 de agotamiento), no hay volumen confirmado, y el precio ya está regresando. El 70% de las rupturas fallan.",
+        "commonMistake": "Entrar inmediatamente en cualquier ruptura. Sin confirmación, es una apuesta muy arriesgada.",
+        "lessonReference": "Falsas Rupturas"
+      },
+      "difficulty": "medium"
+    },
+    "summary": "Las falsas rupturas son trampas donde el precio rompe un nivel pero vuelve. Espera confirmación (retest o cierre fuera del nivel) antes de operar."
+  },
+  {
+    "id": "l2_18",
+    "title": "Volumen: El Confirmador",
+    "description": "Usa el volumen para validar movimientos de precio",
+    "duration": 5,
+    "xpReward": 70,
+    "order": 18,
+    "requiredLessonIds": ["l2_07", "l2_08"],
+    "explanation": [
+      {
+        "type": "text",
+        "content": "El volumen es una de las herramientas más importantes pero más ignoradas. El volumen muestra la convicción detrás de un movimiento de precio."
+      },
+      {
+        "type": "text",
+        "content": "Alto volumen en una ruptura indica participación institucional y mayor probabilidad de continuidad. Bajo volumen en una ruptura indica mayor probabilidad de falsa ruptura."
+      },
+      {
+        "type": "chart",
+        "title": "Ruptura con Alto Volumen",
+        "description": "La ruptura va acompañada de volumen alto",
+        "highlight": "El volumen aumenta significativamente en la ruptura",
+        "candles": [
+          {"time": 1, "open": 100, "high": 102, "low": 99, "close": 101},
+          {"time": 2, "open": 101, "high": 103, "low": 100, "close": 102},
+          {"time": 3, "open": 102, "high": 104, "low": 101, "close": 103},
+          {"time": 4, "open": 103, "high": 105, "low": 102, "close": 104},
+          {"time": 5, "open": 104, "high": 106, "low": 103, "close": 105},
+          {"time": 6, "open": 105, "high": 107, "low": 104, "close": 106},
+          {"time": 7, "open": 106, "high": 108, "low": 105, "close": 107},
+          {"time": 8, "open": 107, "high": 110, "low": 106, "close": 109},
+          {"time": 9, "open": 109, "high": 113, "low": 108, "close": 112}
+        ]
+      },
+      {
+        "type": "tip",
+        "content": "Compara siempre el volumen actual con el promedio de las últimas 20 velas. Si es 2x o más, es una señal fuerte."
+      },
+      {
+        "type": "warning",
+        "content": "No operes basándote solo en volumen. Es una herramienta de confirmación, no de entrada."
+      }
+    ],
+    "example": {
+      "title": "Volumen en rupturas",
+      "description": "Volumen alto confirma ruptura válida",
+      "scenario": "Observa cómo el volumen valida el movimiento"
+    },
+    "exercise": {
+      "id": "ex_l2_18",
+      "type": "concept-quiz",
+      "question": "¿Qué indica alto volumen durante una ruptura de resistencia?",
+      "options": [
+        "Es una señal de falsa ruptura",
+        "Indica que la ruptura tiene alta probabilidad de ser válida",
+        "No tiene significado",
+        "Indica que el precio va a revertir"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Alto volumen durante una ruptura indica participación institucional y convicción. Es una confirmación de que el movimiento es real.",
+      "difficulty": "easy"
+    },
+    "summary": "El volumen confirma la validez de los movimientos. Rupturas con alto volumen tienen mayor probabilidad de éxito que las con bajo volumen."
+  },
+  {
+    "id": "l2_19",
+    "title": "Estructura Completa: Sikus",
+    "description": "Aprende la estructura avanzada Sikus (Market Structure)",
+    "duration": 7,
+    "xpReward": 90,
+    "order": 19,
+    "requiredLessonIds": ["l2_15", "l2_17", "l2_18"],
+    "explanation": [
+      {
+        "type": "text",
+        "content": "La estructura de mercado (Market Structure) es la base del trading avanzado. Consiste en identificar swings, estructura y cambios de carácter de forma sistemática."
+      },
+      {
+        "type": "text",
+        "content": "La secuencia correcta de análisis es: 1) Identificar tendencia (HH/HL o LH/LL), 2) Encontrar estructura (CHoCH o BOS), 3) Esperar confirmación (volumen), 4) Entrar en la dirección de la estructura."
+      },
+      {
+        "type": "chart",
+        "title": "Estructura Completa Sikus",
+        "description": "Observa la secuencia: tendencia → CHoCH → nuevo impulso",
+        "highlight": "Cada número marca un cambio de estructura",
+        "candles": [
+          {"time": 1, "open": 100, "high": 103, "low": 99, "close": 102},
+          {"time": 2, "open": 102, "high": 105, "low": 101, "close": 104},
+          {"time": 3, "open": 104, "high": 108, "low": 103, "close": 107},
+          {"time": 4, "open": 107, "high": 111, "low": 106, "close": 110},
+          {"time": 5, "open": 110, "high": 114, "low": 109, "close": 113},
+          {"time": 6, "open": 113, "high": 116, "low": 112, "close": 115},
+          {"time": 7, "open": 115, "high": 117, "low": 113, "close": 114},
+          {"time": 8, "open": 114, "high": 115, "low": 110, "close": 111},
+          {"time": 9, "open": 111, "high": 112, "low": 107, "close": 108},
+          {"time": 10, "open": 108, "high": 109, "low": 104, "close": 105},
+          {"time": 11, "open": 105, "high": 106, "low": 101, "close": 102},
+          {"time": 12, "open": 102, "high": 103, "low": 98, "close": 99},
+          {"time": 13, "open": 99, "high": 100, "low": 95, "close": 96},
+          {"time": 14, "open": 96, "high": 97, "low": 92, "close": 93},
+          {"time": 15, "open": 93, "high": 94, "low": 89, "close": 90},
+          {"time": 16, "open": 90, "high": 91, "low": 86, "close": 87},
+          {"time": 17, "open": 87, "high": 88, "low": 83, "close": 84},
+          {"time": 18, "open": 84, "high": 85, "low": 80, "close": 81}
+        ]
+      },
+      {
+        "type": "text",
+        "content": "La estructura Sikus funciona en todos los timeframes. En timeframe mayor tienes la tendencia principal, en menor tienes las entradas."
+      },
+      {
+        "type": "tip",
+        "content": "Practica identificando estructura en gráficos históricos antes de operar con dinero real. La estructura es más clara en retrospectiva."
+      }
+    ],
+    "example": {
+      "title": "Estructura en Trading Real",
+      "description": "Secuencia completa: tendencia → CHoCH → BOS → continuación",
+      "scenario": "Aplica el marco conceptual a cualquier activo"
+    },
+    "exercise": {
+      "id": "ex_l2_19",
+      "type": "chart-decision",
+      "question": "Analiza la estructura. ¿Qué harías en la posición actual?",
+      "chart": {
+        "timeframe": "1h",
+        "candles": [
+          {"time": 1, "open": 1.0700, "high": 1.0730, "low": 1.0695, "close": 1.0725},
+          {"time": 2, "open": 1.0725, "high": 1.0760, "low": 1.0720, "close": 1.0755},
+          {"time": 3, "open": 1.0755, "high": 1.0790, "low": 1.0750, "close": 1.0785},
+          {"time": 4, "open": 1.0785, "high": 1.0820, "low": 1.0780, "close": 1.0815},
+          {"time": 5, "open": 1.0815, "high": 1.0840, "low": 1.0805, "close": 1.0830},
+          {"time": 6, "open": 1.0830, "high": 1.0850, "low": 1.0820, "close": 1.0835},
+          {"time": 7, "open": 1.0835, "high": 1.0845, "low": 1.0805, "close": 1.0815},
+          {"time": 8, "open": 1.0815, "high": 1.0825, "low": 1.0785, "close": 1.0795},
+          {"time": 9, "open": 1.0795, "high": 1.0805, "low": 1.0765, "close": 1.0775},
+          {"time": 10, "open": 1.0775, "high": 1.0785, "low": 1.0745, "close": 1.0755},
+          {"time": 11, "open": 1.0755, "high": 1.0765, "low": 1.0725, "close": 1.0735},
+          {"time": 12, "open": 1.0735, "high": 1.0745, "low": 1.0705, "close": 1.0715},
+          {"time": 13, "open": 1.0715, "high": 1.0725, "low": 1.0685, "close": 1.0695},
+          {"time": 14, "open": 1.0695, "high": 1.0705, "low": 1.0665, "close": 1.0675},
+          {"time": 15, "open": 1.0675, "high": 1.0685, "low": 1.0645, "close": 1.0655}
+        ]
+      },
+      "options": ["Comprar por tendencia alcista", "Vender por CHoCH", "Esperar"],
+      "correctAnswer": 1,
+      "result": {
+        "summary": "El gráfico muestra un CHoCH: cambio de tendencia de alcista a bajista.",
+        "analysis": "La tendencia era alcista (HH en 3, 5 y LH en 2, 4, 6). El LH en vela 7 y el LL en vela 8-10 rompen la estructura. Ahora es tendencia bajista. Operar largo sería contra la estructura.",
+        "commonMistake": "Seguir operando a favor de la tendencia anterior sin notar el cambio de estructura.",
+        "lessonReference": "Estructura de Mercado - Sikus"
+      },
+      "difficulty": "hard"
+    },
+    "summary": "La estructura de mercado (Sikus) integra tendencia, estructura y confirmación. Siempre opera en la dirección de la estructura actual: identifica tendencia → confirma CHoCH/BOS → espera volumen → entra."
+  }
+]
