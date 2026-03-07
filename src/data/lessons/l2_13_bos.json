@@ -1,0 +1,114 @@
+// Lección: BOS - Break of Structure
+{
+  "id": "l2_13",
+  "title": "El BOS: Rompimiento de Estructura",
+  "description": "Aprende a identificar el BOS para confirmar continuación de tendencia",
+  "duration": 6,
+  "xpReward": 75,
+  "order": 13,
+  "requiredLessonIds": ["l1_11", "l2_03"],
+  "explanation": [
+    {
+      "type": "text",
+      "content": "El BOS (Break of Structure) es un concepto fundamental en el trading de estructura. Ocurre cuando el precio rompe el máximo o mínimo del swing anterior, confirmando la continuación de la tendencia."
+    },
+    {
+      "type": "text",
+      "content": "En una tendencia alcista, el BOS ocurre cuando el precio rompe por encima del Higher High anterior. En una tendencia bajista, cuando rompe por debajo del Lower Low anterior."
+    },
+    {
+      "type": "chart",
+      "title": "BOS Alcista",
+      "description": "El precio rompe el HH anterior confirmando continuación",
+      "highlight": "El punto 11 rompe el HH de la vela 4, confirmando el BOS",
+      "candles": [
+        {"time": 1, "open": 100, "high": 103, "low": 99, "close": 102},
+        {"time": 2, "open": 102, "high": 105, "low": 101, "close": 104},
+        {"time": 3, "open": 104, "high": 107, "low": 103, "close": 106},
+        {"time": 4, "open": 106, "high": 110, "low": 105, "close": 109},
+        {"time": 5, "open": 109, "high": 111, "low": 107, "close": 108},
+        {"time": 6, "open": 108, "high": 109, "low": 105, "close": 106},
+        {"time": 7, "open": 106, "high": 107, "low": 103, "close": 104},
+        {"time": 8, "open": 104, "high": 105, "low": 101, "close": 102},
+        {"time": 9, "open": 102, "high": 103, "low": 99, "close": 100},
+        {"time": 10, "open": 100, "high": 101, "low": 98, "close": 99},
+        {"time": 11, "open": 99, "high": 112, "low": 98, "close": 111}
+      ]
+    },
+    {
+      "type": "text",
+      "content": "El BOS es más fuerte cuando: 1) Ocurre en la dirección de la tendencia principal, 2) Viene acompañado de volumen alto, 3) El precio mantiene la estructura rota."
+    },
+    {
+      "type": "chart",
+      "title": "BOS Bajista",
+      "description": "El precio rompe el LL anterior",
+      "highlight": "El punto 11 rompe el LL de la vela 4",
+      "candles": [
+        {"time": 1, "open": 115, "high": 116, "low": 113, "close": 114},
+        {"time": 2, "open": 114, "high": 115, "low": 112, "close": 113},
+        {"time": 3, "open": 113, "high": 114, "low": 111, "close": 112},
+        {"time": 4, "open": 112, "high": 113, "low": 109, "close": 110},
+        {"time": 5, "open": 110, "high": 111, "low": 108, "close": 109},
+        {"time": 6, "open": 109, "high": 110, "low": 107, "close": 108},
+        {"time": 7, "open": 108, "high": 109, "low": 106, "close": 107},
+        {"time": 8, "open": 107, "high": 108, "low": 105, "close": 106},
+        {"time": 9, "open": 106, "high": 107, "low": 104, "close": 105},
+        {"time": 10, "open": 105, "high": 106, "low": 103, "close": 104},
+        {"time": 11, "open": 104, "high": 105, "low": 98, "close": 99}
+      ]
+    },
+    {
+      "type": "tip",
+      "content": "Espera a que el precio cierre fuera de la estructura. Una mecha que rompe no cuenta como BOS válido."
+    },
+    {
+      "type": "warning",
+      "content": "No confundas el BOS con un falso breakout. Si el precio vuelve a entrar en la estructura anterior, el BOS falló."
+    }
+  ],
+  "example": {
+    "title": "BOS en EUR/USD",
+    "description": "Ejemplo real de BOS bajista en plena tendencia",
+    "scenario": "Observa cómo el precio rompe el LL previo"
+  },
+  "exercise": {
+    "id": "ex_l2_13",
+    "type": "chart-decision",
+    "question": "El precio acaba de romper. ¿Qué harías?",
+    "chart": {
+      "timeframe": "1h",
+      "candles": [
+        {"time": 1, "open": 1.0800, "high": 1.0820, "low": 1.0795, "close": 1.0815},
+        {"time": 2, "open": 1.0815, "high": 1.0840, "low": 1.0810, "close": 1.0835},
+        {"time": 3, "open": 1.0835, "high": 1.0860, "low": 1.0830, "close": 1.0855},
+        {"time": 4, "open": 1.0855, "high": 1.0880, "low": 1.0850, "close": 1.0875},
+        {"time": 5, "open": 1.0875, "high": 1.0890, "low": 1.0865, "close": 1.0880},
+        {"time": 6, "open": 1.0880, "high": 1.0885, "low": 1.0860, "close": 1.0865},
+        {"time": 7, "open": 1.0865, "high": 1.0870, "low": 1.0845, "close": 1.0855},
+        {"time": 8, "open": 1.0855, "high": 1.0860, "low": 1.0835, "close": 1.0845},
+        {"time": 9, "open": 1.0845, "high": 1.0850, "low": 1.0825, "close": 1.0835},
+        {"time": 10, "open": 1.0835, "high": 1.0840, "low": 1.0815, "close": 1.0825},
+        {"time": 11, "open": 1.0825, "high": 1.0830, "low": 1.0805, "close": 1.0815},
+        {"time": 12, "open": 1.0815, "high": 1.0820, "low": 1.0795, "close": 1.0805},
+        {"time": 13, "open": 1.0805, "high": 1.0810, "low": 1.0785, "close": 1.0795},
+        {"time": 14, "open": 1.0795, "high": 1.0800, "low": 1.0775, "close": 1.0785},
+        {"time": 15, "open": 1.0785, "high": 1.0790, "low": 1.0765, "close": 1.0775},
+        {"time": 16, "open": 1.0775, "high": 1.0780, "low": 1.0755, "close": 1.0765},
+        {"time": 17, "open": 1.0765, "high": 1.0770, "low": 1.0745, "close": 1.0755},
+        {"time": 18, "open": 1.0755, "high": 1.0760, "low": 1.0735, "close": 1.0745},
+        {"time": 19, "open": 1.0745, "high": 1.0890, "low": 1.0740, "close": 1.0880}
+      ]
+    },
+    "options": ["Comprar", "Vender", "Esperar confirmación"],
+    "correctAnswer": 2,
+    "difficulty": "medium",
+    "result": {
+      "summary": "Aunque rompe el LL, es mejor esperar confirmación del BOS.",
+      "analysis": "El precio rompe el LL anterior (vela 4 en 1.0880) pero no hay confirmación de volumen. La vela de rompimiento es muy larga y podría ser un falso breakout. Espera a un retest o confirmación.",
+      "commonMistake": "Entrar inmediatamente en el breakout. Sin confirmación, el 70% de los breakouts fallan.",
+      "lessonReference": "BOS - Confirmación"
+    }
+  },
+  "summary": "El BOS confirma la continuación de tendencia cuando el precio rompe el swing anterior. En tendencia alcista rompe HH, en bajista rompe LL. Espera confirmación antes de operar."
+}

@@ -1,0 +1,91 @@
+// Lección: Higher Highs y Higher Lows - Fundamentos de Tendencia
+{
+  "id": "l1_11",
+  "title": "HH y HL: Identificando Tendencias",
+  "description": "Aprende a identificar tendencias alcistas usando Higher Highs y Higher Lows",
+  "duration": 5,
+  "xpReward": 60,
+  "order": 11,
+  "requiredLessonIds": ["l1_05", "l1_06"],
+  "explanation": [
+    {
+      "type": "text",
+      "content": "Para identificar una tendencia alcista, necesitamos observar una secuencia específica de máximos y mínimos. Una tendencia alcista se define por una serie de Higher Highs (HH) y Higher Lows (HL)."
+    },
+    {
+      "type": "text",
+      "content": "Un Higher High (HH) es un máximo más alto que el máximo anterior. Un Higher Low (HL) es un mínimo más alto que el mínimo anterior. Cuando ves esta secuencia, estás ante una tendencia alcista."
+    },
+    {
+      "type": "chart",
+      "title": "Ejemplo de Tendencia Alcista",
+      "description": "Observa la secuencia de HH y HL en esta tendencia",
+      "highlight": "Los puntos 3, 7 y 11 son Higher Highs. Los puntos 2, 6 y 10 son Higher Lows",
+      "candles": [
+        {"time": 1, "open": 100, "high": 103, "low": 99, "close": 102},
+        {"time": 2, "open": 102, "high": 105, "low": 101, "close": 104},
+        {"time": 3, "open": 104, "high": 108, "low": 103, "close": 107},
+        {"time": 4, "open": 107, "high": 109, "low": 105, "close": 106},
+        {"time": 5, "open": 106, "high": 107, "low": 103, "close": 104},
+        {"time": 6, "open": 104, "high": 105, "low": 102, "close": 103},
+        {"time": 7, "open": 103, "high": 110, "low": 102, "close": 109},
+        {"time": 8, "open": 109, "high": 111, "low": 107, "close": 108},
+        {"time": 9, "open": 108, "high": 109, "low": 105, "close": 106},
+        {"time": 10, "open": 106, "high": 107, "low": 104, "close": 105},
+        {"time": 11, "open": 105, "high": 114, "low": 104, "close": 113},
+        {"time": 12, "open": 113, "high": 116, "low": 111, "close": 115}
+      ]
+    },
+    {
+      "type": "text",
+      "content": "Lo mismo aplica para tendencias bajistas. Cuando ves Lower Highs (LH) y Lower Lows (LL), estás ante una tendencia bajista."
+    },
+    {
+      "type": "tip",
+      "content": "Comienza siempre identificando la tendencia en timeframes mayores antes de operar en timeframes menores. La tendencia es tu amiga."
+    }
+  ],
+  "example": {
+    "title": "En el mercado real",
+    "description": "EUR/USD en gráfico de 1 hora mostrando tendencia alcista clara",
+    "scenario": "Identifica HH y HL antes de entrar"
+  },
+  "exercise": {
+    "id": "ex_l1_11",
+    "type": "chart-decision",
+    "question": "¿Qué harías en esta situación?",
+    "chart": {
+      "timeframe": "1h",
+      "candles": [
+        {"time": 1, "open": 1.0900, "high": 1.0920, "low": 1.0895, "close": 1.0915},
+        {"time": 2, "open": 1.0915, "high": 1.0940, "low": 1.0910, "close": 1.0935},
+        {"time": 3, "open": 1.0935, "high": 1.0960, "low": 1.0930, "close": 1.0955},
+        {"time": 4, "open": 1.0955, "high": 1.0970, "low": 1.0945, "close": 1.0955},
+        {"time": 5, "open": 1.0955, "high": 1.0960, "low": 1.0935, "close": 1.0945},
+        {"time": 6, "open": 1.0945, "high": 1.0950, "low": 1.0925, "close": 1.0935},
+        {"time": 7, "open": 1.0935, "high": 1.0940, "low": 1.0915, "close": 1.0925},
+        {"time": 8, "open": 1.0925, "high": 1.0930, "low": 1.0905, "close": 1.0915},
+        {"time": 9, "open": 1.0915, "high": 1.0920, "low": 1.0895, "close": 1.0905},
+        {"time": 10, "open": 1.0905, "high": 1.0910, "low": 1.0885, "close": 1.0895},
+        {"time": 11, "open": 1.0895, "high": 1.0900, "low": 1.0875, "close": 1.0885},
+        {"time": 12, "open": 1.0885, "high": 1.0890, "low": 1.0865, "close": 1.0875},
+        {"time": 13, "open": 1.0875, "high": 1.0880, "low": 1.0855, "close": 1.0865},
+        {"time": 14, "open": 1.0865, "high": 1.0870, "low": 1.0845, "close": 1.0855},
+        {"time": 15, "open": 1.0855, "high": 1.0860, "low": 1.0835, "close": 1.0845},
+        {"time": 16, "open": 1.0845, "high": 1.0850, "low": 1.0825, "close": 1.0835},
+        {"time": 17, "open": 1.0835, "high": 1.0840, "low": 1.0815, "close": 1.0825},
+        {"time": 18, "open": 1.0825, "high": 1.0830, "low": 1.0805, "close": 1.0815}
+      ]
+    },
+    "options": ["Comprar en el pullback", "Vender porque baja", "Esperar más información"],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "result": {
+      "summary": "La tendencia era alcista (HH en 3, 7, 11 y HL en 2, 6, 10). El pullback es oportunidad de compra.",
+      "analysis": "Este gráfico muestra una tendencia alcista clara con HH en las velas 3, 7 y 11. Los HL están en 2, 6 y 10. Cuando el precio hace pullback hacia el soporte dinámico, es una oportunidad de compra en tendencia.",
+      "commonMistake": "Vender porque el precio baja en una tendencia alcista. El pullback no significa cambio de tendencia.",
+      "lessonReference": "HH y HL - Tendencias"
+    }
+  },
+  "summary": "Una tendencia alcista se identifica por Higher Highs (máximos crecientes) y Higher Lows (mínimos crecientes). Cuando ves esta secuencia, opera a favor de la tendencia."
+}
