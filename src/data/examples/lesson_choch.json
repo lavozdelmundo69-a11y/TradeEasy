@@ -1,0 +1,128 @@
+// Lección de CHoCH (Change of Character) - Ejemplo completo
+{
+  "id": "l2_11",
+  "title": "El CHoCH: Cambio de Tendencia",
+  "description": "Aprende a identificar el cambio de tendencia con el concepto de CHoCH",
+  "duration": 5,
+  "xpReward": 75,
+  "order": 11,
+  "level": 2,
+  "levelName": "Análisis Técnico",
+  "explanation": [
+    {
+      "type": "text",
+      "content": "El CHoCH (Change of Character) es una de las señales más importantes en trading. Indica que la estructura del mercado está cambiando de tendencia."
+    },
+    {
+      "type": "chart",
+      "title": "Estructura Alcista → Bajista",
+      "description": "Observa cómo la tendencia alcista pierde fuerza y cambia a bajista",
+      "highlight": "En el punto 7-8 se forma el primer Lower Low, rompiendo la estructura alcista",
+      "candles": [
+        {"time": "1", "open": 100, "high": 103, "low": 99, "close": 102},
+        {"time": "2", "open": 102, "high": 105, "low": 101, "close": 104},
+        {"time": "3", "open": 104, "high": 108, "low": 103, "close": 107},
+        {"time": "4", "open": 107, "high": 110, "low": 106, "close": 109},
+        {"time": "5", "open": 109, "high": 112, "low": 108, "close": 111},
+        {"time": "6", "open": 111, "high": 113, "low": 109, "close": 110},
+        {"time": "7", "open": 110, "high": 111, "low": 107, "close": 108},
+        {"time": "8", "open": 108, "high": 109, "low": 104, "close": 105},
+        {"time": "9", "open": 105, "high": 106, "low": 102, "close": 103},
+        {"time": "10", "open": 103, "high": 104, "low": 100, "close": 101},
+        {"time": "11", "open": 101, "high": 103, "low": 98, "close": 99},
+        {"time": "12", "open": 99, "high": 101, "low": 96, "close": 97},
+        {"time": "13", "open": 97, "high": 99, "low": 94, "close": 95},
+        {"time": "14", "open": 95, "high": 97, "low": 92, "close": 93},
+        {"time": "15", "open": 93, "high": 95, "low": 90, "close": 91},
+        {"time": "16", "open": 91, "high": 93, "low": 88, "close": 89},
+        {"time": "17", "open": 89, "high": 91, "low": 86, "close": 87},
+        {"time": "18", "open": 87, "high": 89, "low": 84, "close": 85}
+      ]
+    },
+    {
+      "type": "text",
+      "content": "El CHoCH se confirma cuando: 1) El precio hace un Lower Low (baja por debajo del mínimo anterior), 2) El precio hace un Lower High (no puede hacer nuevos máximos)"
+    },
+    {
+      "type": "chart",
+      "title": "Identificación del CHoCH",
+      "description": "Los puntos clave donde ocurre el cambio de tendencia",
+      "highlight": "El punto 8 marca el LL y el punto 10 confirma el CHoCH al romper la estructura",
+      "candles": [
+        {"time": "1", "open": 100, "high": 105, "low": 99, "close": 104},
+        {"time": "2", "open": 104, "high": 108, "low": 103, "close": 107},
+        {"time": "3", "open": 107, "high": 112, "low": 106, "close": 111},
+        {"time": "4", "open": 111, "high": 115, "low": 110, "close": 114},
+        {"time": "5", "open": 114, "high": 117, "low": 113, "close": 116},
+        {"time": "6", "open": 116, "high": 118, "low": 114, "close": 115},
+        {"time": "7", "open": 115, "high": 116, "low": 111, "close": 112},
+        {"time": "8", "open": 112, "high": 113, "low": 108, "close": 109},
+        {"time": "9", "open": 109, "high": 112, "low": 106, "close": 107},
+        {"time": "10", "open": 107, "high": 108, "low": 103, "close": 104},
+        {"time": "11", "open": 104, "high": 105, "low": 100, "close": 101},
+        {"time": "12", "open": 101, "high": 102, "low": 97, "close": 98}
+      ]
+    },
+    {
+      "type": "tip",
+      "content": "El CHoCH es más fiable cuando ocurre después de una tendencia clara. En mercados laterales es más difícil de identificar."
+    },
+    {
+      "type": "warning",
+      "content": "No confundas un simple pullback con un CHoCH. El CHoCH requiere una estructura clara previa."
+    }
+  ],
+  "example": {
+    "title": "CHoCH en Forex real",
+    "description": "Este ejemplo muestra un CHoCH clásico en EUR/USD",
+    "scenario": "Mercado en tendencia alcista que pierde fuerza"
+  },
+  "exercise": {
+    "id": "ex_l2_11",
+    "type": "chart-analysis",
+    "question": "¿Qué indica este gráfico en el punto marcado?",
+    "chart": {
+      "candles": [
+        {"time": "1", "open": 1.0850, "high": 1.0880, "low": 1.0840, "close": 1.0870},
+        {"time": "2", "open": 1.0870, "high": 1.0900, "low": 1.0860, "close": 1.0890},
+        {"time": "3", "open": 1.0890, "high": 1.0930, "low": 1.0880, "close": 1.0920},
+        {"time": "4", "open": 1.0920, "high": 1.0960, "low": 1.0910, "close": 1.0950},
+        {"time": "5", "open": 1.0950, "high": 1.0980, "low": 1.0940, "close": 1.0970},
+        {"time": "6", "open": 1.0970, "high": 1.0990, "low": 1.0950, "close": 1.0960},
+        {"time": "7", "open": 1.0960, "high": 1.0970, "low": 1.0920, "close": 1.0930},
+        {"time": "8", "open": 1.0930, "high": 1.0940, "low": 1.0890, "close": 1.0900},
+        {"time": "9", "open": 1.0900, "high": 1.0910, "low": 1.0860, "close": 1.0870},
+        {"time": "10", "open": 1.0870, "high": 1.0880, "low": 1.0830, "close": 1.0840},
+        {"time": "11", "open": 1.0840, "high": 1.0850, "low": 1.0800, "close": 1.0810},
+        {"time": "12", "open": 1.0810, "high": 1.0820, "low": 1.0770, "close": 1.0780}
+      ],
+      "trend": "down",
+      "highlightIndex": 8
+    },
+    "options": [
+      "Continuación de tendencia alcista",
+      "CHoCH (Cambio de tendencia)",
+      "Mercado lateral",
+      "Falso rompimiento"
+    ],
+    "correctAnswer": 1,
+    "difficulty": "medium",
+    "topic": "estructura_mercado",
+    "explanation": "El gráfico muestra un Higher High (1-6), seguido de un Lower High (7) y un Lower Low (8-10), confirmando el CHoCH de tendencia alcista a bajista.",
+    "feedback": {
+      "shortExplanation": "El CHoCH se identifica cuando el precio rompe la estructura previa: hace un Lower Low seguido de un Lower High.",
+      "optionExplanations": [
+        {"optionIndex": 0, "isCorrect": false, "explanation": "La tendencia alcista terminó. Los máximos son decrecientes (7, 9, 11)."},
+        {"optionIndex": 1, "isCorrect": true, "explanation": "Correcto. El LL en 8 y LH en 9 confirman el cambio de tendencia."},
+        {"optionIndex": 2, "isCorrect": false, "explanation": "No es rango lateral. El precio está claramente en descenso."},
+        {"optionIndex": 3, "isCorrect": false, "explanation": "No es falso rompimiento. Es un cambio de estructura real."}
+      ],
+      "commonMistake": {
+        "title": "Confundir pullback con CHoCH",
+        "whyWrong": "Un pullback es temporal y no rompe la estructura. El CHoCH requiere LL + LH sequential.",
+        "tipToImprove": "Espera al menos 2-3 velas de confirmación después del LL."
+      }
+    }
+  },
+  "summary": "El CHoCH (Change of Character) indica un cambio de tendencia cuando: 1) Se forma un Lower Low rompiendo el swing anterior, 2) Se forma un Lower High confirmando debilidad. Es una señal muy valiosa para anticipar cambios de tendencia."
+}

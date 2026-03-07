@@ -1,8 +1,11 @@
 // QuizCard con Feedback Educativo Mejorado
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Vibration, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Vibration, ScrollView, Dimensions } from 'react-native';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS } from '../../../shared/constants';
 import { Exercise, ExerciseFeedback } from '../../../types';
+import { CandlestickChart } from '../../trading/components/CandlestickChart';
+
+const { width } = Dimensions.get('window');
 
 interface QuizCardProps {
   exercise: Exercise;
@@ -108,6 +111,26 @@ export const QuizCard: React.FC<QuizCardProps> = ({
         {exercise.scenario && (
           <View style={styles.scenario}>
             <Text style={styles.scenarioText}>{exercise.scenario.description}</Text>
+          </View>
+        )}
+        
+        {/* Gráfico para preguntas visuales */}
+        {exercise.chart && (
+          <View style={styles.chartContainer}>
+            <Text style={styles.chartLabel}>📊 Análisis Visual</Text>
+            <CandlestickChart 
+              data={[...exercise.chart.candles]}
+              width={width - SPACING.md * 4}
+              height={180}
+              showVolume={false}
+            />
+            {exercise.chart.trend && (
+              <Text style={styles.chartTrend}>
+                {exercise.chart.trend === 'up' ? '📈 Tendencia Alcista' : 
+                 exercise.chart.trend === 'down' ? '📉 Tendencia Bajista' : 
+                 '➡️ Mercado Lateral'}
+              </Text>
+            )}
           </View>
         )}
       </View>
@@ -243,6 +266,9 @@ const styles = StyleSheet.create({
   topicBadge: { fontSize: FONT_SIZES.xs, color: COLORS.primary, fontWeight: '600' },
   question: { fontSize: FONT_SIZES.lg, fontWeight: '600', color: COLORS.text, lineHeight: 26 },
   scenario: { backgroundColor: COLORS.background, padding: SPACING.md, borderRadius: BORDER_RADIUS.md, marginTop: SPACING.md, borderLeftWidth: 4, borderLeftColor: COLORS.primary },
+  chartContainer: { backgroundColor: COLORS.background, padding: SPACING.sm, borderRadius: BORDER_RADIUS.md, marginTop: SPACING.md },
+  chartLabel: { fontSize: FONT_SIZES.sm, fontWeight: '600', color: COLORS.text, marginBottom: SPACING.xs },
+  chartTrend: { fontSize: FONT_SIZES.xs, color: COLORS.textLight, marginTop: SPACING.xs, textAlign: 'center' },
   scenarioText: { fontSize: FONT_SIZES.sm, color: COLORS.textLight, fontStyle: 'italic', lineHeight: 20 },
   optionsContainer: { gap: SPACING.sm },
   buttonBase: { paddingVertical: SPACING.md, paddingHorizontal: SPACING.lg, borderRadius: BORDER_RADIUS.md, borderWidth: 2, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },

@@ -57,6 +57,15 @@ export interface Exercise {
   
   // Legacy: explicación simple (usar feedback en su lugar)
   explanation?: string;
+  
+  // Gráfico visual para preguntas
+  chart?: CandleChartData;
+}
+
+export interface CandleChartData {
+  candles: readonly Candle[];
+  trend?: 'up' | 'down' | 'sideways';
+  highlightIndex?: number;
 }
 
 export interface ExerciseFeedback {
