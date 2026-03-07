@@ -20,7 +20,11 @@ export interface Lesson {
 
 export interface ExplanationBlock {
   type: 'text' | 'tip' | 'warning' | 'chart';
-  content: string;
+  content?: string;
+  title?: string;
+  description?: string;
+  highlight?: string;
+  candles?: readonly ChartDataPoint[];
 }
 
 export interface ExampleBlock {
@@ -31,6 +35,7 @@ export interface ExampleBlock {
 }
 
 export interface ChartDataPoint {
+  time?: string | number;
   open: number;
   close: number;
   high: number;

@@ -1,6 +1,6 @@
 // LessonScreen - Pantalla de lección mejorada
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Vibration } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Vibration, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, SPACING, FONT_SIZES, BORDER_RADIUS, GAME_CONFIG } from '../shared/constants';
 import { Lesson } from '../types';
@@ -9,6 +9,19 @@ import { useUserStore } from '../store/userStore';
 import { useLessonCompletion } from '../features/lessons/hooks/useLessonCompletion';
 import { AnimatedButton, Card } from '../shared/components';
 import { useQuiz } from '../features/quiz/hooks/useQuiz';
+import { CandlestickChart } from '../features/trading/components/CandlestickChart';
+import { Candle, ChartDataPoint } from '../types';
+
+const { width } = Dimensions.get('window');
+
+// Helper para convertir ChartDataPoint a Candle
+const toCandle = (c: ChartDataPoint): Candle => ({
+  time: typeof c.time === 'string' ? c.time : `candle_${c.time}`,
+  open: c.open,
+  close: c.close,
+  high: c.high,
+  low: c.low,
+});
 
 interface LessonScreenProps {
   lesson: Lesson;
@@ -133,6 +146,23 @@ export const LessonScreen: React.FC<LessonScreenProps> = ({
               )}
               {block.type === 'text' && (
                 <Text style={styles.textContent}>{block.content}</Text>
+              )}
+              {block.type === 'chart' && block.candles && (
+                <View style={styles.chartBlock}>
+                  <Text style={styles.chartTitle}>{block.title}</Text>
+                  <Text style={styles.chartDescription}>{block.description}</Text>
+                  <CandlestickChart 
+                    data={block.candles.map(toCandle)}
+                    width={width - SPACING.xl * 2}
+                    height={180}
+                    showVolume={false}
+                  />
+                  {block.highlight && (
+                    <View style={styles.highlightBox}>
+                      <Text style={styles.highlightText}>🔍 {block.highlight}</Text>
+                    </View>
+                  )}
+                </View>
               )}
             </View>
           ))}
@@ -315,6 +345,38 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     lineHeight: 24,
     marginBottom: SPACING.sm,
+  },
+  chartBlock: {
+    backgroundColor: COLORS.background,
+    padding: SPACING.md,
+    borderRadius: BORDER_RADIUS.md,
+    marginVertical: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+  },
+  chartTitle: {
+    fontSize: FONT_SIZES.md,
+    fontWeight: '700',
+    color: COLORS.primary,
+    marginBottom: SPACING.xs,
+  },
+  chartDescription: {
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.textLight,
+    marginBottom: SPACING.sm,
+  },
+  highlightBox: {
+    backgroundColor: COLORS.warning + '20',
+    padding: SPACING.sm,
+    borderRadius: BORDER_RADIUS.sm,
+    marginTop: SPACING.sm,
+    borderLeftWidth: 3,
+    borderLeftColor: COLORS.warning,
+  },
+  highlightText: {
+    fontSize: FONT_SIZES.sm,
+    color: COLORS.text,
+    fontStyle: 'italic',
   },
   exampleTitle: {
     fontSize: FONT_SIZES.md,
